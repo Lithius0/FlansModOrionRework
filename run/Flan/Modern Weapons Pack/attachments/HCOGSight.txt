@@ -23,4 +23,4 @@ Recipe R ingotIron F dyePowder.1 G thinGlass
 GGG
 RFR
 RRR
-Description Sight Attatchment: HCOG sight.
+Description Sight Attachment: HCOG sight.

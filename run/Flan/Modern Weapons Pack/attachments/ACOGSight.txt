@@ -12,7 +12,7 @@ SpreadMultiplier 1.0
 RecoilMultiplier 1.0
 BulletSpeedMultiplier 1.0
 ReloadTimeMultiplier 1.0
-FOVZoomLevel 2.0
+FOVZoomLevel 2.5
 //Model
 Model mw.ACOG
 Texture ACOGSight
@@ -23,4 +23,4 @@ Recipe R ingotIron F dyePowder.1 G thinGlass
 RRR
 GFG
 RRR
-Description Sight Attatchment: ACOG sight.
+Description Sight Attachment: ACOG sight.

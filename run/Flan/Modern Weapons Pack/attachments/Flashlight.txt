@@ -31,4 +31,4 @@ Recipe F fiberglass G yellowDust R redstone
 FFF
 GGR
 FFF
-Description Under Barrel Attatchment: Flashlight for long guns.
+Description Under Barrel Attachment: Flashlight for long guns.

@@ -28,4 +28,4 @@ Recipe R ingotIron F ingotGold G thinGlass
 RRR
 GFG
 RRR
-Description Sight Attatchment: 4x magnifacation scope.
+Description Sight Attachment: 4x magnification scope.
