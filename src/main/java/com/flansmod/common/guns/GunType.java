@@ -39,7 +39,7 @@ public class GunType extends PaintableType implements IScope
 	/**
 	 * The amount to recoil the player's view by when firing a single shot from this gun
 	 */
-	public int recoil;
+	public float recoil;
 	/**
 	 * The amount that bullets spread out when fired from this gun
 	 */
