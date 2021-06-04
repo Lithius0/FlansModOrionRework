@@ -177,7 +177,7 @@ public class DriveablePart
 	public void hitByBullet(BulletType type, float damage)
 	{
 		//Perform damage code
-		health -= damage * type.damageVsDriveable;
+		health -= damage;
 		if(type.setEntitiesOnFire)
 		{
 			fireTime = 20;
