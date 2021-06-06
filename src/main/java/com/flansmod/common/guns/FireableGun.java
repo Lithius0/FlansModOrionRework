@@ -97,7 +97,7 @@ public class FireableGun
 	 */
 	public float getDamageAgainstVehicles()
 	{
-		return this.vehicledamage;
+		return this.damage * this.vehicledamage;
 	}
 	
 	public void MultiplySpread(float multiplier) { spread *= multiplier; }
