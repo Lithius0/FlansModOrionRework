@@ -92,7 +92,7 @@ public class ShotHandler
 	
 	private static void createMultipleShots(World world, FiredShot shot, Integer bulletAmount, Vector3f rayTraceOrigin, Vector3f shootingDirection, ShootBulletHandler handler)
 	{
-		Float bulletspread = 0.0025f * shot.getFireableGun().getGunSpread() * shot.getBulletType().bulletSpread;
+		Float bulletspread = 0.0025f * shot.getFireableGun().getGunSpread();
 		for(int i = 0; i < bulletAmount; i++)
 		{
 			createShot(world, shot, bulletspread, rayTraceOrigin, new Vector3f(shootingDirection));
@@ -210,7 +210,7 @@ public class ShotHandler
 			EntityHit entityHit = (EntityHit)bulletHit;
 			if(entityHit.entity != null)
 			{
-				if(entityHit.entity.attackEntityFrom(shot.getDamageSource(), damage * bulletType.damageVsLiving) && entityHit.entity instanceof EntityLivingBase)
+				if(entityHit.entity.attackEntityFrom(shot.getDamageSource(), damage) && entityHit.entity instanceof EntityLivingBase)
 				{
 					EntityLivingBase living = (EntityLivingBase)entityHit.entity;
 					for(PotionEffect effect : bulletType.hitEffects)
