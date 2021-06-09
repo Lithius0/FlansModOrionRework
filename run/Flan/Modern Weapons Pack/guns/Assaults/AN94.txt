@@ -22,20 +22,20 @@ Icon AN94
 //Colour in Red, Green, Blue, each going up to 255.
 Colour 255 255 255
 //Reload time in ticks, 1/20ths of a second
-ReloadTime 60
+ReloadTime 50
 //The amount of gun recoil, all relative : Sten = 1, Mp40 = 3, Kar98kSniper = 20
-Recoil 3
+Recoil 2
 //Damage in half hearts
-Damage 6
+Damage 7
 //The higher this value, the more the bullets spread
-Accuracy 4
+Accuracy 3
 //Time in ticks between rounds
 ShootDelay 2.0
 ShootSound AN94Shoot
 ReloadSound AN94Reload
-Mode SemiAuto
+Mode FullAuto
 //Bullet speed, default 3.0
-BulletSpeed 10.0
+BulletSpeed 12.0
 //Default scope settings. Usually for aiming down sights. In which case, use FOVZoomLevel, not ZoomLevel
 Scope None
 ZoomLevel 1.0
