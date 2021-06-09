@@ -10,10 +10,10 @@ RotateWheels true
 CameraDistance 7.5
 //Throttle
 MaxThrottle 0.65
-MaxNegativeThrottle 0.45
+MaxNegativeThrottle 0.5
 //Steering modifiers
-TurnLeftSpeed 0.3
-TurnRightSpeed 0.3
+TurnLeftSpeed 0.5
+TurnRightSpeed 0.5
 //For calculating whether wheels are on the ground or not for driving
 WheelRadius 1.0
 //Wheel positions for collision handling. Tanks still have 4 wheels, they are just the corner ones.
@@ -29,7 +29,7 @@ FourWheelDrive true
 //Tank mode activate
 Tank true
 //Fuel Tank Size (1 point of fuel will keep one propeller going with throttle at 1 for 1 tick)
-FuelTankSize 2000
+FuelTankSize 6000
 //Inventory Slots
 CargoSlots 20
 ShellSlots 5
@@ -44,8 +44,8 @@ AddAmmo shell
 AddAmmo HEshell
 AllowAllAmmo false
 //Delays are in ticks or 1/20ths of seconds
-ShootDelay 2
-ShellDelay 110
+ShootDelay 1
+ShellDelay 90
 //Sounds
 StartSound TankIdle
 StartSoundLength 20
@@ -53,7 +53,7 @@ EngineSound TankMove
 EngineSoundLength 60
 ShootSoundPrimary 75mmGun
 ShootSoundSecondary BrowningShoot
-DamageModifierPrimary 44
+DamageModifierPrimary 5000
 //Recipe
 //Each section of the plane may have many parts
 //The sections are tailWheel, tail, bay, topWing, leftWingWheel, leftWing, rightWingWheel,
@@ -65,8 +65,8 @@ AddRecipeParts rightTrack 1 catTrack
 //Dye colours are "black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink", "lime", "yellow", "lightBlue", "magenta", "orange", "white"
 AddDye 10 green
 //Health and collision
-SetupPart core 10720 -61 -3 -15 114 28 30
-SetupPart turret 10520 -25 25 -25 50 18 50
+SetupPart core 18720 -61 -3 -15 114 28 30
+SetupPart turret 16520 -25 25 -25 50 18 50
 SetupPart leftTrack 8000 -61 -10 -28 112 17 13
 SetupPart rightTrack 8000 -61 -10 15 112 17 13
 BulletDetection 7
