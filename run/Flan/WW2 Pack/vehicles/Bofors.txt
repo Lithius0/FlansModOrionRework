@@ -31,7 +31,7 @@ Tank true
 Primary Shell
 Secondary None
 //Time between shots in 1/20ths of seconds
-ShootDelayPrimary 20
+ShootDelayPrimary 10
 ShootDelaySecondary 0
 //Whether to alternate or fire all together
 AlternatePrimary True
@@ -60,6 +60,8 @@ EngineSound None
 EngineSoundLength 0
 ShootSoundPrimary AAfire
 TurretRotationSpeed 0.03
+DamageModifierPrimary 300
+BulletSpeed 10
 //Recipe
 //Each section of the plane may have many parts
 //The sections are tailWheel, tail, bay, topWing, leftWingWheel, leftWing, rightWingWheel,

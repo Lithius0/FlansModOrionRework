@@ -13,8 +13,8 @@ RoundsPerItem 4
 //WeaponType : One of Missile, Shell, Bomb, Gun, None. Only affects driveable entities
 WeaponType Shell
 //The damage multiplier caused by the bullet on hitting an entity
-DamageVsLiving 3
-DamageVsVehicles 250
+DamageVsLiving 1
+DamageVsVehicles 1
 //Size of explosion caused
 Explosion 0
 //True if bullet explodes on hitting anything. Fuse denotes the maximum time it may spend in the air before detonating
@@ -30,5 +30,4 @@ HitSound flakExplode
 //Whether or not the bullet can travel through an entity having hit it
 Penetrates False
 SmokeTrail False
-MaxStackSize 64
 RecipeOutput 16
