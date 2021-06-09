@@ -223,7 +223,7 @@ public class EntityMG extends Entity implements IEntityAdditionalSpawnData
 		ShootableType shootableType = shootableItem.type;
 		
 		Vector3f position = new Vector3f(blockX + 0.5D, blockY + type.pivotHeight, blockZ + 0.5D);
-		FireableGun gun = new FireableGun(type, type.damage, type.bulletSpread, type.bulletSpeed, type.spreadPattern);
+		FireableGun gun = new FireableGun(type, bullet);
 		FiredShot shot = new FiredShot(gun, bullet, this, (EntityPlayerMP) gunner);
 
 		Double radianYaw = Math.toRadians(direction * 90F + rotationYaw);

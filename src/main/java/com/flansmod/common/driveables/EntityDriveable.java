@@ -139,7 +139,7 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 	
 	/** Can't break the block with hardness greater than this value 
 	 *  when collided */ 
-	public float collisionForce = 30F;
+	public float collisionForce = 1;
 
 	/** Damage factor of unbreakable block such as bedrock when collided */
 	public float unbreakableBlockDamage = 100F;
@@ -653,12 +653,7 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 			{
 				ShootableType ammoType = ((ItemShootable) ammoItem).type;
 				BulletType bulletType = (BulletType) ammoType;
-				FireableGun fireableGun = new FireableGun(
-						gunType,
-						gunType.damage,
-						gunType.bulletSpread,
-						gunType.bulletSpeed,
-						gunType.spreadPattern);
+				FireableGun fireableGun = new FireableGun(gunType, bulletType);
 				FiredShot shot = new FiredShot(fireableGun, bulletType, this, (EntityPlayerMP)getDriver());
 				
 				ShootBulletHandler handler = isExtraBullet ->
@@ -766,14 +761,10 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 	{
 		ItemStack bullet = driveableData.getStackInSlot(slot);
 		ItemBullet bulletItem = (ItemBullet)bullet.getItem();
-		int damageMultiplier = secondary ? type.damageModifierSecondary : type.damageModifierPrimary;
+		float baseDamage = secondary ? type.damageModifierSecondary : type.damageModifierPrimary;
 		
-		FireableGun fireableGun = new FireableGun(bulletItem.type,
-			bulletItem.type.damageVsLiving * damageMultiplier,
-			bulletItem.type.damageVsDriveable * damageMultiplier,
-			bulletItem.type.bulletSpread,
-			speed,
-			EnumSpreadPattern.circle);
+		//Temporary spread of 1. TODO: Make primary and secondary weapon spread fields for EntityDriveable.
+		FireableGun fireableGun = new FireableGun(bulletItem.type, baseDamage, type.bulletSpeed, type.bulletSpread);
 		FiredShot shot = new FiredShot(fireableGun, bulletItem.type, this, (EntityPlayerMP)getDriver());
 		
 		ShootBulletHandler handler = isExtraBullet ->
@@ -1614,6 +1605,7 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 	{
 		DriveablePart part = getDriveableData().parts.get(hit.part);
 		part.hitByBullet(bulletType, damage);
+		FlansMod.log.info("Damage to vehicle: " + damage);
 		
 		// This is server side bsns
 		if(!world.isRemote)

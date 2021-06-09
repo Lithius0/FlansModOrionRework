@@ -401,7 +401,7 @@ public class EntityMecha extends EntityDriveable
 			ShootableType shootableType = ((ItemShootable)bulletStack.getItem()).type;
 			if (shootableType instanceof BulletType)
 			{
-				FireableGun fireableGun = new FireableGun(gunType, gunType.getDamage(stack), gunType.getSpread(stack), gunType.getBulletSpeed(stack), gunType.getSpreadPattern(stack));
+				FireableGun fireableGun = new FireableGun(gunType, bulletType, stack);
 				FiredShot shot = new FiredShot(fireableGun, (BulletType)shootableType, this, (EntityPlayerMP) getDriver());
 				ShotHandler.fireGun(world, shot, gunType.numBullets*bulletType.numBullets, bulletOrigin, armVector);
 			}

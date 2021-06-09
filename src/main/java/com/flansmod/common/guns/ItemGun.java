@@ -575,12 +575,7 @@ public class ItemGun extends Item implements IPaintableItem
 						if (shootableType instanceof BulletType)
 						{
 							//Fire gun
-							FireableGun fireableGun = 
-									new FireableGun(type,
-											type.getDamage(gunstack),
-											type.getSpread(gunstack), 
-											type.bulletSpeed, 
-											type.getSpreadPattern(gunstack));
+							FireableGun fireableGun = new FireableGun(type, shootableType, gunstack);
 							
 							if(otherHand.getItem() instanceof ItemShield || otherHand.getItem() instanceof ItemGlove)
 							{

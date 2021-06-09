@@ -232,7 +232,7 @@ public class EntitySkullDrone extends EntityLiving implements IInventory
 			ShootableType shootableType = ((ItemShootable)bulletStack.getItem()).type;
 			if (shootableType instanceof BulletType)
 			{
-				FireableGun fireableGun = new FireableGun(gunType, gunType.getDamage(stack), gunType.getSpread(stack) * 5f + 10f, gunType.getBulletSpeed(stack), EnumSpreadPattern.circle);
+				FireableGun fireableGun = new FireableGun(gunType, shootableType, stack);
 				FiredShot shot = new FiredShot(fireableGun, (BulletType)shootableType, this, null);
 				ShotHandler.fireGun(world, shot, gunType.numBullets*bulletType.numBullets, bulletOrigin, aimVector);
 			}

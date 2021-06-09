@@ -42,7 +42,6 @@ public class EntityBullet extends EntityShootable implements IEntityAdditionalSp
 {
 	private static final DataParameter<String> BULLET_TYPE = EntityDataManager.createKey(EntityBullet.class, DataSerializers.STRING);
 	
-	private static int bulletLife = 600; // Kill bullets after 30 seconds
 	public int ticksInAir;
 	
 	private FiredShot shot;
@@ -80,7 +79,7 @@ public class EntityBullet extends EntityShootable implements IEntityAdditionalSp
 		motionX = direction.x;
 		motionY = direction.y;
 		motionZ = direction.z;
-		setArrowHeading(motionX, motionY, motionZ, shot.getFireableGun().getGunSpread() * shot.getBulletType().bulletSpread, shot.getFireableGun().getBulletSpeed());
+		setArrowHeading(motionX, motionY, motionZ, shot.getFireableGun().getGunSpread(), shot.getFireableGun().getBulletSpeed());
 		
 		currentPenetratingPower = shot.getBulletType().penetratingPower;
 	}
@@ -284,10 +283,11 @@ public class EntityBullet extends EntityShootable implements IEntityAdditionalSp
 			ticksInAir++;
 			if(ticksInAir > type.fuse && type.fuse > 0 && !isDead)
 			{
+				ShotHandler.onDetonate(world, shot, new Vector3f(posX, posY, posZ)); //Explode the bullet once the fuse has passed
 				setDead();
 			}
 			
-			if(ticksExisted > bulletLife)
+			if(ticksExisted > type.despawnTime && !isDead)
 			{
 				setDead();
 			}
@@ -418,6 +418,7 @@ public class EntityBullet extends EntityShootable implements IEntityAdditionalSp
 			fireablegun.setInteger("infotype", gun.getInfoType().shortName.hashCode());
 			fireablegun.setFloat("spread", gun.getGunSpread());
 			fireablegun.setFloat("speed", gun.getBulletSpeed());
+			fireablegun.setString("spreadPattern", gun.getSpreadPattern().name());
 			fireablegun.setFloat("damage", gun.getDamage());
 			fireablegun.setFloat("vehicledamage", gun.getDamageAgainstVehicles());
 			tag.setTag("fireablegun",fireablegun);
@@ -449,7 +450,7 @@ public class EntityBullet extends EntityShootable implements IEntityAdditionalSp
 		if (tag.hasKey("fireablegun"))
 		{
 			NBTTagCompound gun = tag.getCompoundTag("fireablegun");
-			fireablegun = new FireableGun(InfoType.getType(gun.getInteger("infotype")), gun.getFloat("damage"), gun.getFloat("vehicledamage"), gun.getFloat("spread"), gun.getFloat("speed"), EnumSpreadPattern.circle);
+			fireablegun = new FireableGun(gun.getFloat("damage"), gun.getFloat("vehicledamage"), gun.getFloat("spread"), gun.getFloat("speed"), EnumSpreadPattern.get(gun.getString("spreadpattern")), InfoType.getType(gun.getInteger("infotype")));
 		}
 		
 		if (tag.hasKey("player"))

@@ -367,7 +367,7 @@ public class EntityFlansModShooter extends AbstractSkeleton
 			AttachmentType barrel = gunType.getBarrel(stack);
 			boolean silenced = barrel != null && barrel.silencer;
 			//world.playSoundAtEntity(entityplayer, type.shootSound, 10F, type.distortSound ? 1.0F / (world.rand.nextFloat() * 0.4F + 0.8F) : 1.0F);
-			PacketPlaySound.sendSoundPacket(posX, posY, posZ, FlansMod.soundRange, dimension, gunType.shootSound, gunType.distortSound, silenced);
+			PacketPlaySound.sendSoundPacket(posX, posY, posZ, FlansMod.soundRange, dimension, gunType.shootSound, gunType.distortSound, silenced, 0.6F);
 			soundDelay = gunType.shootSoundLength;
 		}
 		if(!world.isRemote)
@@ -379,7 +379,7 @@ public class EntityFlansModShooter extends AbstractSkeleton
 			Vector3f direction = new Vector3f(target.posX - posX, (target.posY + target.getEyeHeight()) - (posY + getEyeHeight()), target.posZ - posZ).normalise(null);
 			Vector3f.add(direction, new Vector3f(rand.nextFloat() * direction.x * inaccuracy, rand.nextFloat() * direction.y * inaccuracy, rand.nextFloat() * direction.z * inaccuracy), direction);
 			
-			FireableGun fireableGun = new FireableGun(gunType, gunType.getDamage(stack), gunType.getSpread(stack), gunType.getBulletSpeed(stack), gunType.getSpreadPattern(stack));
+			FireableGun fireableGun = new FireableGun(gunType, bullet, stack);
 			
 			//Grenades are currently disabled for this entity
 			if (bullet instanceof BulletType)
