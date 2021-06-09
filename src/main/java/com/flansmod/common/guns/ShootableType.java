@@ -68,7 +68,7 @@ public abstract class ShootableType extends InfoType
 	/**
 	 * Amount of damage to impart upon various entities
 	 */
-	public float damageVsLiving = 1, damageVsDriveable = 1;
+	public float damageVsLiving = 1F, damageVsDriveable = 1F;
 	/**
 	 * Whether this grenade will break glass when thrown against it
 	 */
@@ -82,7 +82,7 @@ public abstract class ShootableType extends InfoType
 	/**
 	 * After this time the grenade will despawn quietly. 0 means no despawn time
 	 */
-	public int despawnTime = 0;
+	public int despawnTime = 600;
 	/**
 	 * If true, then this will explode upon hitting something
 	 */
