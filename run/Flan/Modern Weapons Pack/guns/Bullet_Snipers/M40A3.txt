@@ -9,13 +9,13 @@ Icon M40A3
 //Colour in Red, Green, Blue, each going up to 255.
 Colour 255 255 255
 //Reload time in ticks, 1/20ths of a second
-ReloadTime 120
+ReloadTime 100
 //The amount of gun recoil, all relative : Sten = 1, Mp40 = 3, Kar98kSniper = 20
 Recoil 26
 //Damage in half hearts
-Damage 32
+Damage 30
 //The higher this value, the more the bullets spread
-Accuracy 1
+Accuracy 0.3
 //For guns in which the magazine is integrated
 LoadIntoGun 5
 //Time in ticks between rounds
@@ -24,7 +24,7 @@ ShootSound R700Shoot
 ReloadSound MWSpringfieldReload
 Mode SemiAuto
 //Bullet speed, default 3.0
-BulletSpeed 10.0
+BulletSpeed 20.0
 //Default Scope Settings
 ZoomLevel 1.0
 FOVZoomLevel 1.0

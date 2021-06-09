@@ -9,15 +9,15 @@ Icon Barrett
 //Colour in Red, Green, Blue, each going up to 255.
 Colour 255 255 255
 //Reload time in ticks, 1/20ths of a second
-ReloadTime 40
+ReloadTime 80
 //The amount of gun recoil, all relative : Sten = 1, Mp40 = 3, Kar98kSniper = 20
-Recoil 30
+Recoil 32
 //Damage in half hearts
-Damage 34
+Damage 40
 //The higher this value, the more the bullets spread
-Accuracy 1
+Accuracy 0.5
 //Time in ticks between rounds
-ShootDelay 24.0
+ShootDelay 40.0
 ShootSound BarrettShoot
 ReloadSound BARReload
 Mode SemiAuto
@@ -47,7 +47,7 @@ ShowDamage true
 ShowRecoil true
 DistortSound True
 CanShootUnderwater False
-MoveSpeedModifier 0.8
+MoveSpeedModifier 0.7
 Paintjob barrett_stoic_blue barrett_stoic_blue blue 3
 Paintjob barrett_stoic_green barrett_stoic_green green 3
 Paintjob barrett_stoic_red barrett_stoic_red red 3

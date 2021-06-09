@@ -18,16 +18,16 @@ ReloadTime 40
 //The amount of gun recoil, all relative : Sten = 1, Mp40 = 3, Kar98kSniper = 20
 Recoil 6
 //Damage in half hearts
-Damage 16
+Damage 10
 //The higher this value, the more the bullets spread
 Accuracy 2
 //Time in ticks between rounds
-ShootDelay 1.4
+ShootDelay 4
 ShootSound P90Shoot
 ReloadSound MWThompsonReload
 Mode SemiAuto
 //Bullet speed, default 3.0
-BulletSpeed 10.0
+BulletSpeed 17.0
 //Default scope settings. Usually for aiming down sights. In which case, use FOVZoomLevel, not ZoomLevel
 Scope None
 ZoomLevel 1.0

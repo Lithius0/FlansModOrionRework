@@ -13,9 +13,9 @@ ReloadTime 80
 //The amount of gun recoil, all relative : Sten = 1, Mp40 = 3, Kar98kSniper = 20
 Recoil 16
 //Damage in half hearts
-Damage 24
+Damage 28
 //The higher this value, the more the bullets spread
-Accuracy 3
+Accuracy 0.4
 //For guns in which the magazine is integrated
 LoadIntoGun 4
 //Time in ticks between rounds
@@ -24,7 +24,7 @@ ShootSound R700Shoot
 ReloadSound MWSpringfieldReload
 Mode SemiAuto
 //Bullet speed, default 3.0
-BulletSpeed 10.0
+BulletSpeed 20.0
 //Default Scope Settings
 ZoomLevel 1.0
 FOVZoomLevel 1.0
@@ -49,7 +49,7 @@ ShowDamage true
 ShowRecoil true
 DistortSound True
 CanShootUnderwater False
-MoveSpeedModifier 0.8
+MoveSpeedModifier 0.9
 Paintjob r700_stoic_blue r700_stoic_blue blue 3
 Paintjob r700_stoic_green r700_stoic_green green 3
 Paintjob r700_stoic_red r700_stoic_red red 3
