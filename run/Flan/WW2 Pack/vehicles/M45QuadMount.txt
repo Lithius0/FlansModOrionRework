@@ -31,7 +31,7 @@ Tank true
 Primary Gun
 Secondary None
 //Time between shots in 1/20ths of seconds
-ShootDelayPrimary 3
+ShootDelayPrimary 0.5
 ShootDelaySecondary 0
 //Whether to alternate or fire all together
 AlternatePrimary True
@@ -39,6 +39,7 @@ AlternateSecondary False
 //Firing modes. One of SemiAuto, FullAuto or Minigun
 ModePrimary FullAuto
 ModeSecondary FullAuto
+DamageModifierPrimary 10
 //Add shoot origins. These are the points on your vehicle from which bullets / missiles / shells / bombs appear
 ShootPointPrimary -16 17 14 turret 50Cal
 ShootPointPrimary -12 12 16 turret 50Cal
@@ -62,7 +63,7 @@ StartSoundLength 0
 EngineSound None
 EngineSoundLength 0
 ShootSoundPrimary 50CalShoot
-TurretRotationSpeed 0.08
+TurretRotationSpeed 0.2
 //Recipe
 //Each section of the plane may have many parts
 //The sections are tailWheel, tail, bay, topWing, leftWingWheel, leftWing, rightWingWheel,

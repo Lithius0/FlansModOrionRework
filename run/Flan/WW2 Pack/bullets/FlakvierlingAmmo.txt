@@ -7,14 +7,14 @@ Icon flakvierlingAmmo
 //How affected by gravity the bullet is
 FallSpeed 0.25
 //The maximum stack size
-MaxStackSize 16
+MaxStackSize 1
 //The number of rounds each item has. Limited to 32000.
-RoundsPerItem 20
+RoundsPerItem 80
 //The damage multiplier caused by the bullet on hitting an entity
 //WeaponType : One of Missile, Shell, Bomb, Gun, None. Only affects driveable entities
 WeaponType Shell
-DamageVsLiving 3
-DamageVsVehicles 250
+DamageVsLiving 0.3
+DamageVsVehicles 1
 //Size of explosion caused
 Explosion 0
 //True if bullet explodes on hitting anything. Fuse denotes the maximum time it may spend in the air before detonating

@@ -39,6 +39,7 @@ AlternateSecondary False
 //Firing modes. One of SemiAuto, FullAuto or Minigun
 ModePrimary FullAuto
 ModeSecondary FullAuto
+DamageModifierPrimary 100
 //Add shoot origins. These are the points on your vehicle from which bullets / missiles / shells / bombs appear
 ShootPointPrimary 48 6 4 turret
 // ------------------------------------------------------ Inventory ------------------------------------------------------
@@ -63,7 +64,7 @@ StartSoundLength 0
 EngineSound None
 EngineSoundLength 0
 ShootSoundPrimary AAfire
-TurretRotationSpeed 0.06
+TurretRotationSpeed 0.1
 //Recipe
 //Each section of the plane may have many parts
 //The sections are tailWheel, tail, bay, topWing, leftWingWheel, leftWing, rightWingWheel,
