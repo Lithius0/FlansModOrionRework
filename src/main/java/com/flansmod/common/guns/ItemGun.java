@@ -598,7 +598,7 @@ public class ItemGun extends Item implements IPaintableItem
 							grenade.throwGrenade(world, player);
 							handler.shooting(false);
 						}
-						
+
 						boolean silenced = type.getBarrel(gunstack) != null && type.getBarrel(gunstack).silencer;
 						playShotSound(world, rayTraceOrigin, silenced);
 					}
@@ -637,7 +637,7 @@ public class ItemGun extends Item implements IPaintableItem
 		// Play shot sounds
 		if(soundDelay <= 0 && type.shootSound != null)
 		{
-			PacketPlaySound.sendSoundPacket(position.x, position.y, position.z, FlansMod.soundRange, world.provider.getDimension(), type.shootSound, silenced);
+			PacketPlaySound.sendSoundPacket(position.x, position.y, position.z, FlansMod.soundRange, world.provider.getDimension(), type.shootSound, false, silenced, 0.6F);
 			soundDelay = type.idleSoundLength;
 		}
 	}
@@ -648,7 +648,8 @@ public class ItemGun extends Item implements IPaintableItem
 		FMLClientHandler.instance().getClient().getSoundHandler().playSound(
 				new PositionedSoundRecord(FlansModResourceHandler.getSoundEvent(type.shootSound),
 						SoundCategory.PLAYERS,
-						silenced ? 5F : 10F,
+						// The volume has been turned down as part of the Orion Rework
+						silenced ? 0.5F : 2F,
 						(type.distortSound ? 1.0F / (world.rand.nextFloat() * 0.4F + 0.8F) : 1.0F) * (silenced ? 2F : 1F),
 						x, y, z));
 	}
