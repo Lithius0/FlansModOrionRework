@@ -10,11 +10,12 @@ ReloadTime 75
 //The amount of gun recoil, all relative : Sten = 1, Mp40 = 3, Kar98kSniper = 20
 Recoil 25
 //Damage in half hearts
-Damage 2
+Damage 1500
 //The higher this value, the more the bullets spread
-Accuracy 2
+Accuracy 8
 //Time in ticks between rounds
 ShootDelay 1.0
+ConsumeGunOnUse True
 ShootSound AT4Shoot
 ReloadSound MWbazookaReload
 Mode SemiAuto
@@ -27,7 +28,7 @@ Model mw.M72LAW
 Texture M72LAW
 ModelScale 0.18
 //Modifiers
-MoveSpeedModifier 0.8
+MoveSpeedModifier 1
 Description Rocket Launcher : Anti-Armor weapon for heavy landcraft.
 Paintjob m72law_stoic_blue m72law_stoic_blue blue 4
 Paintjob m72law_stoic_green m72law_stoic_green green 4
