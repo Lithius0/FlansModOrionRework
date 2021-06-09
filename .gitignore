@@ -22,6 +22,7 @@ Thumbs.db
 
 # Flan's Mod
 !run/Flan/
+!run/Templates/
 
 # Flan's Scripts
 upload.bat
