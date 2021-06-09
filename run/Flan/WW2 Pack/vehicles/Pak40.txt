@@ -47,7 +47,7 @@ EngineSound
 EngineSoundLength 0
 ShootSoundPrimary Tank3Shoot
 TurretRotationSpeed 0.02
-DamageModifierPrimary 44
+DamageModifierPrimary 9000
 //Recipe
 //Each section of the plane may have many parts
 //The sections are tailWheel, tail, bay, topWing, leftWingWheel, leftWing, rightWingWheel,
