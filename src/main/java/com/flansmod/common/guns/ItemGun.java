@@ -565,7 +565,7 @@ public class ItemGun extends Item implements IPaintableItem
 						
 						animations.doShoot(type.getPumpDelay(), type.getPumpTime());
 						Float recoil = type.getRecoil(gunstack);
-						FlansModClient.playerRecoil += recoil;
+						FlansModClient.addRecoil(recoil);
 						animations.recoil += recoil;
 						
 					} else

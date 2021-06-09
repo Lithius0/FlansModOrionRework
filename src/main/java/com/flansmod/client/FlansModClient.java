@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -55,6 +56,8 @@ import com.flansmod.common.types.InfoType;
 @SideOnly(Side.CLIENT)
 public class FlansModClient extends FlansMod
 {
+	private static Random random = new Random();
+	
 	// Plane / Vehicle control handling
 	/**
 	 * Whether the player has received the vehicle tutorial text
@@ -73,11 +76,12 @@ public class FlansModClient extends FlansMod
 	/**
 	 * The recoil applied to the player view by shooting
 	 */
-	public static float playerRecoil;
+	public static float playerRecoil = 0F;
 	/**
 	 * The amount of compensation to apply to the recoil in order to bring it back to normal
 	 */
-	public static float antiRecoil;
+	private static float antiRecoil = 0F;
+	private static float wobble = 0F;
 	
 	// Gun animations
 	/**
@@ -281,15 +285,39 @@ public class FlansModClient extends FlansMod
 		// Guns
 		if(scopeTime > 0)
 			scopeTime--;
-		if(playerRecoil > 0)
-			playerRecoil *= 0.8F;
 		if(hitMarkerTime > 0)
 			hitMarkerTime--;
-		minecraft.player.rotationPitch -= playerRecoil;
-		antiRecoil += playerRecoil;
+
+		/*
+		 * Vertical Recoil
+		 * The player's camera pitch is pushed up playerRecoil and down by antiRecoil
+		 * antiRecoil accumulates all the changes made to the pitch by the playerRecoil
+		 * Both values are continuously multiplied by the RESTORING_MULTIPLIER until they converge at 0
+		 */
 		
-		minecraft.player.rotationPitch += antiRecoil * 0.2F;
-		antiRecoil *= 0.8F;
+		//The antiRecoil value is continuously multiplied by this, causing it to converge to 0 over time
+		//Value range is 0-1, exclusive. The smaller the number, the faster they will converge.
+		//Practically, this means that a smaller number will create faster recoil recovery.
+		final float RESTORING_MULTIPLIER = 0.7F;
+		
+		//If this value is greater, the recoil is "jerkier". The lower the value, the more 
+		//Value range is 1-inf, exclusive.
+		final float RECOIL_ACCELERATION = 1.6F;
+		float scaledRecoil = playerRecoil * RECOIL_ACCELERATION;
+		
+		//Reduction of wobble, value range of 0-1, exclusive, higher number means less wobble decay.
+		wobble *= 0.8F;
+		
+		//Player camera is pushed up (negative pitch)
+		minecraft.player.rotationPitch -= scaledRecoil;
+		antiRecoil += scaledRecoil; //Accumulating this change within antiRecoil
+
+		playerRecoil /= RECOIL_ACCELERATION; //Reducing the upwards force
+		
+		//Take a little bit of the recoil accumulated and start pushing the camera back down (positive pitch)
+		minecraft.player.rotationPitch += antiRecoil * (1 - RESTORING_MULTIPLIER);
+		antiRecoil *= RESTORING_MULTIPLIER;
+		
 		
 		// Update gun animations for the gun in hand
 		for(GunAnimations g : gunAnimationsRight.values())
@@ -391,6 +419,31 @@ public class FlansModClient extends FlansMod
 		controlModeMouse = !controlModeMouse;
 		controlModeSwitchTimer = 40;
 		return true;
+	}
+	
+	/**
+	 * Adds a set amount of recoil
+	 * Added by Orion Rework
+	 * @author Lithius
+	 * @param recoilAdded
+	 */
+	public static void addRecoil(float recoilAdded) 
+	{
+		//Adding the vertical recoil with a small multiplier.
+		playerRecoil += recoilAdded * 1.15F;
+		
+		//Adding a random bit of wobble to the recoil
+		//Follows the general formula randomNumber[0-1] * range + offset where (2 * wobble) is the range
+		minecraft.player.rotationYaw += random.nextFloat() * 2F * wobble - wobble;
+		
+		//Pitch is slightly different to yaw in that we do need to compensate for it
+		//There's also not going to be any downwards motion
+		float verticalWobble = random.nextFloat() * 2F * wobble;
+		minecraft.player.rotationPitch -= verticalWobble; //Negative pitch rotates up
+		antiRecoil += verticalWobble; //TODO: test to see what happens when this is removed
+
+		//Increasing the wobble for the next shot (wobble exponentially decays in tick())
+		wobble += 0.3F; //This value can be modified to increase or decrease the wobble (increase is greater wobble)
 	}
 	
 	public static void reloadModels(boolean reloadSkins)

@@ -167,7 +167,7 @@ public class PacketGunAnimation extends PacketBase
 				//TODO lookatstate not send by Server, may cause problems in future
 				animations.lookAt = LookAtState.NONE;
 				animations.doShoot(pumpdelay, pumptime);
-				FlansModClient.playerRecoil += recoil;
+				FlansModClient.addRecoil(recoil);
 				animations.recoil += recoil;
 				break;
 			
