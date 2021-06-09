@@ -1,4 +1,4 @@
-Name 12 Gauge Bird Shot Ammo
+wName 12 Gauge Bird Shot Ammo
 ShortName 12gbirdshotAmmo
 Model Bullet
 //Colour of icon and model
@@ -14,6 +14,7 @@ RoundsPerItem 1
 NumBullets 32
 //The damage multiplier caused by the bullet on hitting an entity
 Damage 1
+DamageVsVehicles 0.5
 //Size of explosion caused
 Explosion 0
 //True if bullet explodes on hitting anything. Fuse denotes the maximum time it may spend in the air before detonating
@@ -21,7 +22,7 @@ ExplodeOnImpact False
 Fuse 10
 FlakParticles 0
 //Bullet spread modifier, multiplies by the gun's bulletSpread
-Spread 0.5
+Spread 1
 //Amount of fire to spread on exploding; for each increment, it will increase the dimensions of the burning area by 2. i.e. 1 will burn a 3x3 square, 2 will burn a 5x5 square
 Fire 0
 BreaksGlass True
