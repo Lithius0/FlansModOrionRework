@@ -9,11 +9,11 @@ RotateWheels True
 //Third Person Camera Distance
 CameraDistance 7.5
 //Throttle
-MaxThrottle 0.8
-MaxNegativeThrottle 0.6
+MaxThrottle 0.9
+MaxNegativeThrottle 0.7
 //Steering modifiers
-TurnLeftSpeed 0.35
-TurnRightSpeed 0.35
+TurnLeftSpeed 0.6
+TurnRightSpeed 0.6
 //For calculating whether wheels are on the ground or not for driving
 WheelRadius 1.0
 //Wheel positions for collision handling. Tanks still have 4 wheels, they are just the corner ones.
@@ -34,7 +34,7 @@ FuelTankSize 2000
 CargoSlots 10
 ShellSlots 5
 //Driver and passenger positions
-Driver 0 28 0 -360 360 -15 20
+Driver 0 22 0 -360 360 -15 20
 RotatedDriverOffset -5 0 -9
 Passengers 0
 BarrelPosition 5 25 2
@@ -53,8 +53,8 @@ EngineSound TankMove
 EngineSoundLength 60
 ShootSoundPrimary Tank4Shoot
 ShootSoundSecondary BrenShoot
-TurretRotationSpeed 0.02
-DamageModifierPrimary 38
+TurretRotationSpeed 0.06
+DamageModifierPrimary 4000
 //Recipe
 //Each section of the plane may have many parts
 //The sections are tailWheel, tail, bay, topWing, leftWingWheel, leftWing, rightWingWheel,
@@ -66,10 +66,10 @@ AddRecipeParts rightTrack 1 catTrack
 //Dye colours are "black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink", "lime", "yellow", "lightBlue", "magenta", "orange", "white"
 AddDye 8 green
 //Health and collision
-SetupPart core 9000 -56 -1 -21 101 23 42
-SetupPart turret 8800 -36 22 -28 56 22 56
-SetupPart rightTrack 6000 -50 -10 -28 94 19 7
-SetupPart leftTrack 6000 -50 -10 21 94 19 7
+SetupPart core 7000 -56 -1 -21 101 23 42
+SetupPart turret 6800 -36 22 -28 56 22 56
+SetupPart rightTrack 4000 -50 -10 -28 94 19 7
+SetupPart leftTrack 4000 -50 -10 21 94 19 7
 BulletDetection 7
 ModelScale 1
 Description American Light Tank

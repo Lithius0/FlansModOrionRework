@@ -9,11 +9,11 @@ RotateWheels True
 //Third Person Camera Distance
 CameraDistance 7.5
 //Throttle
-MaxThrottle 0.75
-MaxNegativeThrottle 0.65
+MaxThrottle 1.2
+MaxNegativeThrottle 0.8
 //Steering modifiers
-TurnLeftSpeed 0.55
-TurnRightSpeed 0.55
+TurnLeftSpeed 0.7
+TurnRightSpeed 0.7
 //For calculating whether wheels are on the ground or not for driving
 WheelRadius 1.0
 //Wheel positions for collision handling. Tanks still have 4 wheels, they are just the corner ones.
@@ -32,9 +32,9 @@ Tank true
 FuelTankSize 2000
 //Inventory Slots
 CargoSlots 10
-ShellSlots 1
+ShellSlots 5
 //Driver and passenger positions
-Driver 0 25 0 -360 360 -2 4
+Driver 0 20 0 -360 360 -2 4
 RotatedDriverOffset -7 0 -4
 Passengers 0
 BarrelPosition 5 25 0
@@ -44,8 +44,8 @@ AllowAllAmmo False
 AddAmmo 20mmAmmo
 AddAmmo TankSmokeShell
 //Delays are in ticks or 1/20ths of seconds
-ShootDelay 1
-ShellDelay 12
+ShootDelay 4
+ShellDelay 2
 //Sounds
 StartSound TankIdle
 StartSoundLength 20
@@ -53,7 +53,8 @@ EngineSound TankMove
 EngineSoundLength 60
 ShootSoundPrimary Flak1Shoot
 ShootSoundSecondary MG42Shoot
-TurretRotationSpeed 0.03
+TurretRotationSpeed 0.1
+DamageModifierPrimary 600
 //Recipe
 //Each section of the plane may have many parts
 //The sections are tailWheel, tail, bay, topWing, leftWingWheel, leftWing, rightWingWheel,
@@ -65,10 +66,10 @@ AddRecipeParts rightTrack 1 catTrack
 //Dye colours are "black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink", "lime", "yellow", "lightBlue", "magenta", "orange", "white"
 AddDye 8 gray
 //Health and collision
-SetupPart core 8720 -46 -3 -16 93 23 33
-SetupPart turret 8520 -21 20 -20 40 12 40
-SetupPart rightTrack 6000 -39 -10 -27 85 20 10
-SetupPart leftTrack 6000 -39 -10 17 85 20 10
+SetupPart core 6720 -46 -3 -16 93 23 33
+SetupPart turret 6520 -21 20 -20 40 12 40
+SetupPart rightTrack 4000 -39 -10 -27 85 20 10
+SetupPart leftTrack 4000 -39 -10 17 85 20 10
 BulletDetection 7
-ModelScale 1.1
+ModelScale 0.9
 Description German Light Tank
