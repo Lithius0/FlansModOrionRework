@@ -3,12 +3,12 @@ package com.flansmod.modernweapons.client.model; //Path where the model is locat
 import com.flansmod.client.model.ModelAttachment;
 import com.flansmod.client.tmt.ModelRendererTurbo;
 
-public class ModelMuzzleBreak extends ModelAttachment //Same as Filename
+public class ModelMuzzleBrake extends ModelAttachment //Same as Filename
 {
 	int textureX = 64;
 	int textureY = 16;
 
-	public ModelMuzzleBreak() //Same as Filename
+	public ModelMuzzleBrake() //Same as Filename
 	{
 		attachmentModel = new ModelRendererTurbo[5];
 		attachmentModel[0] = new ModelRendererTurbo(this, 1, 1, textureX, textureY); // Import 
