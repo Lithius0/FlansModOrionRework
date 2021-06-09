@@ -9,7 +9,7 @@ RotateWheels true
 //Third Person Camera Distance
 CameraDistance 7.5
 //Throttle
-MaxThrottle 0.5
+MaxThrottle 0.4
 MaxNegativeThrottle 0.35
 //Steering modifiers
 TurnLeftSpeed 0.25
@@ -29,7 +29,7 @@ FourWheelDrive true
 //Tank mode activate
 Tank true
 //Fuel Tank Size (1 point of fuel will keep one propeller going with throttle at 1 for 1 tick)
-FuelTankSize 2000
+FuelTankSize 8000
 //Inventory Slots
 CargoSlots 20
 ShellSlots 5
@@ -54,7 +54,7 @@ EngineSoundLength 60
 ShootSoundPrimary Tank2Shoot
 ShootSoundSecondary MG42Shoot
 TurretRotationSpeed 0.02
-DamageModifierPrimary 80
+DamageModifierPrimary 8000
 //Recipe
 //Each section of the plane may have many parts
 //The sections are tailWheel, tail, bay, topWing, leftWingWheel, leftWing, rightWingWheel,
@@ -68,10 +68,10 @@ AddDye 15 green
 AddDye 3 white
 
 //Health and collision
-SetupPart core 13500 -55 -1 -23 120 27 46
-SetupPart turret 13300 -30 26 -30 60 18 60
-SetupPart leftTrack 8000 -60 -10 -37 120 22 14
-SetupPart rightTrack 8000 -60 -10 23 120 22 14
+SetupPart core 20500 -55 -1 -23 120 27 46
+SetupPart turret 20300 -30 26 -30 60 18 60
+SetupPart leftTrack 10000 -60 -10 -37 120 22 14
+SetupPart rightTrack 10000 -60 -10 23 120 22 14
 
 BulletDetection 5
 

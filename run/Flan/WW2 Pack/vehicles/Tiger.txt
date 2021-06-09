@@ -8,11 +8,11 @@ Texture tiger
 //Third Person Camera Distance
 CameraDistance 7.5
 //Throttle
-MaxThrottle 0.45
+MaxThrottle 0.4
 MaxNegativeThrottle 0.35
 //Steering modifiers
-TurnLeftSpeed 0.3
-TurnRightSpeed 0.3
+TurnLeftSpeed 0.25
+TurnRightSpeed 0.25
 //For calculating whether wheels are on the ground or not for driving
 WheelRadius 1.0
 //Wheel positions for collision handling. Tanks still have 4 wheels, they are just the corner ones.
@@ -28,7 +28,7 @@ FourWheelDrive true
 //Tank mode activate
 Tank true
 //Fuel Tank Size (1 point of fuel will keep one propeller going with throttle at 1 for 1 tick)
-FuelTankSize 2000
+FuelTankSize 8000
 //Inventory Slots
 CargoSlots 20
 ShellSlots 5
@@ -44,8 +44,8 @@ AllowAllAmmo false
 //Secondary gun
 AddGun 10 32 10 turret mg42
 //Delays are in ticks or 1/20ths of seconds
-ShootDelay 2
-ShellDelay 290
+ShootDelay 1
+ShellDelay 120
 //Sounds
 StartSound TankIdle
 StartSoundLength 20
@@ -53,7 +53,7 @@ EngineSound TankMove
 EngineSoundLength 60
 ShootSoundPrimary 88mmGun
 ShootSoundSecondary MG42Shoot
-DamageModifierPrimary 78
+DamageModifierPrimary 10000
 //Recipe
 //Each section of the plane may have many parts
 //The sections are tailWheel, tail, bay, topWing, leftWingWheel, leftWing, rightWingWheel,
@@ -66,10 +66,10 @@ AddRecipeParts rightTrack 1 catTrack
 AddDye 15 gray
 
 //Health and collision
-SetupPart core 13500 -55 -1 -23 120 27 46
-SetupPart turret 13300 -30 26 -30 60 18 60
-SetupPart leftTrack 8000 -60 -10 -37 120 22 14
-SetupPart rightTrack 8000 -60 -10 23 120 22 14
+SetupPart core 20500 -55 -1 -23 120 27 46
+SetupPart turret 20300 -30 26 -30 60 18 60
+SetupPart leftTrack 10000 -60 -10 -37 120 22 14
+SetupPart rightTrack 10000 -60 -10 23 120 22 14
 
 BulletDetection 5
 
