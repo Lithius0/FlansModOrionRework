@@ -10,11 +10,11 @@ RotateWheels true
 //Third Person Camera Distance
 CameraDistance 7.5
 //Throttle
-MaxThrottle 0.4
-MaxNegativeThrottle 0.25
+MaxThrottle 1.5
+MaxNegativeThrottle 0.8
 //Steering modifiers
-TurnLeftSpeed 0.45
-TurnRightSpeed 0.45
+TurnLeftSpeed 0.9
+TurnRightSpeed 0.9
 //For calculating whether wheels are on the ground or not for driving
 WheelRadius 1.0
 //Wheel positions for collision handling. Tanks still have 4 wheels, they are just the corner ones.
@@ -30,7 +30,7 @@ FourWheelDrive true
 //Tank mode activate
 Tank false
 //Fuel Tank Size (1 point of fuel will keep one propeller going with throttle at 1 for 1 tick)
-FuelTankSize 2000
+FuelTankSize 4000
 //Inventory Slots
 CargoSlots 20
 ShellSlots 0
@@ -71,7 +71,7 @@ AddRecipeParts rightTrack 1 catTrack
 //Dye colours are "black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink", "lime", "yellow", "lightBlue", "magenta", "orange", "white"
 AddDye 10 gray
 //Health and collision
-SetupPart core 100 -63 -10 -20 113 40 40
+SetupPart core 4000 -63 -10 -20 113 40 40
 BulletDetection 7
 ModelScale 1.1
 PassengerLegacyAiming 4 true
