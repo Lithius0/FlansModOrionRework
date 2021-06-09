@@ -241,10 +241,8 @@ public abstract class DriveableType extends PaintableType
 	public ArrayList<CollisionShapeBox> collisionBox = new ArrayList<>();
 	public boolean fancyCollision = false;
 	
-	
 	public static ArrayList<DriveableType> types = new ArrayList<>();
-	
-
+	public static ArrayList<DriveableType> craftableTypes = new ArrayList<>();
 	
 	private static HashMap<String, ParseFunc<DriveableType>> parsers = new HashMap<>();
 	
@@ -927,6 +925,10 @@ public abstract class DriveableType extends PaintableType
 	public void postRead(TypeFile file)
 	{
 		super.postRead(file);
+	
+		//If the configs do not explicitly disable the crafting recipe for this, we can add it to the craftableTypes list
+		if (!FlansMod.disabledVehicles.contains(this.shortName))
+			craftableTypes.add(this);
 	}
 	
 	@Override
