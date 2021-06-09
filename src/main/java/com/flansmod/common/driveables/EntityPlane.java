@@ -466,7 +466,7 @@ public class EntityPlane extends EntityDriveable
 		int numPropsWorking = 0;
 		int numProps = 0;
 		
-		float fuelConsumptionMultiplier = 2F;
+		float fuelConsumptionMultiplier = 16F;
 		
 		switch(mode)
 		{
