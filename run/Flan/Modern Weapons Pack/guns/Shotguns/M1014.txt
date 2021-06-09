@@ -22,7 +22,7 @@ NumBullets 1
 //For guns in which the magazine is integrated
 LoadIntoGun 4
 //Damage in half hearts
-Damage 2.2
+Damage 1.6
 //The higher this value, the more the bullets spread
 Accuracy 12
 //Time in ticks between rounds

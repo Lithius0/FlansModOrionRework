@@ -20,7 +20,7 @@ Recoil 16
 //Number of bullet entities to create, useful for shotguns, defaults to 1
 NumBullets 1
 //Damage in half hearts
-Damage 2.4
+Damage 1.5
 //For guns in which the magazine is integrated
 LoadIntoGun 7
 //The higher this value, the more the bullets spread

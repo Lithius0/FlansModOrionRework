@@ -21,11 +21,11 @@ Recoil 17
 //Number of bullet entities to create, useful for shotguns, defaults to 1
 NumBullets 1
 //Damage in half hearts
-Damage 2.6
+Damage 1.2
 //The higher this value, the more the bullets spread
-Accuracy 18
+Accuracy 20
 //Time in ticks between rounds
-ShootDelay 15.0
+ShootDelay 13.0
 ShootSound SPASShoot
 ReloadSound SPASReload
 Mode SemiAuto
