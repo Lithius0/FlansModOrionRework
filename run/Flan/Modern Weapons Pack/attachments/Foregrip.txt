@@ -9,7 +9,7 @@ Silencer false
 MeleeDamageMultiplier 1.0
 DamageMultiplier 1.0
 SpreadMultiplier 1.0
-RecoilMultiplier 0.5
+RecoilMultiplier 0.9
 BulletSpeedMultiplier 1.0
 ReloadTimeMultiplier 1.0
 //These variables only come into effect if this is a scope
@@ -28,4 +28,4 @@ Recipe F fiberglass I ingotIron
 III
  F 
  F 
-Description Under Barrel Attatchment: Vertical foregrip.
+Description Under Barrel Attachment: Vertical foregrip.

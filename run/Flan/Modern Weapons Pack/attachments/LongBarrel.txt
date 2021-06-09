@@ -8,9 +8,9 @@ Silencer false
 //These multipliers stack between attachments and do what they say
 MeleeDamageMultiplier 1.0
 DamageMultiplier 1.0
-SpreadMultiplier 0.2
-RecoilMultiplier 1.0
-BulletSpeedMultiplier 1.0
+SpreadMultiplier 0.9
+RecoilMultiplier 1.1
+BulletSpeedMultiplier 1.1
 ReloadTimeMultiplier 1.0
 //These variables only come into effect if this is a scope
 //The ZoomLevel affects how much the view zooms in (note that this removes the model from the zooming animation and so is useless for iron sights)
@@ -26,4 +26,4 @@ Recipe R ingotIron F fiberglass
 FFF
 RRR
 FFF
-Description Barrel Attatchment: Barrel extentsion.
+Description Barrel Attachment: Barrel extension.
