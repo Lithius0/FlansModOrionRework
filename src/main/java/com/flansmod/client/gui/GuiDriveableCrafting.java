@@ -168,14 +168,14 @@ public class GuiDriveableCrafting extends GuiScreen
 		switch(button.id)
 		{
 			case CRAFT_BUTTON_ID:
-				FlansMod.proxy.craftDriveable(inventory.player, DriveableType.types.get(selectedBlueprint));
+				FlansMod.proxy.craftDriveable(inventory.player, DriveableType.craftableTypes.get(selectedBlueprint));
 				break;
 			case BLUEPRINTS_UP_BUTTON_ID:
 				if(blueprintsScrollPos > 0)
 					blueprintsScrollPos--;
 				break;
 			case BLUEPRINTS_DOWN_BUTTON_ID:
-				if(blueprintsScrollPos * 8 + 16 < DriveableType.types.size())
+				if(blueprintsScrollPos * 8 + 16 < DriveableType.craftableTypes.size())
 					blueprintsScrollPos++;
 				break;
 			case RECIPE_UP_BUTTON_ID:
@@ -183,7 +183,7 @@ public class GuiDriveableCrafting extends GuiScreen
 					recipeScrollPos--;
 				break;
 			case RECIPE_DOWN_BUTTON_ID:
-				DriveableType selectedType = DriveableType.types.get(selectedBlueprint);
+				DriveableType selectedType = DriveableType.craftableTypes.get(selectedBlueprint);
 				int totalCells = RECIPE_ROW_COUNT * RECIPE_COLUMN_COUNT;
 				if(recipeScrollPos * RECIPE_COLUMN_COUNT + totalCells < selectedType.driveableRecipe.size())
 					recipeScrollPos++;
@@ -208,7 +208,7 @@ public class GuiDriveableCrafting extends GuiScreen
 		List<ItemToRender> itemsToRender = getBlueprintItemsToRender();
 
 		// Preview
-		DriveableType selectedType = DriveableType.types.get(selectedBlueprint);
+		DriveableType selectedType = DriveableType.craftableTypes.get(selectedBlueprint);
 		drawPreview(selectedType);
 
 		// Stats
@@ -444,9 +444,9 @@ public class GuiDriveableCrafting extends GuiScreen
 				}
 
 				// Draw blueprint
-				if(blueprintNumber < DriveableType.types.size())
+				if(blueprintNumber < DriveableType.craftableTypes.size())
 				{
-					DriveableType type = DriveableType.types.get(blueprintNumber);
+					DriveableType type = DriveableType.craftableTypes.get(blueprintNumber);
 					itemsToRender = itemsToRender.push(new ItemToRender(
 							new ItemStack(type.item),
 							blueprintsOriginX + column * BLUEPRINT_WIDTH,
@@ -505,7 +505,7 @@ public class GuiDriveableCrafting extends GuiScreen
 						int pageStartIndex = blueprintsScrollPos * BLUEPRINT_COLUMN_COUNT;
 						int rowStartInPageIndex = row * BLUEPRINT_COLUMN_COUNT;
 						int result = pageStartIndex + rowStartInPageIndex + column;
-						if(result < DriveableType.types.size())
+						if(result < DriveableType.craftableTypes.size())
 						{
 							recipeScrollPos = 0;
 							selectedBlueprint = result;
@@ -530,15 +530,17 @@ public class GuiDriveableCrafting extends GuiScreen
 
 		int totalBlueprintsCells = BLUEPRINT_COLUMN_COUNT * BLUEPRINT_ROW_COUNT;
 		blueprintsDownButton.enabled =
-				blueprintsScrollPos * BLUEPRINT_COLUMN_COUNT + totalBlueprintsCells < DriveableType.types.size() - 1;
+				blueprintsScrollPos * BLUEPRINT_COLUMN_COUNT + totalBlueprintsCells < DriveableType.craftableTypes.size() - 1;
 
 		// Recipe buttons
 		recipeUpButton.enabled = recipeScrollPos > 0;
 
 		int totalRecipeItems = RECIPE_COLUMN_COUNT * RECIPE_ROW_COUNT;
-		DriveableType selectedType = DriveableType.types.get(selectedBlueprint);
-		recipeDownButton.enabled =
-				recipeScrollPos * RECIPE_COLUMN_COUNT + totalRecipeItems < selectedType.driveableRecipe.size() - 1;
+		if (selectedBlueprint < DriveableType.craftableTypes.size()) {
+			DriveableType selectedType = DriveableType.craftableTypes.get(selectedBlueprint);
+			recipeDownButton.enabled =
+			recipeScrollPos * RECIPE_COLUMN_COUNT + totalRecipeItems < selectedType.driveableRecipe.size() - 1;
+		}
 	}
 
 	private static class ArrowButton extends GuiButton

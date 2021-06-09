@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -167,6 +169,7 @@ public class FlansMod
 	public static boolean shootOnRightClick = false;
 	public static boolean forceUpdateJSONs = false;
 	public static boolean enchantmentModuleEnabled = true;
+	public static List<String> disabledVehicles; //Array of shortnames of disabled vehicles
 	
 	public static float armourSpawnRate = 0.25F;
 	
@@ -773,6 +776,8 @@ public class FlansMod
 		addAllPaintjobsToCreative = configFile.getBoolean("Add All Paintjobs to Creative", Configuration.CATEGORY_GENERAL, addAllPaintjobsToCreative, "Whether all paintjobs should appear in creative");
 		forceUpdateJSONs = configFile.getBoolean("ForceUpdateJSONs", Configuration.CATEGORY_GENERAL, forceUpdateJSONs, "Turn this on to force re-create all JSON files. Should only be used in dev environment");
 		enchantmentModuleEnabled = configFile.getBoolean("EnchantmentModuleEnabled", Configuration.CATEGORY_GENERAL, enchantmentModuleEnabled, "Enable gun-related enchantments");
+		disabledVehicles = Arrays.asList(configFile.getStringList("DisabledVehicles", Configuration.CATEGORY_GENERAL, new String[0], "Any vehicle shortnames included in here will not be craftable in the vehicle crafting table"));
+	
 		
 		if(configFile.hasChanged())
 			configFile.save();

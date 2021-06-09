@@ -157,6 +157,10 @@ public class CommonProxy
 		
 		//This becomes false if some recipe element is not found on the player
 		boolean canCraft = true;
+		
+		//Making sure the crafting recipe is not disabled
+		canCraft = !FlansMod.disabledVehicles.contains(type.shortName);
+		
 		//Iterate over rows then columns
 		for(ItemStack recipeStack : type.driveableRecipe)
 		{
