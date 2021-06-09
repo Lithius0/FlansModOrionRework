@@ -8,7 +8,7 @@ Texture BF109
 //Third Person Camera Distance
 CameraDistance 10.0
 //Resting Pitch. Set this so the plane spawns level. It will fall onto its collision boxes automatically, but this lets you start it flat
-RestingPitch 15.0
+RestingPitch 10.0
 // ------------------------------------------------------ Movement ------------------------------------------------------
 //Mode : One of Plane, Heli or VTOL. The VTOL has a toggle button that switches some model aesthetics and the flight mode
 Mode Plane
@@ -30,7 +30,7 @@ Drag 1.0
 NumWheels 3
 WheelPosition 0 42 -5 -15
 WheelPosition 1 42 -5 16
-WheelPosition 2 -94 18 0
+WheelPosition 2 -94 14 0
 WheelSpringStrength 0.125
 //Propeller Positions
 //Propeller <ID> <x> <y> <z> <planePart> <recipeItem>
@@ -40,7 +40,7 @@ Propeller 0 54 2 0 nose metalPropeller
 Primary Gun
 Secondary Bomb
 //Time between shots in 1/20ths of seconds
-ShootDelayPrimary 2
+ShootDelayPrimary 1
 ShootDelaySecondary 100
 //Whether to alternate or fire all together
 AlternatePrimary False
@@ -57,10 +57,9 @@ AlternateSecondary False
 DamageModifierPrimary 50
 // ------------------------------------------------------ Inventory ------------------------------------------------------
 CargoSlots 10
-BombSlots 0
+BombSlots 1
 MissileSlots 0
 AllowAllAmmo False
-AddAmmo largeBomb
 AddAmmo smallBomb
 AddAmmo napalm
 //Fuel Tank Size (1 point of fuel will keep one propeller going with throttle at 1 for 1 tick)
@@ -91,11 +90,11 @@ AddRecipeParts tailWheel 1 wheel
 AddDye 5 silver
 AddDye 3 green
 // ------------------------------------------------------ Health and hitboxes ------------------------------------------------------
-SetupPart core 1000 -69 16 -10 139 30 20
-SetupPart nose 500 70 18 -12 25 21 20
-SetupPart tail 500 -122 23 -38 52 43 76
-SetupPart rightWing 500 0 22 11 52 9 120
-SetupPart leftWing 500 0 22 -130 52 9 120
+SetupPart core 900 -69 16 -10 139 30 20
+SetupPart nose 600 70 18 -12 25 21 20
+SetupPart tail 600 -122 23 -38 52 43 76
+SetupPart rightWing 600 0 22 11 52 9 120
+SetupPart leftWing 600 0 22 -130 52 9 120
 BulletDetection 10
 //Collision points for breaking wings etc. upon crashing
 CollisionPoint 49 40 10 core

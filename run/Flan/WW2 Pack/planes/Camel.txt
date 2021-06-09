@@ -13,14 +13,14 @@ RestingPitch 5.0
 //Mode : One of Plane, Heli or VTOL. The VTOL has a toggle button that switches some model aesthetics and the flight mode
 Mode Plane
 //Throttle
-MaxThrottle 0.4
+MaxThrottle 0.6
 MaxNegativeThrottle 0.0
 //Yaw modifiers
 TurnLeftSpeed 1
 TurnRightSpeed 3
 //Pitch modifiers
-LookUpSpeed 1
-LookDownSpeed 1
+LookUpSpeed 2.5
+LookDownSpeed 2
 //Roll modifiers
 RollLeftSpeed 1
 RollRightSpeed 3
@@ -40,7 +40,7 @@ Propeller 0 27 0 0 nose woodenPropeller
 Primary Gun
 Secondary None
 //Time between shots in 1/20ths of seconds
-ShootDelayPrimary 6
+ShootDelayPrimary 1
 ShootDelaySecondary 0
 //Whether to alternate or fire all together
 AlternatePrimary False
