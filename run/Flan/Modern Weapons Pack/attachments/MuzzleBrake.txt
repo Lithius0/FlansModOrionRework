@@ -1,6 +1,6 @@
-Name Muzzle Break
-ShortName flanMWmuzzlebreak
-Icon MuzzleBreak
+Name Muzzle Brake
+ShortName flanMWmuzzlebrake
+Icon MuzzleBrake
 //The type of attachment defines what slot in the gun it takes. Types are "generic", "barrel", "scope", "stock" and "grip"
 AttachmentType barrel
 //If true, then this attachment will muffle all sounds from the gun. Needn't be a barrel attachment
@@ -8,8 +8,8 @@ Silencer false
 //These multipliers stack between attachments and do what they say
 MeleeDamageMultiplier 1.0
 DamageMultiplier 1.0
-SpreadMultiplier 0.4
-RecoilMultiplier 0.6
+SpreadMultiplier 1.0
+RecoilMultiplier 0.9
 BulletSpeedMultiplier 1.0
 ReloadTimeMultiplier 1.0
 //These variables only come into effect if this is a scope
@@ -28,4 +28,4 @@ Recipe R ingotIron F fiberglass
 RRR
 FFF
 RRR
-Description Barrel Attatchment: Muzzle break.
+Description Barrel Attachment: Muzzle brake.
