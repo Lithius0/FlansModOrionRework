@@ -246,7 +246,7 @@ public class ShotHandler
 			
 			Material mat = blockHit.getIBlockState().getMaterial();
 			//If the bullet breaks glass, and can do so according to FlansMod, do so.
-			if(bulletType.breaksGlass && mat == Material.GLASS)
+			if(bulletType.breaksGlass && mat == Material.GLASS && blockHit.getIBlockState().getBlockHardness(world, pos) <= 1)
 			{
 				if(TeamsManager.canBreakGlass)
 				{
