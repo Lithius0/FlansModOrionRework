@@ -254,7 +254,7 @@ public class EntityGrenade extends EntityShootable implements IEntityAdditionalS
 				List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().expand(checkRadius, checkRadius, checkRadius));
 				for(Object obj : list)
 				{
-					if(obj == thrower && ticksExisted < 10)
+					if(obj == thrower || ticksExisted < 10)
 						continue;
 					if(obj instanceof EntityLivingBase && getDistanceSq((Entity)obj) < type.livingProximityTrigger * type.livingProximityTrigger)
 					{
@@ -500,7 +500,7 @@ public class EntityGrenade extends EntityShootable implements IEntityAdditionalS
 		}
 		
 		//Make fire
-		if(type.fireRadius > 0.1F)
+		if(!world.isRemote && type.fireRadius > 0.1F)
 		{
 			for(float i = -type.fireRadius; i < type.fireRadius; i++)
 			{
@@ -513,15 +513,12 @@ public class EntityGrenade extends EntityShootable implements IEntityAdditionalS
 						int z = MathHelper.floor(k + posZ);
 						if(i * i + j * j + k * k <= type.fireRadius * type.fireRadius && world.getBlockState(new BlockPos(x, y, z)).getBlock() == Blocks.AIR && rand.nextBoolean())
 						{
-							/*
-							 if(!world.getBlockState(new BlockPos(x + 1, y, z)).getBlock(). || !world.isAirBlock(new BlockPos(x - 1, y, z)) 
-							 
-							|| !world.isAirBlock(new BlockPos(x, y + 1, z)) || !world.isAirBlock(new BlockPos(x, y - 1, z))
-							|| !world.isAirBlock(new BlockPos(x, y, z + 1)) || !world.isAirBlock(new BlockPos(x, y, z - 1))) 
-							*/
+							BlockPos position = new BlockPos(x, y, z);
+							
+							if (world.isAirBlock(position) && world.getBlockState(position.down()).isFullBlock()) 
 							{
-								world.setBlockState(new BlockPos(x, y, z), Blocks.FIRE.getDefaultState(), 2);
-								world.scheduleUpdate(new BlockPos(x, y, z), Blocks.FIRE, 0);
+								world.setBlockState(position, Blocks.FIRE.getDefaultState(), 11);
+								world.scheduleUpdate(position, Blocks.FIRE, 1);
 							}
 						}
 					}

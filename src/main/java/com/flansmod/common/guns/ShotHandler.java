@@ -307,9 +307,11 @@ public class ShotHandler
 				{
 					for(int j = -1; j < 1; j++)
 					{
-						if(world.getBlockState(new BlockPos((int)(detonatePos.x + i), (int)(detonatePos.y + j), (int)(detonatePos.z + k))).getMaterial() == Material.AIR)
+						BlockPos firePosition = new BlockPos((int)(detonatePos.x + i), (int)(detonatePos.y + j), (int)(detonatePos.z + k));
+						if(world.isAirBlock(firePosition) && world.getBlockState(firePosition.down()).isFullBlock())
 						{
-							world.setBlockState(new BlockPos((int)(detonatePos.x + i), (int)(detonatePos.y + j), (int)(detonatePos.z + k)), Blocks.FIRE.getDefaultState(), 2);
+							world.setBlockState(firePosition, Blocks.FIRE.getDefaultState(), 11);
+							world.scheduleUpdate(firePosition, Blocks.FIRE, 1);
 						}
 					}
 				}

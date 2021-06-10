@@ -262,9 +262,10 @@ public class FlansModExplosion extends Explosion
 		{
 			for(BlockPos blockpos1 : this.affectedBlockPositions)
 			{
-				if(this.world.getBlockState(blockpos1).getMaterial() == Material.AIR && this.world.getBlockState(blockpos1.down()).isFullBlock() && this.random.nextInt(3) == 0)
+				if(this.world.getBlockState(blockpos1).getMaterial() == Material.AIR && this.world.getBlockState(blockpos1.down()).isFullBlock())
 				{
-					this.world.setBlockState(blockpos1, Blocks.FIRE.getDefaultState());
+					this.world.setBlockState(blockpos1, Blocks.FIRE.getDefaultState(), 11);
+					world.scheduleUpdate(blockpos1, Blocks.FIRE, 1);
 				}
 			}
 		}
