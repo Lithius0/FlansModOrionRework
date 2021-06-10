@@ -59,7 +59,7 @@ DamageModifierPrimary 4000
 //Each section of the plane may have many parts
 //The sections are tailWheel, tail, bay, topWing, leftWingWheel, leftWing, rightWingWheel,
 //rightWing, nose, turret, coreWheel, core
-AddRecipeParts turret 1 lightTankBody 1 vehicleSeat
+AddRecipeParts turret 1 lightTankTurret 1 vehicleSeat
 AddRecipeParts core 1 lightTankBody
 AddRecipeParts leftTrack 1 catTrack
 AddRecipeParts rightTrack 1 catTrack
