@@ -35,7 +35,7 @@ Sticky false
 ////Detonation conditions
 VehicleProximityTrigger -1.0
 LivingProximityTrigger -1.0
-Fuse 40
+Fuse 200
 DetonateWhenShot true
 Remote false
 //DespawnTime 0

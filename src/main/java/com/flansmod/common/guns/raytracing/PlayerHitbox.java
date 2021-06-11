@@ -189,7 +189,9 @@ public class PlayerHitbox
 			if(!player.world.isRemote && hitDamage == 0 && TeamsManager.getInstance().currentRound != null)
 				TeamsManager.getInstance().currentRound.gametype.playerAttacked((EntityPlayerMP)player, damagesource);
 			
-			//if(damagesource.)
+			//This is to prevent the player's armor from getting destroyed completely with powerful weapons like anti-tank guns
+			if (hitDamage > 100)
+				hitDamage = 100;
 			
 			//Attack the entity!
 			if(player.attackEntityFrom(damagesource, hitDamage))
