@@ -9,7 +9,7 @@ RotateWheels true
 //Third Person Camera Distance
 CameraDistance 5.0
 //Throttle
-MaxThrottle 1.7
+MaxThrottle 1.5
 MaxNegativeThrottle 1.0
 //Steering modifiers
 TurnLeftSpeed 1.0
@@ -66,11 +66,11 @@ AddRecipeParts backRightWheel 1 wheel
 //Dye colours are "black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink", "lime", "yellow", "lightBlue", "magenta", "orange", "white"
 AddDye 5 green
 //Health and collision
-SetupPart core 3000 -24 -6 -16 48 12 32
-SetupPart backLeftWheel 1500 -20 -10 -16 8 8 2
-SetupPart backRightWheel 1500 -20 -10 14 8 8 2
-SetupPart frontLeftWheel 1500 12 -10 -16 8 8 2
-SetupPart frontRightWheel 1500 12 -10 14 8 8 2
+SetupPart core 200 -24 -6 -16 48 12 32
+SetupPart backLeftWheel 50 -20 -10 -16 8 8 2
+SetupPart backRightWheel 50 -20 -10 14 8 8 2
+SetupPart frontLeftWheel 50 12 -10 -16 8 8 2
+SetupPart frontRightWheel 50 12 -10 14 8 8 2
 BulletDetection 5
 Description American Jeep
 ModelScale 0.95
