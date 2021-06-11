@@ -10,7 +10,7 @@ RotateWheels true
 //Third Person Camera Distance
 CameraDistance 7.5
 //Throttle
-MaxThrottle 1.5
+MaxThrottle 1.2
 MaxNegativeThrottle 0.8
 //Steering modifiers
 TurnLeftSpeed 0.9
@@ -71,7 +71,7 @@ AddRecipeParts rightTrack 1 catTrack
 //Dye colours are "black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink", "lime", "yellow", "lightBlue", "magenta", "orange", "white"
 AddDye 10 gray
 //Health and collision
-SetupPart core 4000 -63 -10 -20 113 40 40
+SetupPart core 3000 -63 -10 -20 113 40 40
 BulletDetection 7
 ModelScale 1.1
 PassengerLegacyAiming 4 true
