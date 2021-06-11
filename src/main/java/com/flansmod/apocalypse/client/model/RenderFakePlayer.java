@@ -1,8 +1,6 @@
 package com.flansmod.apocalypse.client.model;
 
 import com.flansmod.apocalypse.common.entity.EntityFakePlayer;
-import com.flansmod.apocalypse.common.entity.EntityTeleporter;
-
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderBiped;

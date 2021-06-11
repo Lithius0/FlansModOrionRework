@@ -4,7 +4,6 @@
 
 package com.flansmod.apocalypse.client.model;
 
-import com.flansmod.client.model.ModelItemHolder;
 import com.flansmod.client.tmt.ModelRendererTurbo;
 import com.flansmod.common.vector.Vector3f;
 

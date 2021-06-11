@@ -2,7 +2,6 @@ package com.flansmod.apocalypse.common.entity;
 
 import java.util.ArrayList;
 
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

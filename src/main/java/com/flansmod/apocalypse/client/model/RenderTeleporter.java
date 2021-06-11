@@ -1,9 +1,6 @@
 package com.flansmod.apocalypse.client.model;
 
 import com.flansmod.apocalypse.common.entity.EntityTeleporter;
-import com.flansmod.client.model.RenderParachute;
-import com.flansmod.common.tools.EntityParachute;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.Render;

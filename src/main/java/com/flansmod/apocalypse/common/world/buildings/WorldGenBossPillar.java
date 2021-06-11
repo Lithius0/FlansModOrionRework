@@ -2,11 +2,7 @@ package com.flansmod.apocalypse.common.world.buildings;
 
 import java.util.Random;
 
-import com.flansmod.common.ModuloHelper;
-
-import net.minecraft.block.BlockColored;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;

@@ -15,7 +15,6 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import com.flansmod.apocalypse.common.entity.EntityNukeDrop;
-import com.flansmod.apocalypse.common.entity.EntityTeleporter;
 
 public class RenderNukeDrop extends Render<EntityNukeDrop>
 {
