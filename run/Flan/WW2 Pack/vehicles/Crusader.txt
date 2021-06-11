@@ -8,7 +8,7 @@ Texture Crusader
 //Third Person Camera Distance
 CameraDistance 7.5
 //Throttle
-MaxThrottle 1.0
+MaxThrottle 1.1
 MaxNegativeThrottle 0.7
 //Steering modifiers
 TurnLeftSpeed 0.6

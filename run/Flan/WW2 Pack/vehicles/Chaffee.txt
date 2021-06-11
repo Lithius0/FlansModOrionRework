@@ -9,7 +9,7 @@ RotateWheels True
 //Third Person Camera Distance
 CameraDistance 7.5
 //Throttle
-MaxThrottle 0.9
+MaxThrottle 1.0
 MaxNegativeThrottle 0.7
 //Steering modifiers
 TurnLeftSpeed 0.6
