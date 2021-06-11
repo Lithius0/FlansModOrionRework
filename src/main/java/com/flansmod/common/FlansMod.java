@@ -6,10 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -19,12 +17,48 @@ import java.util.zip.ZipInputStream;
 
 import org.apache.logging.log4j.Logger;
 
+import com.flansmod.client.debug.EntityDebugDot;
+import com.flansmod.client.debug.EntityDebugVector;
+import com.flansmod.common.driveables.EntityPlane;
+import com.flansmod.common.driveables.EntitySeat;
+import com.flansmod.common.driveables.EntityVehicle;
+import com.flansmod.common.driveables.EntityWheel;
+import com.flansmod.common.driveables.mechas.EntityMecha;
+import com.flansmod.common.driveables.mechas.ItemMecha;
+import com.flansmod.common.enchantments.EnchantmentModule;
+import com.flansmod.common.eventhandlers.PlayerDeathEventListener;
+import com.flansmod.common.guns.EntityAAGun;
+import com.flansmod.common.guns.EntityBullet;
+import com.flansmod.common.guns.EntityGrenade;
+import com.flansmod.common.guns.EntityMG;
+import com.flansmod.common.network.PacketHandler;
+import com.flansmod.common.paintjob.BlockPaintjobTable;
+import com.flansmod.common.paintjob.TileEntityPaintjobTable;
+import com.flansmod.common.parts.ItemPart;
+import com.flansmod.common.teams.ArmourType;
+import com.flansmod.common.teams.BlockSpawner;
+import com.flansmod.common.teams.CommandTeams;
+import com.flansmod.common.teams.EntityFlag;
+import com.flansmod.common.teams.EntityFlagpole;
+import com.flansmod.common.teams.EntityGunItem;
+import com.flansmod.common.teams.EntityTeamItem;
+import com.flansmod.common.teams.ItemFlagpole;
+import com.flansmod.common.teams.ItemOpStick;
+import com.flansmod.common.teams.ItemTeamArmour;
+import com.flansmod.common.teams.PlayerClass;
+import com.flansmod.common.teams.Team;
+import com.flansmod.common.teams.TeamsManager;
+import com.flansmod.common.teams.TeamsManagerRanked;
+import com.flansmod.common.teams.TileEntitySpawner;
+import com.flansmod.common.tools.EntityParachute;
+import com.flansmod.common.tools.ItemTool;
+import com.flansmod.common.types.EnumType;
+import com.flansmod.common.types.InfoType;
+import com.flansmod.common.types.TypeFile;
+
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockTNT;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.command.CommandHandler;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
@@ -60,11 +94,9 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -75,74 +107,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.versioning.ArtifactVersion;
 
-import com.flansmod.client.debug.EntityDebugDot;
-import com.flansmod.client.debug.EntityDebugVector;
-import com.flansmod.common.driveables.EntityPlane;
-import com.flansmod.common.driveables.EntitySeat;
-import com.flansmod.common.driveables.EntityVehicle;
-import com.flansmod.common.driveables.EntityWheel;
-import com.flansmod.common.driveables.ItemPlane;
-import com.flansmod.common.driveables.ItemVehicle;
-import com.flansmod.common.driveables.PlaneType;
-import com.flansmod.common.driveables.VehicleType;
-import com.flansmod.common.driveables.mechas.EntityMecha;
-import com.flansmod.common.driveables.mechas.ItemMecha;
-import com.flansmod.common.driveables.mechas.ItemMechaAddon;
-import com.flansmod.common.driveables.mechas.MechaItemType;
-import com.flansmod.common.driveables.mechas.MechaType;
-import com.flansmod.common.enchantments.EnchantmentModule;
-import com.flansmod.common.eventhandlers.PlayerDeathEventListener;
-import com.flansmod.common.guns.AAGunType;
-import com.flansmod.common.guns.AttachmentType;
-import com.flansmod.common.guns.BulletType;
-import com.flansmod.common.guns.EntityAAGun;
-import com.flansmod.common.guns.EntityBullet;
-import com.flansmod.common.guns.EntityGrenade;
-import com.flansmod.common.guns.EntityMG;
-import com.flansmod.common.guns.GrenadeType;
-import com.flansmod.common.guns.GunType;
-import com.flansmod.common.guns.ItemAAGun;
-import com.flansmod.common.guns.ItemAttachment;
-import com.flansmod.common.guns.ItemBullet;
-import com.flansmod.common.guns.ItemGrenade;
-import com.flansmod.common.guns.ItemGun;
-import com.flansmod.common.guns.boxes.BlockGunBox;
-import com.flansmod.common.guns.boxes.GunBoxType;
-import com.flansmod.common.network.PacketHandler;
-import com.flansmod.common.paintjob.BlockPaintjobTable;
-import com.flansmod.common.paintjob.TileEntityPaintjobTable;
-import com.flansmod.common.parts.ItemPart;
-import com.flansmod.common.parts.PartType;
-import com.flansmod.common.teams.ArmourBoxType;
-import com.flansmod.common.teams.ArmourType;
-import com.flansmod.common.teams.BlockArmourBox;
-import com.flansmod.common.teams.BlockSpawner;
-import com.flansmod.common.teams.CommandTeams;
-import com.flansmod.common.teams.EntityFlag;
-import com.flansmod.common.teams.EntityFlagpole;
-import com.flansmod.common.teams.EntityGunItem;
-import com.flansmod.common.teams.EntityTeamItem;
-import com.flansmod.common.teams.ItemFlagpole;
-import com.flansmod.common.teams.ItemOpStick;
-import com.flansmod.common.teams.ItemRewardBox;
-import com.flansmod.common.teams.ItemTeamArmour;
-import com.flansmod.common.teams.LoadoutPool;
-import com.flansmod.common.teams.PlayerClass;
-import com.flansmod.common.teams.RewardBox;
-import com.flansmod.common.teams.Team;
-import com.flansmod.common.teams.TeamsManager;
-import com.flansmod.common.teams.TeamsManagerRanked;
-import com.flansmod.common.teams.TileEntitySpawner;
-import com.flansmod.common.tools.EntityParachute;
-import com.flansmod.common.tools.ItemTool;
-import com.flansmod.common.tools.ToolType;
-import com.flansmod.common.types.EnumType;
-import com.flansmod.common.types.InfoType;
-import com.flansmod.common.types.TypeFile;
-
-@Mod(modid = FlansMod.MODID, name = "Flan's Mod", version = FlansMod.VERSION, acceptableRemoteVersions = "@ALLOWED_VERSIONS@", guiFactory = "com.flansmod.client.gui.config.ModGuiFactory")
+@Mod(modid = FlansMod.MODID, name = "Flan's Mod Orion Rework", version = FlansMod.VERSION, acceptableRemoteVersions = "@ALLOWED_VERSIONS@", guiFactory = "com.flansmod.client.gui.config.ModGuiFactory")
 public class FlansMod
 {
 	//Core mod stuff
@@ -164,12 +130,14 @@ public class FlansMod
 	public static final float driveableUpdateRange = 200F;
 	public static final int numPlayerSnapshots = 20;
 	public static boolean isApocalypseLoaded = false;
+	
+	//TODO:Clean up configs, preferably move them into a separate class
 	public static boolean addAllPaintjobsToCreative = false;
 	public static boolean addGunpowderRecipe = true;
 	public static boolean shootOnRightClick = false;
 	public static boolean forceUpdateJSONs = false;
 	public static boolean enchantmentModuleEnabled = true;
-	public static List<String> disabledVehicles; //Array of shortnames of disabled vehicles
+	public static List<String> disabledVehicles; //List of shortnames of disabled vehicles
 	
 	public static float armourSpawnRate = 0.25F;
 	
