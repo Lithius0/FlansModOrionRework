@@ -19,13 +19,13 @@ MaxNegativeThrottle 0.0
 TurnLeftSpeed 1.5
 TurnRightSpeed 1.5
 //Pitch modifiers
-LookUpSpeed 2.8
-LookDownSpeed 2.5
+LookUpSpeed 2.4
+LookDownSpeed 2.0
 //Roll modifiers
 RollLeftSpeed 1.5
 RollRightSpeed 1.5
 //Drag 1.0 is standard. Modify to make the plane / heli more or less sluggish
-Drag 1.0
+Drag 0.85
 //Wheels
 NumWheels 3
 WheelPosition 0 2 -13 -6
