@@ -6,7 +6,7 @@ Icon piat
 //Colour in Red, Green, Blue, each going up to 255.
 Colour 255 255 255
 //Reload time in ticks, 1/20ths of a second
-ReloadTime 80
+ReloadTime 60
 //The amount of gun recoil, all relative : Sten = 1, Mp40 = 3, Kar98kSniper = 20
 Recoil 20
 //Damage in half hearts
@@ -18,7 +18,7 @@ ShootDelay 5
 ShootSound bazookaShoot
 ReloadSound bazookaReload
 Mode SemiAuto
-BulletSpeed 3.0
+BulletSpeed 2.0
 Scope None
 Deployable False
 DeployedModel None
