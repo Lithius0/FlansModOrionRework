@@ -13,7 +13,7 @@ RestingPitch 10.0
 //Mode : One of Plane, Heli or VTOL. The VTOL has a toggle button that switches some model aesthetics and the flight mode
 Mode Plane
 //Throttle
-MaxThrottle 4.0
+MaxThrottle 3.5
 MaxNegativeThrottle 0.0
 //Yaw modifiers
 TurnLeftSpeed 1.6
@@ -22,8 +22,8 @@ TurnRightSpeed 1.6
 LookUpSpeed 1.5
 LookDownSpeed 1.0
 //Roll modifiers
-RollLeftSpeed 1.15
-RollRightSpeed 1.15
+RollLeftSpeed 1.5
+RollRightSpeed 1.5
 //Drag 1.0 is standard. Modify to make the plane / heli more or less sluggish
 Drag 0.5
 //Wheels
@@ -92,7 +92,7 @@ AddDye 3 green
 // ------------------------------------------------------ Health and hitboxes ------------------------------------------------------
 SetupPart core 900 -69 16 -10 139 30 20
 SetupPart nose 600 70 18 -12 25 21 20
-SetupPart tail 600 -122 35 -38 52 37 20
+SetupPart tail 500 -100 35 -10 60 37 20
 SetupPart rightWing 600 0 22 11 52 9 120
 SetupPart leftWing 600 0 22 -130 52 9 120
 BulletDetection 10
