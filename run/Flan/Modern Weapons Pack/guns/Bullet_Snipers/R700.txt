@@ -19,7 +19,7 @@ Accuracy 0.4
 //For guns in which the magazine is integrated
 LoadIntoGun 4
 //Time in ticks between rounds
-ShootDelay 22.0
+ShootDelay 20.0
 ShootSound R700Shoot
 ReloadSound MWSpringfieldReload
 Mode SemiAuto
