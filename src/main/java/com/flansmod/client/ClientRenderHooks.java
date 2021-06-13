@@ -964,9 +964,9 @@ public class ClientRenderHooks
 				
 				//Calculate speed, this is in meters per tick (technically blocks per tick, but 1 meter = 1 block)
 				float speed = (float)Math.sqrt(dX * dX + dY * dY + dZ * dZ);
-				speed *= mc.getTickLength(); //Converting to meters per second
+				speed *= 20F; //Converting to meters per second
 				
-				//Rounding to nearest 10s
+				//Rounding to nearest 10ths
 				speed = (int)(speed * 10F) / 10F;
 				
 				mc.fontRenderer.drawString("Speed: " + speed + " meters per second", 2, 2, 0xffffff);
