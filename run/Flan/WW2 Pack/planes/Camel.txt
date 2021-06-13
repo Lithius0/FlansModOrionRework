@@ -22,8 +22,8 @@ TurnRightSpeed 3
 LookUpSpeed 2.0
 LookDownSpeed 1.8
 //Roll modifiers
-RollLeftSpeed 1
-RollRightSpeed 3
+RollLeftSpeed 2
+RollRightSpeed 4
 //Drag 1.0 is standard. Modify to make the plane / heli more or less sluggish
 Drag 0.8
 //Wheels
