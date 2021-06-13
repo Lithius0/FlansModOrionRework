@@ -962,12 +962,14 @@ public class ClientRenderHooks
 				double dY = ent.posY - ent.prevPosY;
 				double dZ = ent.posZ - ent.prevPosZ;
 				
-				// Convert to chunks per Minecraft hour
-				float speed = (float)Math.sqrt(dX * dX + dY * dY + dZ * dZ) * 1000F / 16F;
+				//Calculate speed, this is in meters per tick (technically blocks per tick, but 1 meter = 1 block)
+				float speed = (float)Math.sqrt(dX * dX + dY * dY + dZ * dZ);
+				speed *= mc.getTickLength(); //Converting to meters per second
 				
+				//Rounding to nearest 10s
 				speed = (int)(speed * 10F) / 10F;
 				
-				mc.fontRenderer.drawString("Speed: " + speed + " chunks per hour", 2, 2, 0xffffff);
+				mc.fontRenderer.drawString("Speed: " + speed + " meters per second", 2, 2, 0xffffff);
 				
 				if(FlansMod.DEBUG)
 				{

@@ -31,7 +31,7 @@ Tank true
 Primary Gun
 Secondary None
 //Time between shots in 1/20ths of seconds
-ShootDelayPrimary 0.5
+ShootDelayPrimary 1
 ShootDelaySecondary 0
 //Whether to alternate or fire all together
 AlternatePrimary True

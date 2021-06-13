@@ -107,7 +107,6 @@ public class PacketPlaySound extends PacketBase
 				(
 						event,
 						SoundCategory.PLAYERS,
-						// The volume has been turned down as part of the Orion Rework
 						(silenced ? (volume / 4.0F) : volume),
 						// If distort is on, the pitch is adjusted by the formula 1/ (0.4r + 0.8) where r is a random float
 						// Roughly speaking, it's a curve with 1.25 on one side, 0.83 on the other, and 1 in the middle
