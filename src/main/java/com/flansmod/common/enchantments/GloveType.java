@@ -3,17 +3,9 @@ package com.flansmod.common.enchantments;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.flansmod.client.model.ModelDriveable;
 import com.flansmod.common.FlansMod;
-import com.flansmod.common.driveables.DriveablePosition;
-import com.flansmod.common.driveables.DriveableType;
-import com.flansmod.common.driveables.Seat;
-import com.flansmod.common.parts.PartType;
 import com.flansmod.common.types.InfoType;
 import com.flansmod.common.types.TypeFile;
-import com.flansmod.common.types.InfoType.ParseFunc;
-
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class GloveType extends InfoType
 {

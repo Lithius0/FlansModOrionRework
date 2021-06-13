@@ -3,15 +3,14 @@ package com.flansmod.common.driveables;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-
 import com.flansmod.client.model.ModelPlane;
 import com.flansmod.common.FlansMod;
 import com.flansmod.common.parts.PartType;
 import com.flansmod.common.types.TypeFile;
-import com.flansmod.common.types.InfoType.ParseFunc;
 import com.flansmod.common.vector.Vector3f;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class PlaneType extends DriveableType
 {

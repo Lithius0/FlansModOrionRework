@@ -1,10 +1,7 @@
 package com.flansmod.common;
 
-import java.io.File;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import net.minecraft.block.Block;
@@ -37,7 +34,6 @@ import com.flansmod.common.parts.PartType;
 import com.flansmod.common.teams.ArmourBoxType;
 import com.flansmod.common.types.EnumType;
 import com.flansmod.common.types.InfoType;
-import com.google.common.io.Files;
 
 public class CommonProxy
 {

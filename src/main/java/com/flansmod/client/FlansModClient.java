@@ -5,15 +5,12 @@ import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-
-import org.lwjgl.input.Keyboard;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -41,7 +38,6 @@ import scala.actors.threadpool.Arrays;
 import com.flansmod.client.model.GunAnimations;
 import com.flansmod.client.teams.ClientTeamsData;
 import com.flansmod.client.util.WorldRenderer;
-import com.flansmod.common.ContentManager.ContentPackFlanFolder;
 import com.flansmod.common.FlansMod;
 import com.flansmod.common.driveables.mechas.EntityMecha;
 import com.flansmod.common.guns.AttachmentType;
