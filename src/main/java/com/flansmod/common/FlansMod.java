@@ -138,7 +138,6 @@ public class FlansMod
 	public static boolean forceUpdateJSONs = false;
 	public static boolean enchantmentModuleEnabled = true;
 	public static List<String> disabledVehicles; //List of shortnames of disabled vehicles
-	public static float globalFuelEfficiencyMultiplier = 0.04F;
 	
 	public static float armourSpawnRate = 0.25F;
 	
@@ -746,7 +745,6 @@ public class FlansMod
 		forceUpdateJSONs = configFile.getBoolean("ForceUpdateJSONs", Configuration.CATEGORY_GENERAL, forceUpdateJSONs, "Turn this on to force re-create all JSON files. Should only be used in dev environment");
 		enchantmentModuleEnabled = configFile.getBoolean("EnchantmentModuleEnabled", Configuration.CATEGORY_GENERAL, enchantmentModuleEnabled, "Enable gun-related enchantments");
 		disabledVehicles = Arrays.asList(configFile.getStringList("DisabledVehicles", Configuration.CATEGORY_GENERAL, new String[0], "Any vehicle shortnames included in here will not be craftable in the vehicle crafting table"));
-		globalFuelEfficiencyMultiplier = configFile.getFloat("GlobalFuelEfficiencyMultiplier", Configuration.CATEGORY_CLIENT, globalFuelEfficiencyMultiplier, 0, 10, "Fuel use will be multiplied by this value. Higher means more fuel used per tick");
 		
 		if(configFile.hasChanged())
 			configFile.save();
