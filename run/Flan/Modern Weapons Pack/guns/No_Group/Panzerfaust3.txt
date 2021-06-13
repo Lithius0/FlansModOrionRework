@@ -19,7 +19,7 @@ ShootSound AT4Shoot
 ReloadSound MWbazookaReload
 Mode SemiAuto
 //Bullet speed, default 3.0
-BulletSpeed 4.0
+BulletSpeed 3.0
 Scope None
 Deployable False
 DeployedModel None
