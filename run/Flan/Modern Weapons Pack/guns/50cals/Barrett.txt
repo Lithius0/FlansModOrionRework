@@ -17,7 +17,7 @@ Damage 40
 //The higher this value, the more the bullets spread
 Accuracy 0.5
 //Time in ticks between rounds
-ShootDelay 40.0
+ShootDelay 25.0
 ShootSound BarrettShoot
 ReloadSound BARReload
 Mode SemiAuto
