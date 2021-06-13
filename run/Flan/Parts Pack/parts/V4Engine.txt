@@ -6,7 +6,7 @@ Colour 255 255 255
 //Categories are Cockpit, Wing, Engine, Propeller, Bay, Tail, Wheel, Chassis, Turret, Misc
 Category Engine
 EngineSpeed 1.0
-FuelConsumption 0.01
+FuelConsumption 1
 WorksWith vehicles planes
 StackSize 4
 RecipeOutput 1
