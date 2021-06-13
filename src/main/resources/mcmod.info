@@ -3,14 +3,15 @@
   "modList": [
     {
       "modid": "flansmod",
-      "name": "Flan's Mod",
+      "name": "Flan's Mod Orion Rework",
       "description": "Guns, planes and other vehicles in Minecraft.",
       "version": "${version}",
       "mcversion": "${mcversion}",
       "url": "https://www.flansmod.com",
       "updateUrl": "",
       "authorList": [
-        "jamioflan"
+        "jamioflan",
+        "Lithius"
       ],
       "credits": "All code contributors.",
       "logoFile": "/flansmod.png",

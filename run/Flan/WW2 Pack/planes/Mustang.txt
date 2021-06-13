@@ -30,7 +30,7 @@ Drag 0.3
 NumWheels 3
 WheelPosition 0 33 -8 -36
 WheelPosition 1 33 -8 36
-WheelPosition 2 -69 10 0
+WheelPosition 2 -69 12 0
 WheelSpringStrength 0.125
 //Propeller Positions
 //Propeller <ID> <x> <y> <z> <planePart> <recipeItem>
@@ -97,7 +97,7 @@ AddDye 2 yellow
 // ------------------------------------------------------ Health and hitboxes ------------------------------------------------------
 SetupPart core 1000 -14 8 -10 56 39 20
 SetupPart nose 1000 42 15 -10 56 24 20
-SetupPart tail 500 -95 19 -10 80 46 20
+SetupPart tail 500 -95 35 -10 80 37 20
 SetupPart rightWing 500 -10 19 10 57 6 119
 SetupPart leftWing 500 -10 20 -130 57 6 120
 BulletDetection 10
