@@ -958,6 +958,7 @@ public class ClientRenderHooks
 			
 			if(ent != null)
 			{
+				//Displaying vehicle speed
 				double dX = ent.posX - ent.prevPosX;
 				double dY = ent.posY - ent.prevPosY;
 				double dZ = ent.posZ - ent.prevPosZ;
@@ -965,16 +966,16 @@ public class ClientRenderHooks
 				//Calculate speed, this is in meters per tick (technically blocks per tick, but 1 meter = 1 block)
 				float speed = (float)Math.sqrt(dX * dX + dY * dY + dZ * dZ);
 				speed *= 20F; //Converting to meters per second
+				//Might give an erroneous value if TPS drops because this assumes there are exactly 20 ticks per second
 				
 				//Rounding to nearest 10ths
 				speed = (int)(speed * 10F) / 10F;
 				
 				mc.fontRenderer.drawString("Speed: " + speed + " meters per second", 2, 2, 0xffffff);
 				
-				if(FlansMod.DEBUG)
-				{
-					mc.fontRenderer.drawString("Throttle : " + ent.throttle, 2, 12, 0xffffff);
-				}
+				//Displaying vehicle throttle
+				int displayThrottle = (int)(ent.throttle * 100F); //Changing the decimal value to a percentile
+				mc.fontRenderer.drawString("Throttle : " + displayThrottle + "%", 2, 12, 0xffffff);
 			}
 		}
 	}
