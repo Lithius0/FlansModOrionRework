@@ -40,7 +40,7 @@ Propeller 0 29 0 0 nose woodenPropeller
 Primary Gun
 Secondary None
 //Time between shots in 1/20ths of seconds
-ShootDelayPrimary 1
+ShootDelayPrimary 0.8
 ShootDelaySecondary 0
 //Whether to alternate or fire all together
 AlternatePrimary False

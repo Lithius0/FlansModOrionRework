@@ -19,8 +19,8 @@ ZoomLevel 1.0
 FOVZoomLevel 1.0
 ZoomOverlay None
 //Model
-Model mw.MuzzleBrake
-Texture MuzzleBrake
+Model mw.MuzzleBreak
+Texture MuzzleBreak
 ModelScale 0.6
 //Recipe
 RecipeOutput 1
