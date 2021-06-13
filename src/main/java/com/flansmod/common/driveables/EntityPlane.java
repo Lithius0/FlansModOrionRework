@@ -25,6 +25,12 @@ import com.flansmod.common.vector.Vector3f;
 public class EntityPlane extends EntityDriveable
 {
 	/**
+	 * The max speed for any aircraft. Anything flying faster than this will have their motion dampened
+	 * Measured in blocks per tick. Multiply by 20 to get blocks per second.
+	 */
+	public static final float SPEED_CAP = 10F;
+	
+	/**
 	 * The flap positions, used for rendering and for controlling the plane rotations
 	 */
 	public float flapsYaw, flapsPitchLeft, flapsPitchRight;
@@ -575,12 +581,14 @@ public class EntityPlane extends EntityDriveable
 				break;
 		}
 		
-		double motion = Math.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
-		if(motion > 10)
+		//Velocity capping
+		double planeSpeed = this.getSpeed();
+		if(planeSpeed > SPEED_CAP)
 		{
-			motionX *= 10 / motion;
-			motionY *= 10 / motion;
-			motionZ *= 10 / motion;
+			//Scaling the motion vector so the resultant vector's magnitude should equal SPEED_CAP
+			motionX *= SPEED_CAP / planeSpeed;
+			motionY *= SPEED_CAP / planeSpeed;
+			motionZ *= SPEED_CAP / planeSpeed;
 		}
 		
 		for(EntityWheel wheel : wheels)
