@@ -726,9 +726,30 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 		}
 	}
 	
+	/**
+	 * Gets the current movement speed of the driveable
+	 * More specifically, it gets the magnitude of the velocity vector of the driveable
+	 * Only seems to work server-side
+	 * @return the speed of the driveable in blocks per ticks
+	 */
 	public double getSpeed()
 	{
 		return Math.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
+	}
+	
+	/**
+	 * Gets the current movement speed of the driveable 
+	 * This method uses the difference between the current position and the position to determine speed
+	 * This method will work on the client
+	 * @return the speed of the driveable in blocks per ticks
+	 */
+	public double getSpeedClient()
+	{
+		double dX = posX - prevPosX;
+		double dY = posY - prevPosY;
+		double dZ = posZ - prevPosZ;
+		
+		return Math.sqrt(dX * dX + dY * dY + dZ * dZ);
 	}
 	
 	public Vector3f getOrigin(ShootPoint shootPoint)
