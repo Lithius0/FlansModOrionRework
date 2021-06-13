@@ -1,7 +1,42 @@
 package com.flansmod.common.driveables;
 
+import static com.flansmod.common.util.BlockUtil.destroyBlock;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import com.flansmod.api.IControllable;
+import com.flansmod.api.IExplodeable;
+import com.flansmod.client.EntityCamera;
+import com.flansmod.client.FlansModClient;
+import com.flansmod.client.debug.EntityDebugVector;
+import com.flansmod.client.handlers.KeyInputHandler;
+import com.flansmod.common.FlansMod;
+import com.flansmod.common.RotatedAxes;
+import com.flansmod.common.driveables.DriveableType.ParticleEmitter;
+import com.flansmod.common.driveables.mechas.ContainerMechaInventory;
+import com.flansmod.common.guns.BulletType;
+import com.flansmod.common.guns.EnumFireMode;
+import com.flansmod.common.guns.FireableGun;
+import com.flansmod.common.guns.FiredShot;
+import com.flansmod.common.guns.GunType;
+import com.flansmod.common.guns.InventoryHelper;
+import com.flansmod.common.guns.ItemBullet;
+import com.flansmod.common.guns.ItemShootable;
+import com.flansmod.common.guns.ShootBulletHandler;
+import com.flansmod.common.guns.ShootableType;
+import com.flansmod.common.guns.ShotHandler;
+import com.flansmod.common.guns.raytracing.FlansModRaytracer.BulletHit;
+import com.flansmod.common.guns.raytracing.FlansModRaytracer.DriveableHit;
+import com.flansmod.common.network.PacketDriveableDamage;
+import com.flansmod.common.network.PacketDriveableKey;
+import com.flansmod.common.network.PacketDriveableKeyHeld;
+import com.flansmod.common.network.PacketPlaySound;
+import com.flansmod.common.parts.EnumPartCategory;
+import com.flansmod.common.parts.ItemPart;
+import com.flansmod.common.parts.PartType;
+import com.flansmod.common.teams.TeamsManager;
+import com.flansmod.common.vector.Vector3f;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.material.Material;
@@ -33,42 +68,6 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.flansmod.api.IControllable;
-import com.flansmod.api.IExplodeable;
-import com.flansmod.client.EntityCamera;
-import com.flansmod.client.FlansModClient;
-import com.flansmod.client.debug.EntityDebugVector;
-import com.flansmod.client.handlers.KeyInputHandler;
-import com.flansmod.common.FlansMod;
-import com.flansmod.common.RotatedAxes;
-import com.flansmod.common.driveables.DriveableType.ParticleEmitter;
-import com.flansmod.common.driveables.mechas.ContainerMechaInventory;
-import com.flansmod.common.guns.BulletType;
-import com.flansmod.common.guns.EnumFireMode;
-import com.flansmod.common.guns.EnumSpreadPattern;
-import com.flansmod.common.guns.FireableGun;
-import com.flansmod.common.guns.FiredShot;
-import com.flansmod.common.guns.GunType;
-import com.flansmod.common.guns.InventoryHelper;
-import com.flansmod.common.guns.ItemBullet;
-import com.flansmod.common.guns.ItemShootable;
-import com.flansmod.common.guns.ShootBulletHandler;
-import com.flansmod.common.guns.ShootableType;
-import com.flansmod.common.guns.ShotHandler;
-import com.flansmod.common.guns.raytracing.FlansModRaytracer.BulletHit;
-import com.flansmod.common.guns.raytracing.FlansModRaytracer.DriveableHit;
-import com.flansmod.common.network.PacketDriveableDamage;
-import com.flansmod.common.network.PacketDriveableKey;
-import com.flansmod.common.network.PacketDriveableKeyHeld;
-import com.flansmod.common.network.PacketPlaySound;
-import com.flansmod.common.parts.EnumPartCategory;
-import com.flansmod.common.parts.ItemPart;
-import com.flansmod.common.parts.PartType;
-import com.flansmod.common.teams.TeamsManager;
-import com.flansmod.common.vector.Vector3f;
-
-import static com.flansmod.common.util.BlockUtil.destroyBlock;
 
 public abstract class EntityDriveable extends Entity implements IControllable, IExplodeable, IEntityAdditionalSpawnData
 {
@@ -1161,6 +1160,8 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 		if(getDriveableData().fuelInTank >= type.fuelTankSize)
 			return;
 		
+		//TODO: Make fuel cans a class of their own with compatabiliity for other mods built into a consume fuel method
+		
 		// Look through the entire inventory for fuel cans, buildcraft fuel buckets and RedstoneFlux power sources
 		for(int i = 0; i < getDriveableData().getSizeInventory(); i++)
 		{
@@ -1175,12 +1176,18 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 				// Check it is a fuel item
 				if(part.category == EnumPartCategory.FUEL)
 				{
+					int amountOfFuelToTransfer = FlansMod.vehicleFuelTransferRate;
+					
+					//If the fuel item has less fuel than the amount we want to tranfer, we only transfer the amount we have
+					if ((stack.getMaxDamage() - stack.getItemDamage()) < FlansMod.vehicleFuelTransferRate)
+						amountOfFuelToTransfer = stack.getMaxDamage() - stack.getItemDamage();
+						
 					// Put 2 points of fuel
-					getDriveableData().fuelInTank += fuelMultiplier;
+					getDriveableData().fuelInTank += amountOfFuelToTransfer;
 					
 					// Damage the fuel item to indicate being used up
 					int damage = stack.getItemDamage();
-					stack.setItemDamage(damage + 1);
+					stack.setItemDamage(damage + amountOfFuelToTransfer);
 					
 					// If we have finished this fuel item
 					if(damage >= stack.getMaxDamage())
