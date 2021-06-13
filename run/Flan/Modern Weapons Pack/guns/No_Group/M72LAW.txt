@@ -10,9 +10,9 @@ ReloadTime 75
 //The amount of gun recoil, all relative : Sten = 1, Mp40 = 3, Kar98kSniper = 20
 Recoil 25
 //Damage in half hearts
-Damage 1500
+Damage 2000
 //The higher this value, the more the bullets spread
-Accuracy 8
+Accuracy 6
 //Time in ticks between rounds
 ShootDelay 1.0
 ConsumeGunOnUse True
@@ -20,7 +20,7 @@ ShootSound AT4Shoot
 ReloadSound MWbazookaReload
 Mode SemiAuto
 //Bullet speed, default 3.0
-BulletSpeed 2.2
+BulletSpeed 2.5
 Scope None
 Deployable False
 DeployedModel None
