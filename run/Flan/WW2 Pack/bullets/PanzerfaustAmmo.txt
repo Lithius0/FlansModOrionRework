@@ -5,7 +5,7 @@ Model Bullet
 Colour 255 255 255
 Icon PanzerfaustHead
 //How affected by gravity the bullet is
-FallSpeed 0.5
+FallSpeed 0.7
 //The maximum stack size
 MaxStackSize 2
 //The number of rounds each item has. Limited to 32000.

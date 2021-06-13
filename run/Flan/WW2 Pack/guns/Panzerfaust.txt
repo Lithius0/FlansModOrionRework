@@ -19,7 +19,7 @@ ConsumeGunOnUse True
 ShootSound bazookaShoot
 //ReloadSound bazookaReload
 Mode SemiAuto
-BulletSpeed 3.0
+BulletSpeed 2.0
 Scope None
 Deployable False
 DeployedModel None
