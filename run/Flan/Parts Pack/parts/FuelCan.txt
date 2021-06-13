@@ -5,7 +5,7 @@ Icon FuelCan
 Colour 255 255 255
 //Categories are Cockpit, Wing, Engine, Propeller, Bay, Tail, Wheel, Chassis, Turret, Fuel, Misc
 Category Fuel
-Fuel 16000
+Fuel 4000
 StackSize 1
 RecipeOutput 1
 Recipe I ingotIron C coal
