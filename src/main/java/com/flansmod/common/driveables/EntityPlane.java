@@ -509,7 +509,7 @@ public class EntityPlane extends EntityDriveable
 				motionY *= drag;
 				motionZ *= drag;
 				
-				data.fuelInTank -= upwardsForce * fuelConsumptionMultiplier * data.engine.fuelConsumption;
+				data.fuelInTank -= throttle * data.engine.fuelConsumption * FlansMod.globalFuelEfficiencyMultiplier;
 				
 				break;
 			
@@ -571,7 +571,7 @@ public class EntityPlane extends EntityDriveable
 				motionY *= drag;
 				motionZ *= drag;
 				
-				data.fuelInTank -= throttleScaled * fuelConsumptionMultiplier * data.engine.fuelConsumption;
+				data.fuelInTank -= throttle * data.engine.fuelConsumption * FlansMod.globalFuelEfficiencyMultiplier;
 				break;
 			default:
 				break;
