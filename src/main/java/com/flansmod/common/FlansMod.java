@@ -139,6 +139,7 @@ public class FlansMod
 	public static boolean enchantmentModuleEnabled = true;
 	public static List<String> disabledVehicles; //List of shortnames of disabled vehicles
 	public static float globalFuelUseMultiplier = 0.05F;
+	public static int vehicleFuelTransferRate = 4;
 	
 	public static float armourSpawnRate = 0.25F;
 	
@@ -747,6 +748,7 @@ public class FlansMod
 		enchantmentModuleEnabled = configFile.getBoolean("EnchantmentModuleEnabled", Configuration.CATEGORY_GENERAL, enchantmentModuleEnabled, "Enable gun-related enchantments");
 		disabledVehicles = Arrays.asList(configFile.getStringList("DisabledVehicles", Configuration.CATEGORY_GENERAL, new String[0], "Any vehicle shortnames included in here will not be craftable in the vehicle crafting table"));
 		globalFuelUseMultiplier = configFile.getFloat("GlobalFuelUseMultiplier", Configuration.CATEGORY_CLIENT, globalFuelUseMultiplier, 0, 10, "Fuel use will be multiplied by this value. Higher means more fuel used per tick");
+		vehicleFuelTransferRate = configFile.getInt("VehicleFuelTransferRate", Configuration.CATEGORY_CLIENT, vehicleFuelTransferRate, 0, 100, "How much fuel to transfer from a container to the vehicle in one tick");
 		
 		if(configFile.hasChanged())
 			configFile.save();
