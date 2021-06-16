@@ -29,6 +29,11 @@ public class EntityPlane extends EntityDriveable
 	 * Measured in blocks per tick. Multiply by 20 to get blocks per second.
 	 */
 	private static final float SPEED_CAP = 5F;
+	/**
+	 * This value multiplies the user's input for pitch, roll, and yaw controls.
+	 * The higher this value, the more maneuverable and generally twitchy the aircrafts tend to be
+	 */
+	private static final float SENSITIVITY_MULTIPLIER = 0.125F;
 	
 	/**
 	 * The flap positions, used for rendering and for controlling the plane rotations
@@ -417,15 +422,11 @@ public class EntityPlane extends EntityDriveable
 		
 		//Alter angles
 		//Sensitivity function
-		float sensitivityAdjust = 2.00677104758f - (float)Math.exp(-2.0f * throttle) / (4.5f * (throttle + 0.1f));
-		sensitivityAdjust = MathHelper.clamp(sensitivityAdjust, 0.0f, 1.0f);
-		//Scalar
-		sensitivityAdjust *= 0.125F;
+		float sensitivityAdjust = SENSITIVITY_MULTIPLIER * (float)Math.sqrt(throttle) + 0.01F;
+		
 		
 		float yaw = flapsYaw * (flapsYaw > 0 ? type.turnLeftModifier : type.turnRightModifier) * sensitivityAdjust;
 		
-		//if(throttle < 0.2F)
-		//	sensitivityAdjust = throttle * 2.5F;
 		//Pitch according to the sum of flapsPitchLeft and flapsPitchRight / 2
 		float flapsPitch = (flapsPitchLeft + flapsPitchRight) / 2F;
 		float pitch = flapsPitch * (flapsPitch > 0 ? type.lookUpModifier : type.lookDownModifier) * sensitivityAdjust;
