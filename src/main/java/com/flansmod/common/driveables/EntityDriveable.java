@@ -1349,6 +1349,7 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 			}
 			
 			RayTraceResult hit = world.rayTraceBlocks(lastPos, currentPos, crashInWater);
+			//Applying Damage
 			if(hit != null && hit.typeOfHit == Type.BLOCK)
 			{
 				BlockPos pos = hit.getBlockPos();
@@ -1362,6 +1363,8 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 				{
 					damage *= unbreakableBlockDamage * unbreakableBlockDamage;
 				}
+				//Damage is proportional to the square of the block hardness (how hard it is to break)
+				//and the speed of the vehicle
 				else
 				{
 					damage *= blockHardness * blockHardness;
@@ -1633,7 +1636,6 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 	{
 		DriveablePart part = getDriveableData().parts.get(hit.part);
 		part.hitByBullet(bulletType, damage);
-		FlansMod.log.info("Damage to vehicle: " + damage);
 		
 		// This is server side bsns
 		if(!world.isRemote)
