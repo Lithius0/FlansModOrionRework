@@ -30,6 +30,12 @@ public class EntityPlane extends EntityDriveable
 	 */
 	private static final float SPEED_CAP = 5F;
 	/**
+	 * Acceleration due to gravity
+	 * 9.81 meters per second squared
+	 * divided by 400 because we need it in meters per tick
+	 */
+	private static final float GRAVITY = 9.81F / 400F;
+	/**
 	 * This value multiplies the user's input for pitch, roll, and yaw controls.
 	 * The higher this value, the more maneuverable and generally twitchy the aircrafts tend to be
 	 */
@@ -459,8 +465,6 @@ public class EntityPlane extends EntityDriveable
 			//axes.rotateGlobalRoll(-axes.getRoll() * 0.1F);
 		}
 		
-		//Some constants
-		float g = 0.98F / 10F;
 		float drag = 1F - (0.05F * type.drag);
 		
 		float throttleScaled = 0.01F * (type.maxThrottle + (data.engine == null ? 0 : data.engine.engineSpeed));
@@ -483,11 +487,10 @@ public class EntityPlane extends EntityDriveable
 				
 				Vector3f up = axes.getYAxis();
 				
-				throttleScaled *= numProps == 0 ? 0 : (float)numPropsWorking / numProps * 2F;
-				
-				float upwardsForce = throttle * throttleScaled + (g - throttleScaled / 2F);
-				if(throttle < 0.5F)
-					upwardsForce = g * throttle * 2F;
+
+				//Apply gravity
+				motionY -= GRAVITY;
+				float upwardsForce = throttle * effectiveEnginePower + (GRAVITY - effectiveEnginePower);
 				
 				if(!isPartIntact(EnumDriveablePart.blades))
 				{
@@ -499,8 +502,6 @@ public class EntityPlane extends EntityDriveable
 				motionX += upwardsForce * up.x * 0.5F;
 				motionY += upwardsForce * up.y;
 				motionZ += upwardsForce * up.z * 0.5F;
-				//Apply gravity
-				motionY -= g;
 				
 				break;
 			
@@ -521,6 +522,8 @@ public class EntityPlane extends EntityDriveable
 					lastTickSpeed = 2F;
 				
 				float newSpeed = lastTickSpeed + throttleScaled * 2F;
+				//Apply gravity
+				motionY -= GRAVITY;
 				
 				//Calculate the amount to alter motion by
 				float proportionOfMotionToCorrect = 2F * throttleTemp - 0.5F;
@@ -528,22 +531,27 @@ public class EntityPlane extends EntityDriveable
 					proportionOfMotionToCorrect = throttle * 0.25f;
 				if(proportionOfMotionToCorrect > 0.6F)
 					proportionOfMotionToCorrect = 0.6F;
+				/**
+				 * Lift is implemented very simply. It is a force that directly counteracts gravity, no matter the orientation.
+				 * This means that all planes can effectively become helicopters
+				 */
 				
-				//Apply gravity
-				g = 0.98F / 20F;
-				motionY -= g;
+				//The 0.7F is there to limit the max lift to 70% of the gravity
+				float amountOfLift = 0.7F * GRAVITY * throttle;
 				
-				//Apply lift
+				//Missing wings will reduce lift
 				int numWingsIntact = 0;
 				if(isPartIntact(EnumDriveablePart.rightWing)) numWingsIntact++;
 				if(isPartIntact(EnumDriveablePart.leftWing)) numWingsIntact++;
 				
-				float amountOfLift = 2F * g * throttleTemp * numWingsIntact / 2F;
-				if(amountOfLift > g)
-					amountOfLift = g;
+				amountOfLift *= numWingsIntact / 2F;
 				
 				if(!isPartIntact(EnumDriveablePart.tail))
 					amountOfLift *= 0.75F;
+
+				//Capping lift at the amount of gravity
+				if(amountOfLift > GRAVITY)
+					amountOfLift = GRAVITY;
 				
 				motionY += amountOfLift;
 				
