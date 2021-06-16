@@ -508,12 +508,6 @@ public class EntityPlane extends EntityDriveable
 				//motionY += rand.nextGaussian() * wobbleFactor;
 				//motionZ += rand.nextGaussian() * wobbleFactor;
 				
-				//Apply drag
-				motionX *= drag;
-				motionY *= drag;
-				motionZ *= drag;
-				
-				
 				break;
 			
 			case PLANE:
