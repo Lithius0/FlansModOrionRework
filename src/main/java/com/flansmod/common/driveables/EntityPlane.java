@@ -462,7 +462,6 @@ public class EntityPlane extends EntityDriveable
 		//Some constants
 		float g = 0.98F / 10F;
 		float drag = 1F - (0.05F * type.drag);
-		float wobbleFactor = 0F;//.005F;
 		
 		float throttleScaled = 0.01F * (type.maxThrottle + (data.engine == null ? 0 : data.engine.engineSpeed));
 		
