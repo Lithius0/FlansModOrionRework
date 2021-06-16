@@ -474,10 +474,11 @@ public class EntityPlane extends EntityDriveable
 			//axes.rotateGlobalRoll(-axes.getRoll() * 0.1F);
 		}
 		
-		float throttleScaled = 0.01F * (type.maxThrottle + (data.engine == null ? 0 : data.engine.engineSpeed));
+		//The power output of the engine will determine the speed of the plane and its acceleration
+		float enginePower = 0.01F * type.maxThrottle * (data.engine == null ? 0 : data.engine.engineSpeed);
 		
 		if(!canThrust())
-			throttleScaled = 0;
+			enginePower = 0;
 		
 		int numPropsWorking = 0;
 		int numProps = 0;
@@ -494,6 +495,7 @@ public class EntityPlane extends EntityDriveable
 				
 				Vector3f up = axes.getYAxis();
 				
+				float effectiveEnginePower = enginePower * (numProps == 0 ? 0 : (float)numPropsWorking / numProps);
 
 				//Apply gravity
 				motionY -= GRAVITY;
@@ -519,7 +521,6 @@ public class EntityPlane extends EntityDriveable
 						numPropsWorking++;
 				numProps = type.propellers.size();
 				
-				float throttleTemp = throttle * (numProps == 0 ? 0 : (float)numPropsWorking / numProps * 2F);
 				
 				//Apply forces
 				Vector3f forwards = (Vector3f)axes.getXAxis().normalise();
