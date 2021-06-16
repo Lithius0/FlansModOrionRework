@@ -52,7 +52,7 @@ ShowDamage true
 ShowRecoil true
 DistortSound True
 CanShootUnderwater False
-MoveSpeedModifier 0.8
+MoveSpeedModifier 1
 Paintjob dragunov_stoic_blue dragunov_stoic_blue blue 3
 Paintjob dragunov_stoic_green dragunov_stoic_green green 3
 Paintjob dragunov_stoic_red dragunov_stoic_red red 3
