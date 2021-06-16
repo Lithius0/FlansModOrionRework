@@ -12,7 +12,7 @@ Recoil 1
 //Damage in half hearts
 Damage 7
 //The higher this value, the more the bullets spread
-Accuracy 5
+Accuracy 6
 //Time in ticks between rounds
 ShootDelay 0.8
 //The length of the sound. 0 for a single shot sound. Other values are for looping sounds

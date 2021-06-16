@@ -13,7 +13,7 @@ Recoil 1
 //Damage in half hearts
 Damage 5
 //The higher this value, the more the bullets spread
-Accuracy 4
+Accuracy 7
 //Time in ticks between rounds
 ShootDelay 0.3
 ShootSound MG42Shoot
