@@ -570,15 +570,24 @@ public class EntityPlane extends EntityDriveable
 				motionY += proportionOfMotionToCorrect * newSpeed * forwards.y;
 				motionZ += proportionOfMotionToCorrect * newSpeed * forwards.z;
 				
-				//Apply drag
-				motionX *= drag;
-				motionY *= drag;
-				motionZ *= drag;
-				
 				data.fuelInTank -= throttle * data.engine.fuelConsumption * FlansMod.globalFuelUseMultiplier;
 				break;
 			default:
 				break;
+		}
+		
+		//Apply drag
+		if (currentSpeed > 0.2F) 
+		{
+			motionX -= Math.signum(motionX) * (motionX * motionX) * type.drag * DRAG_MULTIPLIER;
+			motionY -= Math.signum(motionY) * (motionY * motionY) * type.drag * DRAG_MULTIPLIER;
+			motionZ -= Math.signum(motionZ) * (motionZ * motionZ) * type.drag * DRAG_MULTIPLIER;
+		}
+		else
+		{
+			motionX *= STATIC_DRAG;
+			motionY *= STATIC_DRAG;
+			motionZ *= STATIC_DRAG;
 		}
 		
 		//Velocity capping
