@@ -195,7 +195,7 @@ public class EntityPlane extends EntityDriveable
 			{
 				if(canThrust || throttle < 0F)
 				{
-					throttle += 0.005F;
+					throttle += 0.01F;
 					if(throttle > 1F)
 						throttle = 1F;
 				}
@@ -205,7 +205,7 @@ public class EntityPlane extends EntityDriveable
 			{
 				if(canThrust || throttle > 0F)
 				{
-					throttle -= 0.005F;
+					throttle -= 0.01F;
 					if(throttle < -1F)
 						throttle = -1F;
 					if(throttle < 0F && type.maxNegativeThrottle == 0F)
