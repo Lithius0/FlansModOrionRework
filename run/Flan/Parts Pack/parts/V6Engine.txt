@@ -5,8 +5,8 @@ Icon V6Engine
 Colour 255 255 255
 //Categories are Cockpit, Wing, Engine, Propeller, Bay, Tail, Wheel, Chassis, Turret, Misc
 Category Engine
-EngineSpeed 1.2
-FuelConsumption 1.5
+EngineSpeed 1.1
+FuelConsumption 1.3
 WorksWith vehicles planes
 StackSize 4
 RecipeOutput 1
