@@ -215,24 +215,24 @@ public class EntityPlane extends EntityDriveable
 			}
 			case 2: //Left : Yaw the flaps left
 			{
-				flapsYaw -= 1F;
+				flapsYaw -= 4F;
 				return true;
 			}
 			case 3: //Right : Yaw the flaps right
 			{
-				flapsYaw += 1F;
+				flapsYaw += 4F;
 				return true;
 			}
 			case 4: //Up : Pitch the flaps up
 			{
-				flapsPitchLeft += 1F;
-				flapsPitchRight += 1F;
+				flapsPitchLeft += 4F;
+				flapsPitchRight += 4F;
 				return true;
 			}
 			case 5: //Down : Pitch the flaps down
 			{
-				flapsPitchLeft -= 1F;
-				flapsPitchRight -= 1F;
+				flapsPitchLeft -= 4F;
+				flapsPitchRight -= 4F;
 				return true;
 			}
 			case 7: //Inventory : Check to see if this plane allows in-flight inventory editing or if the plane is on the ground
@@ -250,14 +250,14 @@ public class EntityPlane extends EntityDriveable
 			}
 			case 11: //Roll left
 			{
-				flapsPitchLeft += 1F;
-				flapsPitchRight -= 1F;
+				flapsPitchLeft += 4F;
+				flapsPitchRight -= 4F;
 				return true;
 			}
 			case 12: //Roll right
 			{
-				flapsPitchLeft -= 1F;
-				flapsPitchRight += 1F;
+				flapsPitchLeft -= 4F;
+				flapsPitchRight += 4F;
 				return true;
 			}
 			case 13: // Gear
