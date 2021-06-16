@@ -36,6 +36,15 @@ public class EntityPlane extends EntityDriveable
 	 */
 	private static final float GRAVITY = 9.81F / 400F;
 	/**
+	 * This is a general multiplier for the drag force. The higher this value, the higher the force
+	 * Value range: 0-inf, though it is recommend you keep this a low value
+	 */
+	private static final float DRAG_MULTIPLIER = 0.05F;
+	/**
+	 * The velocity will multiplied by this instead of the more complex drag function when plane is slow enought (around 4 meters/second)
+	 */
+	private static final float STATIC_DRAG = 0.95F;
+	/**
 	 * This value multiplies the user's input for pitch, roll, and yaw controls.
 	 * The higher this value, the more maneuverable and generally twitchy the aircrafts tend to be
 	 */
