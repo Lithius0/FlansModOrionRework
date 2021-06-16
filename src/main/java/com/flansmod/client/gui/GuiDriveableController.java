@@ -166,6 +166,10 @@ public class GuiDriveableController extends GuiScreen
 			{
 				plane.pressKey(3, player, true);
 			}
+			if(FlansMod.proxy.keyDown(KeyInputHandler.upKey.getKeyCode()))
+			{
+				plane.pressKey(4, player, true);
+			}
 			if(FlansMod.proxy.keyDown(mc.gameSettings.keyBindJump.getKeyCode()))//KeyInputHandler.upKey.getKeyCode()))
 			{
 				plane.pressKey(4, player, true);

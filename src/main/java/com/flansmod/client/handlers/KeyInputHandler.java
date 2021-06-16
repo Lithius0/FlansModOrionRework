@@ -34,9 +34,13 @@ import com.flansmod.common.network.PacketRequestDebug;
 @SideOnly(value = Side.CLIENT)
 public class KeyInputHandler
 {
+	public static KeyBinding upKey = new KeyBinding("key.pitchUp.desc",
+			FlansKeyConflictContext.VEHICLE,
+			Keyboard.KEY_DOWN,
+			"key.flansmod.category");
 	public static KeyBinding downKey = new KeyBinding("key.pitchDown.desc",
 			FlansKeyConflictContext.VEHICLE,
-			Keyboard.KEY_LCONTROL,
+			Keyboard.KEY_UP,
 			"key.flansmod.category");
 	public static KeyBinding vehicleMenuKey = new KeyBinding("key.vehicleMenu.desc",
 			FlansKeyConflictContext.VEHICLE,
@@ -88,7 +92,7 @@ public class KeyInputHandler
 			"key.flansmod.category");
 	public static KeyBinding lookAtGunKey = new KeyBinding("key.lookAtGun.desc",
 			FlansKeyConflictContext.GUN,
-			Keyboard.KEY_L,
+			Keyboard.KEY_SEMICOLON,
 			"key.flansmod.category");
 	public static KeyBinding debugKey = new KeyBinding("key.debug.desc",
 			KeyConflictContext.UNIVERSAL,
@@ -115,7 +119,6 @@ public class KeyInputHandler
 	
 	KeyInputHandler()
 	{
-		ClientRegistry.registerKeyBinding(downKey);
 		ClientRegistry.registerKeyBinding(vehicleMenuKey);
 		ClientRegistry.registerKeyBinding(bombKey);
 		ClientRegistry.registerKeyBinding(gunKey);
@@ -125,6 +128,8 @@ public class KeyInputHandler
 		ClientRegistry.registerKeyBinding(teamsScoresKey);
 		ClientRegistry.registerKeyBinding(leftRollKey);
 		ClientRegistry.registerKeyBinding(rightRollKey);
+		ClientRegistry.registerKeyBinding(downKey);
+		ClientRegistry.registerKeyBinding(upKey);
 		ClientRegistry.registerKeyBinding(gearKey);
 		ClientRegistry.registerKeyBinding(doorKey);
 		ClientRegistry.registerKeyBinding(modeKey);
