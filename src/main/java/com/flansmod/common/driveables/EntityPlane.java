@@ -474,8 +474,6 @@ public class EntityPlane extends EntityDriveable
 			//axes.rotateGlobalRoll(-axes.getRoll() * 0.1F);
 		}
 		
-		float drag = 1F - (0.05F * type.drag);
-		
 		float throttleScaled = 0.01F * (type.maxThrottle + (data.engine == null ? 0 : data.engine.engineSpeed));
 		
 		if(!canThrust())
