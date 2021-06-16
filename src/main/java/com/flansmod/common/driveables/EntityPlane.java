@@ -36,6 +36,11 @@ public class EntityPlane extends EntityDriveable
 	 */
 	private static final float GRAVITY = 9.81F / 400F;
 	/**
+	 * The amount of drag that's imposed at 90 deg angle of attack
+	 * 1-MANEUVER_DRAG will be multiplied by the vehicle velocity at 90deg aoa
+	 */
+	private static final float MANEUVER_DRAG = 0.5F;
+	/**
 	 * This is a general multiplier for the drag force. The higher this value, the higher the force
 	 * Value range: 0-inf, though it is recommend you keep this a low value
 	 */
@@ -515,30 +520,58 @@ public class EntityPlane extends EntityDriveable
 				break;
 			
 			case PLANE:
+
+				
+				//Apply forces
+				Vector3f forwards = (Vector3f)axes.getXAxis().normalise();
+
 				//Count the number of working propellers
 				for(Propeller prop : type.propellers)
 					if(isPartIntact(prop.planePart))
 						numPropsWorking++;
 				numProps = type.propellers.size();
 				
+				//The proportion of propellors that are able to produce thrust, essentially a multiplier
+				//Value range is 0-1
+				float workingPropellorProportion = (numProps == 0 ? 0 : (float)numPropsWorking / numProps);
 				
-				//Apply forces
-				Vector3f forwards = (Vector3f)axes.getXAxis().normalise();
+				/*
+				 * This is a really simply way of making sure the plane is going where it is pointing
+				 * Real aircraft do this with clever aerodynamics and lift forces from the airfoils
+				 * To simplify things a bit, we're just going to interpolate between the velocity and facing vector
+				 * 
+				 * NOTE: This interpolation step should go before any other modifications to motion
+				 * Otherwise they will get erroneously added to the currentSpeed
+				 * 
+				 * I know this is kind of terrible, but I don't have the time to implement something more accurate
+				 * and there were some issues with the previous implementation that I couldn't live with -Lithius
+				 */
 				
-				//Sanity limiter
-				if(lastTickSpeed > 2F)
-					lastTickSpeed = 2F;
-				
-				float newSpeed = lastTickSpeed + throttleScaled * 2F;
+				//Interpolation alpha
+				float alpha = throttle * workingPropellorProportion * 0.5F;
+
+				//A currentSpeed of 0 will give us a NaN error here.
+				//The throttle check is to prevent a weird bug regarding the fact that the velocity from the gravity carries to the next tick. 
+				//Even if the aircraft is on the ground
+				//The other checks are to make sure there is a pilot before we do the checks
+				if (currentSpeed > 0.1 && throttle > 0.1 && getSeat(0) != null && getSeat(0).getControllingPassenger() != null) {
+					Vector3f targetVector = new Vector3f(forwards.x, forwards.y, forwards.z);
+					targetVector.scale(currentSpeed);
+					
+					float angleOfAttack = Vector3f.angle(targetVector, new Vector3f(motionX, motionY, motionZ));
+					
+					float maneuverDrag = (float) (1F - (angleOfAttack * MANEUVER_DRAG / Math.PI));
+	
+					targetVector.scale(maneuverDrag);
+					
+					//Interpolating motion
+					motionX = (1F - alpha) * motionX + alpha * targetVector.x;
+					motionY = (1F - alpha) * motionY + alpha * targetVector.y;
+					motionZ = (1F - alpha) * motionZ + alpha * targetVector.z;
+				}
 				//Apply gravity
 				motionY -= GRAVITY;
 				
-				//Calculate the amount to alter motion by
-				float proportionOfMotionToCorrect = 2F * throttleTemp - 0.5F;
-				if(proportionOfMotionToCorrect < throttle * 0.25f)
-					proportionOfMotionToCorrect = throttle * 0.25f;
-				if(proportionOfMotionToCorrect > 0.6F)
-					proportionOfMotionToCorrect = 0.6F;
 				/**
 				 * Lift is implemented very simply. It is a force that directly counteracts gravity, no matter the orientation.
 				 * This means that all planes can effectively become helicopters
@@ -563,16 +596,14 @@ public class EntityPlane extends EntityDriveable
 				
 				motionY += amountOfLift;
 				
-				//Cut out some motion for correction
-				motionX *= 1F - proportionOfMotionToCorrect;
-				motionY *= 1F - proportionOfMotionToCorrect;
-				motionZ *= 1F - proportionOfMotionToCorrect;
+				//The acceleration the plane would undergo if there was no drag
+				//This is not net acceleration, the plane's velocity at the end of the tick still has to go through drag and velocity capping
+				float planeAcceleration = throttle * enginePower * workingPropellorProportion;
 				
-				//Add the corrected motion
-				motionX += proportionOfMotionToCorrect * newSpeed * forwards.x;
-				motionY += proportionOfMotionToCorrect * newSpeed * forwards.y;
-				motionZ += proportionOfMotionToCorrect * newSpeed * forwards.z;
-				
+				motionX += planeAcceleration * forwards.x;
+				motionY += planeAcceleration * forwards.y;
+				motionZ += planeAcceleration * forwards.z;
+
 				break;
 			default:
 				break;
