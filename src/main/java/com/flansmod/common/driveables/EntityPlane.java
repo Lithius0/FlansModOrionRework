@@ -513,7 +513,6 @@ public class EntityPlane extends EntityDriveable
 				motionY *= drag;
 				motionZ *= drag;
 				
-				data.fuelInTank -= throttle * data.engine.fuelConsumption * FlansMod.globalFuelUseMultiplier;
 				
 				break;
 			
@@ -570,7 +569,6 @@ public class EntityPlane extends EntityDriveable
 				motionY += proportionOfMotionToCorrect * newSpeed * forwards.y;
 				motionZ += proportionOfMotionToCorrect * newSpeed * forwards.z;
 				
-				data.fuelInTank -= throttle * data.engine.fuelConsumption * FlansMod.globalFuelUseMultiplier;
 				break;
 			default:
 				break;
@@ -589,6 +587,10 @@ public class EntityPlane extends EntityDriveable
 			motionY *= STATIC_DRAG;
 			motionZ *= STATIC_DRAG;
 		}
+		
+		
+		//Burning fuel
+		data.fuelInTank -= throttle * data.engine.fuelConsumption * FlansMod.globalFuelUseMultiplier;
 		
 		//Velocity capping
 		double planeSpeed = this.getSpeed();
