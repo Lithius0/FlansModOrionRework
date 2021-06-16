@@ -9,7 +9,7 @@ Silencer false
 MeleeDamageMultiplier 1.0
 DamageMultiplier 1.0
 SpreadMultiplier 1.0
-RecoilMultiplier 0.9
+RecoilMultiplier 0.85
 BulletSpeedMultiplier 1.0
 ReloadTimeMultiplier 1.0
 //These variables only come into effect if this is a scope
