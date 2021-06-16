@@ -28,7 +28,7 @@ public class EntityPlane extends EntityDriveable
 	 * The max speed for any aircraft. Anything flying faster than this will have their motion dampened
 	 * Measured in blocks per tick. Multiply by 20 to get blocks per second.
 	 */
-	public static final float SPEED_CAP = 10F;
+	private static final float SPEED_CAP = 5F;
 	
 	/**
 	 * The flap positions, used for rendering and for controlling the plane rotations
@@ -412,9 +412,8 @@ public class EntityPlane extends EntityDriveable
 		if(getSeat(0) != null && getSeat(0).getControllingPassenger() != null && mode == EnumPlaneMode.HELI &&
 				canThrust())
 			throttle = (throttle - 0.5F) * throttlePull + 0.5F;
-		
-		//Get the speed of the plane
-		float lastTickSpeed = (float)getSpeedXYZ();
+
+		float currentSpeed = Math.min((float)getSpeedXYZ(), SPEED_CAP);
 		
 		//Alter angles
 		//Sensitivity function
