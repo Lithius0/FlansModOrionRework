@@ -20,7 +20,7 @@ Recoil 2
 //Damage in half hearts
 Damage 5
 //The higher this value, the more the bullets spread
-Accuracy 10
+Accuracy 5
 //Time in ticks between rounds
 ShootDelay 1.6
 ShootSound GlockShoot

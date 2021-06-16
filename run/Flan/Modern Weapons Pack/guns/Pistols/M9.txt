@@ -21,7 +21,7 @@ NumBullets 1
 //Damage in half hearts
 Damage 5
 //The higher this value, the more the bullets spread
-Accuracy 10
+Accuracy 7
 //Time in ticks between rounds
 ShootDelay 1.4
 ShootSound M9Shoot
