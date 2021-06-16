@@ -16,16 +16,16 @@ Mode Plane
 MaxThrottle 5.0
 MaxNegativeThrottle 0.0
 //Yaw modifiers
-TurnLeftSpeed 1.6
-TurnRightSpeed 1.6
+TurnLeftSpeed 1.0
+TurnRightSpeed 1.0
 //Pitch modifiers
 LookUpSpeed 1.2
 LookDownSpeed 0.8
 //Roll modifiers
-RollLeftSpeed 1.6
-RollRightSpeed 1.6
+RollLeftSpeed 4.2
+RollRightSpeed 4.2
 //Drag 1.0 is standard. Modify to make the plane / heli more or less sluggish
-Drag 0.3
+Drag 0.6
 //Wheels
 NumWheels 3
 WheelPosition 0 33 -8 -36
@@ -88,7 +88,6 @@ AddRecipeParts coreWheel 2 wheel
 AddRecipeParts nose 1 metalNose
 AddRecipeParts rightWing 1 metalWingSmall
 AddRecipeParts leftWing 1 metalWingSmall
-AddRecipeParts bay 1 bombBay
 AddRecipeParts tail 1 metalTail
 AddRecipeParts tailWheel 1 wheel
 //Dye colours are "black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink", "lime", "yellow", "lightBlue", "magenta", "orange", "white"
@@ -97,7 +96,7 @@ AddDye 2 yellow
 // ------------------------------------------------------ Health and hitboxes ------------------------------------------------------
 SetupPart core 1000 -14 8 -10 56 39 20
 SetupPart nose 1000 42 15 -10 56 24 20
-SetupPart tail 500 -95 35 -10 70 37 20
+SetupPart tail 500 -95 19 -10 80 46 20
 SetupPart rightWing 500 -10 19 10 57 6 119
 SetupPart leftWing 500 -10 20 -130 57 6 120
 BulletDetection 10
@@ -140,10 +139,10 @@ CollisionPoint 48 18 11 rightWing
 CollisionPoint 48 23 11 rightWing
 CollisionPoint -70 41 10 tail
 CollisionPoint -70 41 -10 tail
-CollisionPoint -70 24 -10 tail
-CollisionPoint -70 24 10 tail
-CollisionPoint -109 30 2 tail
-CollisionPoint -109 30 -2 tail
+CollisionPoint -70 30 -10 tail
+CollisionPoint -70 30 10 tail
+CollisionPoint -109 36 2 tail
+CollisionPoint -109 36 -2 tail
 CollisionPoint -115 64 -1 tail
 CollisionPoint -115 64 1 tail
 CollisionPoint -109 65 1 tail
@@ -152,14 +151,6 @@ CollisionPoint -100 62 -1 tail
 CollisionPoint -100 62 1 tail
 CollisionPoint -87 38 1 tail
 CollisionPoint -87 38 -1 tail
-CollisionPoint -96 23 1 tailWheel
-CollisionPoint -96 23 -1 tailWheel
-CollisionPoint -91 23 1 tailWheel
-CollisionPoint -91 23 -1 tailWheel
-CollisionPoint -91 21 -1 tailWheel
-CollisionPoint -91 21 1 tailWheel
-CollisionPoint -96 21 1 tailWheel
-CollisionPoint -96 21 -1 tailWheel
 CollisionPoint 50 40 10 nose
 CollisionPoint 50 40 -10 nose
 CollisionPoint 50 17 -10 nose
