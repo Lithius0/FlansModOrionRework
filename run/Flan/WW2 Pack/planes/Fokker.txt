@@ -16,11 +16,11 @@ Mode Plane
 MaxThrottle 1.3
 MaxNegativeThrottle 0.0
 //Yaw modifiers
-TurnLeftSpeed 1.0
-TurnRightSpeed 1.0
+TurnLeftSpeed 0.5
+TurnRightSpeed 0.5
 //Pitch modifiers
-LookUpSpeed 2.4
-LookDownSpeed 2.0
+LookUpSpeed 2.0
+LookDownSpeed 1.6
 //Roll modifiers
 RollLeftSpeed 3.7
 RollRightSpeed 3.7
@@ -53,7 +53,7 @@ ShootPointPrimary 30 8 5 nose mg42
 ShootPointPrimary 30 8 -5 nose mg42
 DamageModifierPrimary 50
 // ------------------------------------------------------ Inventory ------------------------------------------------------
-CargoSlots 8
+CargoSlots 2
 BombSlots 0
 MissileSlots 0
 AllowAllAmmo False
