@@ -499,9 +499,6 @@ public class EntityPlane extends EntityDriveable
 				Vector3f up = axes.getYAxis();
 				
 				float effectiveEnginePower = enginePower * (numProps == 0 ? 0 : (float)numPropsWorking / numProps);
-
-				//Apply gravity
-				motionY -= GRAVITY;
 				float upwardsForce = throttle * effectiveEnginePower + (GRAVITY - effectiveEnginePower);
 				
 				if(!isPartIntact(EnumDriveablePart.blades))
@@ -567,8 +564,6 @@ public class EntityPlane extends EntityDriveable
 					motionY = (1F - alpha) * motionY + alpha * targetVector.y;
 					motionZ = (1F - alpha) * motionZ + alpha * targetVector.z;
 				}
-				//Apply gravity
-				motionY -= GRAVITY;
 				
 				/**
 				 * Lift is implemented very simply. It is a force that directly counteracts gravity, no matter the orientation.
@@ -606,6 +601,9 @@ public class EntityPlane extends EntityDriveable
 			default:
 				break;
 		}
+		
+		//Apply gravity
+		motionY -= GRAVITY;
 		
 		//Apply drag
 		motionX -= Math.signum(motionX) * (motionX * motionX) * type.drag * DRAG_MULTIPLIER;
