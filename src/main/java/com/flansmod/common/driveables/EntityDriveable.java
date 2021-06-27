@@ -85,6 +85,30 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 	public String driveableType;
 	
 	/**
+	 * In general, the motion will be multiplied by this value whenever a brake force needs to be applied
+	 * It's also used in plane collision since the plane applies a brake force if it hits something.
+	 * Value range: 0-1, exclusive, anything greater than 1 leads to insane velocities fast
+	 */
+	public static final float BRAKE_FORCE = 0.9F;
+	/**
+	 *  During collisions, vehicles can't break blocks with a hardness greater than this value
+	 *  Quick reference:
+	 *  Obsidian: 50
+	 *  Planks and logs: 2
+	 *  Cobblestone: 2
+	 *  Concrete: 1.8
+	 *  Stone: 1.5 (why does stone have a smaller value than cobblestone?!)
+	 *  Dirt: 0.5
+	 *  https://minecraft.fandom.com/wiki/Module:Hardness_values
+	 */ 
+	public static final float COLLISION_FORCE = 1.4F;
+	/**
+	 * This is how much damage the driveable takes for every block broken.
+	 * This value is additive, not multiplicative
+	 */
+	public static final float BASE_COLLISION_DAMAGE = 10.0F;
+	
+	/**
 	 * The throttle, in the range -1, 1 is multiplied by the maxThrottle (or maxNegativeThrottle) from the plane type to
 	 * obtain the thrust
 	 */
@@ -1356,19 +1380,24 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 				IBlockState state = world.getBlockState(pos);
 				
 				float blockHardness = state.getBlockHardness(world, pos);
-				float damage = (float)speed;
+				//Reminder that speed is in blocks per tick and is usually around 1
+				float damage = BASE_COLLISION_DAMAGE + (float)speed;
 
-				// unbreakable block
+				//Unbreakable block. Unbreakables have a hardness of -1, so if they followed the same logic
+				//The driveable would barely take damage
 				if(blockHardness < 0F)
 				{
-					damage *= unbreakableBlockDamage * unbreakableBlockDamage;
+					damage *= unbreakableBlockDamage;
 				}
-				//Damage is proportional to the square of the block hardness (how hard it is to break)
-				//and the speed of the vehicle
 				else
 				{
-					damage *= blockHardness * blockHardness;
+					damage *= blockHardness;
 				}
+				
+				//Slow down the vehicle on impact
+				motionX *= BRAKE_FORCE;
+				motionY *= BRAKE_FORCE;
+				motionZ *= BRAKE_FORCE;
 
 				// Attack the part
 				if(!attackPart(p.part, DamageSource.IN_WALL, damage) 
@@ -1378,7 +1407,7 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 					// TODO: [1.12] Heck
 					// playAuxSFXAtEntity(null, 2001, pos, Block.getStateId(state));
 					
-					if(!world.isRemote && blockHardness <= collisionForce)
+					if(!world.isRemote && blockHardness <= COLLISION_FORCE)
 					{
 						WorldServer worldServer = (WorldServer)world;
 						destroyBlock(worldServer, pos, getDriver(), true);
