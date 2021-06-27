@@ -367,8 +367,7 @@ public class EntityPlane extends EntityDriveable
 		
 		//Work out if this is the client side and the player is driving
 		boolean thePlayerIsDrivingThis =
-				world.isRemote && getSeat(0) != null && getSeat(0).getControllingPassenger() instanceof EntityPlayer
-						&& FlansMod.proxy.isThePlayer((EntityPlayer)getSeat(0).getControllingPassenger());
+				world.isRemote && hasControllingPlayer() && FlansMod.proxy.isThePlayer((EntityPlayer)getSeat(0).getControllingPassenger());
 		
 		//Despawning
 		ticksSinceUsed++;
