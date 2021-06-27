@@ -1995,4 +1995,14 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 			mc.setRenderViewEntity((getCamera() == null ? mc.player : getCamera()));
 		else mc.setRenderViewEntity(mc.player);
 	}
+	
+	/**
+	 * Checks whether or not the driveable has a player in its controlling seat (i.e. a driver/pilot)
+	 * More specifically, it checks whether or not seat 0 has a player in it
+	 * @return true if seat 0 has a player, false otherwise
+	 */
+	public boolean hasControllingPlayer() 
+	{
+		return getSeat(0) != null && getSeat(0).getControllingPassenger() instanceof EntityPlayer;
+	}
 }
