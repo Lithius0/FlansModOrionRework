@@ -230,16 +230,6 @@ public class EntityVehicle extends EntityDriveable implements IExplodeable
 				wheelsYaw += 1F;
 				return true;
 			}
-			case 4: // Up : Brake
-			{
-				throttle *= 0.8F;
-				if(onGround)
-				{
-					motionX *= 0.8F;
-					motionZ *= 0.8F;
-				}
-				return true;
-			}
 			case 7: //Inventory
 			{
 				if(world.isRemote)
@@ -257,6 +247,16 @@ public class EntityVehicle extends EntityDriveable implements IExplodeable
 						player.sendMessage(new TextComponentString("Doors " + (varDoor ? "open" : "closed")));
 					toggleTimer = 10;
 					FlansMod.getPacketHandler().sendToServer(new PacketVehicleControl(this));
+				}
+				return true;
+			}
+			case 16: // Up : Brake
+			{
+				throttle *= BRAKE_FORCE;
+				if(onGround)
+				{
+					motionX *= BRAKE_FORCE;
+					motionZ *= BRAKE_FORCE;
 				}
 				return true;
 			}
