@@ -50,6 +50,12 @@ public class EntityPlane extends EntityDriveable
 	 * The higher this value, the more maneuverable and generally twitchy the aircrafts tend to be
 	 */
 	private static final float SENSITIVITY_MULTIPLIER = 0.125F;
+	/**
+	 * This multiplier here is multiplied to the maxThrottle value of a plane
+	 * This is just to bring them up to a reasonable value, otherwise they'd all be values around 0.01
+	 * This does not apply to helicopters, they're normalized on the gravity value
+	 */
+	private static final float PLANE_ENGINE_MULTIPLIER = 0.01F;
 	
 	/**
 	 * Whether or not the tick method will slow down the vehicle
@@ -425,15 +431,6 @@ public class EntityPlane extends EntityDriveable
 		}
 		
 		//Movement
-		
-		//Throttle handling
-		//Without a player, default to 0
-		//With a player default to 0.5 for helicopters (hover speed)
-		//And default to the range 0.25 ~ 0.5 for planes (taxi speed ~ take off speed)
-		float throttlePull = 0.99F;
-		if(getSeat(0) != null && getSeat(0).getControllingPassenger() != null && mode == EnumPlaneMode.HELI &&
-				canThrust())
-			throttle = (throttle - 0.5F) * throttlePull + 0.5F;
 
 		float currentSpeed = Math.min((float)getSpeedXYZ(), SPEED_CAP);
 		
@@ -477,7 +474,7 @@ public class EntityPlane extends EntityDriveable
 		}
 		
 		//The power output of the engine will determine the speed of the plane and its acceleration
-		float enginePower = 0.01F * type.maxThrottle * (data.engine == null ? 0 : data.engine.engineSpeed);
+		float enginePower = type.maxThrottle * (data.engine == null ? 0 : data.engine.engineSpeed);
 		
 		if(!canThrust())
 			enginePower = 0;
@@ -498,18 +495,32 @@ public class EntityPlane extends EntityDriveable
 				Vector3f up = axes.getYAxis();
 				
 				float effectiveEnginePower = enginePower * (numProps == 0 ? 0 : (float)numPropsWorking / numProps);
-				float upwardsForce = throttle * effectiveEnginePower + (GRAVITY - effectiveEnginePower);
+				
+				//Helicopter throttle handling
+				//With a player, throttle converges to hover speed
+				//Without a player, throttle converges to 0
+				float throttlePull = 0.99F;
+				float hoverThrottle = 1F / effectiveEnginePower;
+				if(this.hasControllingPlayer())
+					throttle = (throttle - hoverThrottle) * throttlePull + hoverThrottle;
+				else
+					throttle = 0;
+				
+				//Determining how much acceleration the heli feels this tick.
+				//Multiplying by GRAVITY normalizes the engine power on GRAVITY (throttle is already 0-1)
+				//i.e. An engine power of 1 means the heli can perfectly hover at 100% throttle
+				//It also makes it really easy to calculate the hover throttle
+				float upwardsForce = effectiveEnginePower * throttle * GRAVITY;
 				
 				if(!isPartIntact(EnumDriveablePart.blades))
 				{
 					upwardsForce = 0F;
 				}
 				
-				//Move up
-				//Throttle - 0.5 means that the positive throttle scales from -0.5 to +0.5. Thus it accounts for gravity-ish
-				motionX += upwardsForce * up.x * 0.5F;
+				//Applying Thrust
+				motionX += upwardsForce * up.x;
 				motionY += upwardsForce * up.y;
-				motionZ += upwardsForce * up.z * 0.5F;
+				motionZ += upwardsForce * up.z;
 				
 				break;
 			
@@ -528,6 +539,8 @@ public class EntityPlane extends EntityDriveable
 				//The proportion of propellors that are able to produce thrust, essentially a multiplier
 				//Value range is 0-1
 				float workingPropellorProportion = (numProps == 0 ? 0 : (float)numPropsWorking / numProps);
+				
+				enginePower *= PLANE_ENGINE_MULTIPLIER;
 				
 				/*
 				 * This is a really simply way of making sure the plane is going where it is pointing
