@@ -805,7 +805,11 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 		float baseDamage = secondary ? type.damageModifierSecondary : type.damageModifierPrimary;
 		
 		//Temporary spread of 1. TODO: Make primary and secondary weapon spread fields for EntityDriveable.
-		FireableGun fireableGun = new FireableGun(bulletItem.type, baseDamage, type.bulletSpeed, type.bulletSpread);
+		FireableGun fireableGun;
+		if (type.weaponType(secondary).equals(EnumWeaponType.BOMB))
+			fireableGun = new FireableGun(bulletItem.type, baseDamage, speed, 1F);
+		else
+			fireableGun = new FireableGun(bulletItem.type, baseDamage, type.bulletSpeed, 1F);
 		FiredShot shot = new FiredShot(fireableGun, bulletItem.type, this, (EntityPlayerMP)getDriver());
 		
 		ShootBulletHandler handler = isExtraBullet ->
