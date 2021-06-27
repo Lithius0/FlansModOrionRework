@@ -57,7 +57,7 @@ AlternateSecondary False
 DamageModifierPrimary 50
 // ------------------------------------------------------ Inventory ------------------------------------------------------
 CargoSlots 4  
-BombSlots 1
+BombSlots 0
 MissileSlots 0
 AllowAllAmmo False
 AddAmmo smallBomb
