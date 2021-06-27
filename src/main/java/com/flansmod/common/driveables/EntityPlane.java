@@ -211,9 +211,7 @@ public class EntityPlane extends EntityDriveable
 	{
 		PlaneType type = this.getPlaneType();
 		//Send keys which require server side updates to the server
-		boolean canThrust = ((getSeat(0) != null && getSeat(0).getControllingPassenger() instanceof EntityPlayer
-				&& ((EntityPlayer)getSeat(0).getControllingPassenger()).capabilities.isCreativeMode)
-				|| getDriveableData().fuelInTank > 0) && hasWorkingProp();
+		boolean canThrust = canThrust();
 		switch(key)
 		{
 			case 0: //Accelerate : Increase the throttle, up to 1.
@@ -796,17 +794,22 @@ public class EntityPlane extends EntityDriveable
 		PostUpdate();
 	}
 	
+	/**
+	 * Whether or no the plane is allowed to produce any thrust
+	 * Plane is allowed to produce thrust if there is fuel in the tank or if controlling player is in creative
+	 * @return true if plane can thrust, false otherwise
+	 */
 	public boolean canThrust()
 	{
-		return (getSeat(0) != null && getSeat(0).getControllingPassenger() instanceof EntityPlayer
-				&& ((EntityPlayer)getSeat(0).getControllingPassenger()).capabilities.isCreativeMode) ||
-				driveableData.fuelInTank > 0;
-	}
-	
-	@Override
-	public void setDead()
-	{
-		super.setDead();
+		if (hasWorkingProp()) {
+			if (getDriveableData().fuelInTank > 0) {
+				return true;
+			}
+			if (hasControllingPlayer()) {
+				return ((EntityPlayer)getSeat(0).getControllingPassenger()).capabilities.isCreativeMode;
+			}
+		}
+		return false;
 	}
 	
 	@Override
