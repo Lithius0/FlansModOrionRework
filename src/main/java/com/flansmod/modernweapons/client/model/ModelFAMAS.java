@@ -11,10 +11,8 @@ package com.flansmod.modernweapons.client.model; //Path where the model is locat
 
 import com.flansmod.client.model.EnumAnimationType;
 import com.flansmod.client.model.ModelGun;
-import com.flansmod.common.vector.Vector3f;
 import com.flansmod.client.tmt.ModelRendererTurbo;
-import com.flansmod.client.tmt.Coord2D;
-import com.flansmod.client.tmt.Shape2D;
+import com.flansmod.common.vector.Vector3f;
 
 public class ModelFAMAS extends ModelGun //Same as Filename
 {

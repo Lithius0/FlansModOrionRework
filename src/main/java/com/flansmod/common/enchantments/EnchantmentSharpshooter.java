@@ -1,8 +1,6 @@
 package com.flansmod.common.enchantments;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentDamage;
-import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 
 public class EnchantmentSharpshooter extends Enchantment
