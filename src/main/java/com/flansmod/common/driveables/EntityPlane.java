@@ -439,7 +439,7 @@ public class EntityPlane extends EntityDriveable
 		
 		//Alter angles
 		//Sensitivity function
-		float sensitivityAdjust = SENSITIVITY_MULTIPLIER * (float)Math.sqrt(throttle) + 0.01F;
+		float sensitivityAdjust = SENSITIVITY_MULTIPLIER * (float)Math.sqrt(throttle) + 0.005F;
 		
 		
 		float yaw = flapsYaw * (flapsYaw > 0 ? type.turnLeftModifier : type.turnRightModifier) * sensitivityAdjust;
