@@ -160,9 +160,6 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 	public float lastRecoilPos = 0;
 	public int recoilTimer = 0;
 	
-	/** Can't break the block with hardness greater than this value 
-	 *  when collided */ 
-	public float collisionForce = 1;
 
 	/** Damage factor of unbreakable block such as bedrock when collided */
 	public float unbreakableBlockDamage = 100F;
