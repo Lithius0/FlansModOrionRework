@@ -14,7 +14,7 @@ Damage 3500
 //The higher this value, the more the bullets spread
 Accuracy 7
 //Time in ticks between rounds
-ShootDelay 5
+ShootDelay 7
 ShootSound bazookaShoot
 ReloadSound bazookaReload
 Mode SemiAuto
