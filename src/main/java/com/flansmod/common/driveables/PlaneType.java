@@ -153,6 +153,9 @@ public class PlaneType extends DriveableType
 			if(parser != null)
 			{
 				parser.Parse(split, this);
+				if (this.mode.equals(EnumPlaneMode.HELI) && this.maxThrottle <= 1) {
+					FlansMod.log.warn(this.toString() + " vehicle type has a maxThrottle less than 1 and may not be able to take off!");
+				}
 			}
 			else
 			{
