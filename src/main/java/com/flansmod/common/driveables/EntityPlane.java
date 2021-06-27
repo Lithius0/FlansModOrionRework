@@ -46,15 +46,15 @@ public class EntityPlane extends EntityDriveable
 	 */
 	private static final float DRAG_MULTIPLIER = 0.05F;
 	/**
-	 * The velocity will multiplied by this instead of the more complex drag function when plane is slow enought (around 4 meters/second)
-	 */
-	private static final float STATIC_DRAG = 0.95F;
-	/**
 	 * This value multiplies the user's input for pitch, roll, and yaw controls.
 	 * The higher this value, the more maneuverable and generally twitchy the aircrafts tend to be
 	 */
 	private static final float SENSITIVITY_MULTIPLIER = 0.125F;
 	
+	/**
+	 * Whether or not the tick method will slow down the vehicle
+	 */
+	private boolean brakesEngaged = false;
 	/**
 	 * The flap positions, used for rendering and for controlling the plane rotations
 	 */
@@ -328,9 +328,9 @@ public class EntityPlane extends EntityDriveable
 				}
 				return true;
 			}
-			case 16: // Trim Button
+			case 16: // Brakes
 			{
-				axes.setAngles(axes.getYaw(), 0, 0);
+				brakesEngaged = true;
 				return true;
 			}
 			default:
@@ -608,19 +608,26 @@ public class EntityPlane extends EntityDriveable
 		}
 		
 		//Apply drag
-		if (currentSpeed > 0.2F) 
-		{
-			motionX -= Math.signum(motionX) * (motionX * motionX) * type.drag * DRAG_MULTIPLIER;
-			motionY -= Math.signum(motionY) * (motionY * motionY) * type.drag * DRAG_MULTIPLIER;
-			motionZ -= Math.signum(motionZ) * (motionZ * motionZ) * type.drag * DRAG_MULTIPLIER;
-		}
-		else
-		{
-			motionX *= STATIC_DRAG;
-			motionY *= STATIC_DRAG;
-			motionZ *= STATIC_DRAG;
-		}
+		motionX -= Math.signum(motionX) * (motionX * motionX) * type.drag * DRAG_MULTIPLIER;
+		motionY -= Math.signum(motionY) * (motionY * motionY) * type.drag * DRAG_MULTIPLIER;
+		motionZ -= Math.signum(motionZ) * (motionZ * motionZ) * type.drag * DRAG_MULTIPLIER;
 		
+		//Brakes
+		//They can either be engaged manually or if there's no player inside (to mitigate vehicles just randomly drifting)
+		if (brakesEngaged || !this.hasControllingPlayer()) {
+			//Instead of checking to see if plane is on the ground to activate brakes, we just make sure the speed isn't too high
+			//It's lazy, but it does work
+			if (this.getSpeedXZ() < 0.2F)
+			{
+				//Motion Y is missing because aircraft brakes aren't parachutes. They can't stop vertical motion
+				motionX *= BRAKE_FORCE;
+				motionZ *= BRAKE_FORCE;
+				
+			}
+
+			//If the player is actively holding the brakes, this should get set to true again every tick
+			brakesEngaged = false;
+		}
 		
 		//Burning fuel
 		data.fuelInTank -= throttle * data.engine.fuelConsumption * FlansMod.globalFuelUseMultiplier;
