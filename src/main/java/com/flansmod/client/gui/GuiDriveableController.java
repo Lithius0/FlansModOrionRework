@@ -150,6 +150,7 @@ public class GuiDriveableController extends GuiScreen
 		
 		if(plane != null && !plane.isDead() && plane.getControllingEntity() != null && plane.getControllingEntity() instanceof EntityPlayer)
 		{
+			//TODO: replace key integers with enums
 			if(FlansMod.proxy.keyDown(mc.gameSettings.keyBindForward.getKeyCode()))//KeyInputHandler.accelerateKey.getKeyCode()))
 			{
 				plane.pressKey(0, player, true);
@@ -167,10 +168,6 @@ public class GuiDriveableController extends GuiScreen
 				plane.pressKey(3, player, true);
 			}
 			if(FlansMod.proxy.keyDown(KeyInputHandler.upKey.getKeyCode()))
-			{
-				plane.pressKey(4, player, true);
-			}
-			if(FlansMod.proxy.keyDown(mc.gameSettings.keyBindJump.getKeyCode()))//KeyInputHandler.upKey.getKeyCode()))
 			{
 				plane.pressKey(4, player, true);
 			}
@@ -217,6 +214,10 @@ public class GuiDriveableController extends GuiScreen
 			if(FlansMod.proxy.keyDown(KeyInputHandler.modeKey.getKeyCode()))
 			{
 				plane.pressKey(15, player, true);
+			}
+			if(FlansMod.proxy.keyDown(mc.gameSettings.keyBindJump.getKeyCode()))//KeyInputHandler.upKey.getKeyCode()))
+			{
+				plane.pressKey(16, player, true);
 			}
 			
 		}

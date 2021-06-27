@@ -162,7 +162,7 @@ public class KeyInputHandler
 				controllable.pressKey(2, player, false);
 			if(mc.gameSettings.keyBindRight.isKeyDown())
 				controllable.pressKey(3, player, false);
-			if(mc.gameSettings.keyBindJump.isKeyDown())
+			if(upKey.isKeyDown())
 				controllable.pressKey(4, player, false);
 			if(downKey.isKeyDown())
 				controllable.pressKey(5, player, false);
@@ -174,6 +174,8 @@ public class KeyInputHandler
 				controllable.pressKey(11, player, false);
 			if(rightRollKey.isKeyDown())
 				controllable.pressKey(12, player, false);
+			if(mc.gameSettings.keyBindJump.isKeyDown())
+				controllable.pressKey(16, player, false);
 		}
 	}
 	
