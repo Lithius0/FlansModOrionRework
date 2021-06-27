@@ -525,7 +525,6 @@ public class EntityPlane extends EntityDriveable
 				break;
 			
 			case PLANE:
-
 				
 				//Apply forces
 				Vector3f forwards = (Vector3f)axes.getXAxis().normalise();
@@ -561,7 +560,7 @@ public class EntityPlane extends EntityDriveable
 				//The throttle check is to prevent a weird bug regarding the fact that the velocity from the gravity carries to the next tick. 
 				//Even if the aircraft is on the ground
 				//The other checks are to make sure there is a pilot before we do the checks
-				if (currentSpeed > 0.1 && throttle > 0.1 && getSeat(0) != null && getSeat(0).getControllingPassenger() != null) {
+				if (currentSpeed > 0.1 && throttle > 0.1 && hasControllingPlayer()) {
 					Vector3f targetVector = new Vector3f(forwards.x, forwards.y, forwards.z);
 					targetVector.scale(currentSpeed);
 					
