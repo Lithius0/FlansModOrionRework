@@ -30,4 +30,4 @@ HitSound flakExplode
 //Whether or not the bullet can travel through an entity having hit it
 Penetrates False
 SmokeTrail False
-MaxStackSize 16
+MaxStackSize 4
