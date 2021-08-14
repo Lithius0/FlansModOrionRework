@@ -34,7 +34,7 @@ FuelTankSize 2000
 CargoSlots 10
 ShellSlots 5
 //Driver and passenger positions
-Driver 0 20 0 -360 360 -2 4
+Driver 0 20 0 -360 360 -10 20
 RotatedDriverOffset -7 0 -4
 Passengers 0
 BarrelPosition 5 25 0
