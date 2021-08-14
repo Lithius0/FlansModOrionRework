@@ -190,8 +190,8 @@ public class PlayerHitbox
 				TeamsManager.getInstance().currentRound.gametype.playerAttacked((EntityPlayerMP)player, damagesource);
 			
 			//This is to prevent the player's armor from getting destroyed completely with powerful weapons like anti-tank guns
-			if (hitDamage > 100)
-				hitDamage = 100;
+			if (hitDamage > 200)
+				hitDamage = 200;
 			
 			//Attack the entity!
 			if(player.attackEntityFrom(damagesource, hitDamage))
@@ -210,7 +210,6 @@ public class PlayerHitbox
 				if(currentStack != null && currentStack.getItem() instanceof ItemGun)
 				{
 					GunType gunType = ((ItemGun)currentStack.getItem()).GetType();
-					//TODO : Shield damage
 					return penetratingPower - gunType.shieldDamageAbsorption;
 				}
 				else return penetratingPower;
@@ -221,7 +220,6 @@ public class PlayerHitbox
 				if(currentStack != null && currentStack.getItem() instanceof ItemGun)
 				{
 					GunType gunType = ((ItemGun)currentStack.getItem()).GetType();
-					//TODO : Shield damage
 					return penetratingPower - gunType.shieldDamageAbsorption;
 				}
 				else return penetratingPower;
