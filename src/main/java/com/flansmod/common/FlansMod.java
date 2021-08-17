@@ -126,7 +126,7 @@ public class FlansMod
 	public static int ticker = 0;
 	public static long lastTime;
 	public static File flanDir, modDir;
-	public static final float soundRange = 50F;
+	public static final float soundRange = 64F;
 	public static final float driveableUpdateRange = 200F;
 	public static final int numPlayerSnapshots = 20;
 	public static boolean isApocalypseLoaded = false;
