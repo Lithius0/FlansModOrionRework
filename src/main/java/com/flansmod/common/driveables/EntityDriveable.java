@@ -107,6 +107,11 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 	 * This value is additive, not multiplicative
 	 */
 	public static final float BASE_COLLISION_DAMAGE = 10.0F;
+	/**
+	 * This is the throttle value at which the engine sound goes from idling to full
+	 * Value range: 0-1, exclusive
+	 */
+	public static final float ENGINE_SOUND_THRESHOLD = 0.1F;
 	
 	/**
 	 * The throttle, in the range -1, 1 is multiplied by the maxThrottle (or maxNegativeThrottle) from the plane type to
@@ -1203,17 +1208,16 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 		int fuelMultiplier = 2;
 		
 		// The tank is currently full, so do nothing
-		if(getDriveableData().fuelInTank >= type.fuelTankSize)
+		if(driveableData.fuelInTank >= type.fuelTankSize)
 			return;
 		
-		//TODO: Make fuel cans a class of their own with compatabiliity for other mods built into a consume fuel method
+		//TODO: Make fuel cans a class of their own with compatibility for other mods built into a consume fuel method
 		
 		// Look through the entire inventory for fuel cans, buildcraft fuel buckets and RedstoneFlux power sources
-		for(int i = 0; i < getDriveableData().getSizeInventory(); i++)
+		int fuelSlot = driveableData.getFuelSlot();
+		ItemStack stack = driveableData.getStackInSlot(fuelSlot);
+		if(stack != null && !stack.isEmpty())
 		{
-			ItemStack stack = getDriveableData().getStackInSlot(i);
-			if(stack == null || stack.isEmpty())
-				continue;
 			Item item = stack.getItem();
 			// Check for Flan's Mod fuel items
 			if(item instanceof ItemPart)
@@ -1224,7 +1228,7 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 				{
 					int amountOfFuelToTransfer = FlansMod.vehicleFuelTransferRate;
 					
-					//If the fuel item has less fuel than the amount we want to tranfer, we only transfer the amount we have
+					//If the fuel item has less fuel than the amount we want to transfer, we only transfer the amount we have
 					if ((stack.getMaxDamage() - stack.getItemDamage()) < FlansMod.vehicleFuelTransferRate)
 						amountOfFuelToTransfer = stack.getMaxDamage() - stack.getItemDamage();
 						
@@ -1244,11 +1248,8 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 						stack.setCount(stack.getCount() - 1);
 						// If we consumed the last one, destroy the stack
 						if(stack.getCount() <= 0)
-							getDriveableData().setInventorySlotContents(i, ItemStack.EMPTY.copy());
+							getDriveableData().setInventorySlotContents(driveableData.getFuelSlot(), ItemStack.EMPTY.copy());
 					}
-					
-					// We found a fuel item and consumed some, so we are done
-					break;
 				}
 				
 				// Check for Buildcraft oil and fuel buckets
@@ -1257,14 +1258,14 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 					getDriveableData().fuelInTank + 1000 * fuelMultiplier <= type.fuelTankSize)
 				{
 					getDriveableData().fuelInTank += 1000 * fuelMultiplier;
-					getDriveableData().setInventorySlotContents(i, new ItemStack(Items.BUCKET));
+					getDriveableData().setInventorySlotContents(fuelSlot, new ItemStack(Items.BUCKET));
 				}
 				else if(FlansMod.hooks.BuildCraftLoaded && stack.isItemEqual(
 					FlansMod.hooks.BuildCraftFuelBucket) &&
 					getDriveableData().fuelInTank + 2000 * fuelMultiplier <= type.fuelTankSize)
 				{
 					getDriveableData().fuelInTank += 2000 * fuelMultiplier;
-					getDriveableData().setInventorySlotContents(i, new ItemStack(Items.BUCKET));
+					getDriveableData().setInventorySlotContents(fuelSlot, new ItemStack(Items.BUCKET));
 				}
 			}
 		}
