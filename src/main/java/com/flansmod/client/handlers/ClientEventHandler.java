@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderItemInFrameEvent;
@@ -19,10 +20,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.flansmod.client.ClientRenderHooks;
 import com.flansmod.client.FlansModClient;
+import com.flansmod.client.audio.MovingSoundDriveable;
+import com.flansmod.client.audio.MovingSoundDriveableIdling;
 import com.flansmod.client.model.InstantBulletRenderer;
 import com.flansmod.client.model.RenderFlag;
 import com.flansmod.client.model.RenderGun;
 import com.flansmod.common.FlansMod;
+import com.flansmod.common.driveables.DriveableType;
+import com.flansmod.common.driveables.EntityDriveable;
 import com.flansmod.common.guns.ItemGun;
 
 /**
@@ -156,5 +161,22 @@ public class ClientEventHandler
 	public void ModifyHUD(RenderGameOverlayEvent event)
 	{
 		renderHooks.modifyHUD(event);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void entityJoined(EntityJoinWorldEvent event)
+	{
+		if (event.getEntity() instanceof EntityDriveable && event.getWorld().isRemote)
+		{
+			//When a driveable spawns in the world, we play the sound, which loops until they're destroyed
+			EntityDriveable driveable = (EntityDriveable)event.getEntity();
+			DriveableType type = driveable.getDriveableType();
+			if (!type.engineSound.isEmpty())
+				Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundDriveable(driveable));
+			if (!type.startSound.isEmpty())
+				Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundDriveableIdling(driveable));
+				
+		}
 	}
 }
