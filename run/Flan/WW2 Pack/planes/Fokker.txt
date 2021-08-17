@@ -19,8 +19,8 @@ MaxNegativeThrottle 0.0
 TurnLeftSpeed 0.5
 TurnRightSpeed 0.5
 //Pitch modifiers
-LookUpSpeed 2.0
-LookDownSpeed 1.6
+LookUpSpeed 1.8
+LookDownSpeed 1.5
 //Roll modifiers
 RollLeftSpeed 3.7
 RollRightSpeed 3.7
