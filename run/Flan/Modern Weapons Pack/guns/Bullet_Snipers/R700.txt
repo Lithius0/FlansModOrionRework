@@ -15,7 +15,7 @@ Recoil 16
 //Damage in half hearts
 Damage 24
 //The higher this value, the more the bullets spread
-Accuracy 0.4
+Accuracy 0.2
 //For guns in which the magazine is integrated
 LoadIntoGun 4
 //Time in ticks between rounds

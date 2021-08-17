@@ -16,13 +16,13 @@ Colour 255 255 255
 //Reload time in ticks, 1/20ths of a second
 ReloadTime 40
 //The amount of gun recoil, all relative : Sten = 1, Mp40 = 3, Kar98kSniper = 20
-Recoil 7
+Recoil 5
 //Damage in half hearts
-Damage 14
+Damage 11
 //The higher this value, the more the bullets spread
-Accuracy 1
+Accuracy 0.5
 //Time in ticks between rounds
-ShootDelay 4.0
+ShootDelay 3.0
 ShootSound M14Shoot
 ReloadSound BARReload
 Mode SemiAuto

@@ -16,7 +16,7 @@ Colour 255 255 255
 //Reload time in ticks, 1/20ths of a second
 ReloadTime 70
 //The amount of gun recoil, all relative : Sten = 1, Mp40 = 3, Kar98kSniper = 20
-Recoil 20
+Recoil 16
 //Damage in half hearts
 Damage 26
 //The higher this value, the more the bullets spread

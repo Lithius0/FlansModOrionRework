@@ -16,11 +16,11 @@ Colour 255 255 255
 //Reload time in ticks, 1/20ths of a second
 ReloadTime 30
 //The amount of gun recoil, all relative : Sten = 1, Mp40 = 3, Kar98kSniper = 20
-Recoil 10
+Recoil 5.5
 //Damage in half hearts
-Damage 13
+Damage 12
 //The higher this value, the more the bullets spread
-Accuracy 1
+Accuracy 0.5
 //Time in ticks between rounds
 ShootDelay 6.0
 ShootSound DragunovShoot
