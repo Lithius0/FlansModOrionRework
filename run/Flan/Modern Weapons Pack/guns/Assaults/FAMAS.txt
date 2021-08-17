@@ -28,7 +28,7 @@ Recoil 1.5
 //Damage in half hearts
 Damage 7
 //The higher this value, the more the bullets spread
-Accuracy 3
+Accuracy 1.5
 //Time in ticks between rounds
 ShootDelay 1.1
 ShootSound FAMASShoot

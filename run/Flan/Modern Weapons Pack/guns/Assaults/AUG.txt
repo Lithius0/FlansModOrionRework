@@ -1,4 +1,4 @@
-Name AUG
+wName AUG
 ShortName aug
 //The ammo this gun uses (shortName)
 Ammo m16a4Ammo
@@ -28,7 +28,7 @@ Recoil 2
 //Damage in half hearts
 Damage 8
 //The higher this value, the more the bullets spread
-Accuracy 3
+Accuracy 1.5
 //Time in ticks between rounds
 ShootDelay 1.7
 ShootSound FNSCARShoot

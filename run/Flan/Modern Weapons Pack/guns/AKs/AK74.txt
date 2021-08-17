@@ -17,7 +17,7 @@ Recoil 1.7
 //Damage in half hearts
 Damage 6
 //The higher this value, the more the bullets spread
-Accuracy 6
+Accuracy 1.5
 //Time in ticks between rounds
 ShootDelay 1.2
 ShootSound AK74Shoot

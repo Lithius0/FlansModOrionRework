@@ -28,7 +28,7 @@ Recoil 3
 //Damage in half hearts
 Damage 10
 //The higher this value, the more the bullets spread
-Accuracy 2
+Accuracy 1.3
 //Time in ticks between rounds
 ShootDelay 2
 ShootSound FNSCARShoot

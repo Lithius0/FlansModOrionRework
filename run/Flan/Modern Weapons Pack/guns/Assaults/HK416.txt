@@ -28,7 +28,7 @@ Recoil 1.5
 //Damage in half hearts
 Damage 6
 //The higher this value, the more the bullets spread
-Accuracy 3.5
+Accuracy 1.5
 //Time in ticks between rounds
 ShootDelay 2.0
 ShootSound M14Shoot
