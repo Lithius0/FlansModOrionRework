@@ -770,24 +770,6 @@ public class EntityPlane extends EntityDriveable
 		
 		checkForCollisions();
 		
-		//Sounds
-		//Starting sound
-		if(throttle > 0.01F && throttle < 0.2F && soundPosition == 0 && hasEnoughFuel())
-		{
-			PacketPlaySound.sendSoundPacket(posX, posY, posZ, FlansMod.soundRange, dimension, type.startSound, false);
-			soundPosition = type.startSoundLength;
-		}
-		//Flying sound
-		if(throttle > 0.2F && soundPosition == 0 && hasEnoughFuel())
-		{
-			PacketPlaySound.sendSoundPacket(posX, posY, posZ, FlansMod.soundRange, dimension, type.engineSound, false);
-			soundPosition = type.engineSoundLength;
-		}
-		
-		//Sound decrementer
-		if(soundPosition > 0)
-			soundPosition--;
-		
 		for(EntitySeat seat : getSeats())
 		{
 			if(seat != null)

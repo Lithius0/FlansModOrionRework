@@ -513,20 +513,6 @@ public class EntityVehicle extends EntityDriveable implements IExplodeable
 		
 		checkForCollisions();
 		
-		//Sounds
-		//Starting sound
-		if(throttle > 0.01F && throttle < 0.2F && soundPosition == 0 && hasEnoughFuel())
-		{
-			PacketPlaySound.sendSoundPacket(posX, posY, posZ, 50, dimension, type.startSound, false);
-			soundPosition = type.startSoundLength;
-		}
-		//Flying sound
-		if(throttle > 0.2F && soundPosition == 0 && hasEnoughFuel())
-		{
-			PacketPlaySound.sendSoundPacket(posX, posY, posZ, 50, dimension, type.engineSound, false);
-			soundPosition = type.engineSoundLength;
-		}
-		
 		for(EntitySeat seat : getSeats())
 		{
 			if(seat != null)
