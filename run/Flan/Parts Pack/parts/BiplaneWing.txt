@@ -7,7 +7,7 @@ Colour 255 255 255
 Category Wing
 StackSize 8
 RecipeOutput 1
-Recipe W wood S stick
-WWW
+Recipe W woodenWing S stick
+ W
 S S
-WWW
+ W

@@ -7,7 +7,7 @@ Colour 255 255 255
 Category Wing
 StackSize 8
 RecipeOutput 2
-Recipe W biplaneWing
-  W
+Recipe W wood
+WWW
    
    
