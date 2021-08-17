@@ -35,6 +35,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -594,14 +595,17 @@ public class ItemGun extends Item implements IPaintableItem
 							handler.shooting(false);
 						}
 
-						boolean silenced = type.getBarrel(gunstack) != null && type.getBarrel(gunstack).silencer;
-						playShotSound(world, rayTraceOrigin, silenced);
 					}
+
+				boolean silenced = type.getBarrel(gunstack) != null && type.getBarrel(gunstack).silencer;
+				playShotSound(player, silenced);
+					
 				int gunSlot = player.inventory.currentItem;
 				if(type.consumeGunUponUse)
 					player.inventory.setInventorySlotContents(gunSlot, ItemStack.EMPTY.copy());
 			}
 			data.SetShootTime(hand, shootTime);
+
 		}
 	}
 	
@@ -628,25 +632,14 @@ public class ItemGun extends Item implements IPaintableItem
 			}
 	}
 	
-	public void playShotSound(World world, Vector3f position, Boolean silenced) {
+	public void playShotSound(EntityPlayer player, Boolean silenced) {
 		// Play shot sounds
 		if(soundDelay <= 0 && type.shootSound != null)
 		{
-			PacketPlaySound.sendSoundPacket(position.x, position.y, position.z, FlansMod.soundRange, world.provider.getDimension(), type.shootSound, false, silenced, 0.6F);
+			SoundEvent sound = FlansModResourceHandler.getSoundEvent(type.shootSound);
+			player.playSound(sound, silenced ? 0.4F : 8F, silenced ? 8F : 1F);
 			soundDelay = type.idleSoundLength;
 		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	private void PlayShotSound(World world, boolean silenced, float x, float y, float z)
-	{
-		FMLClientHandler.instance().getClient().getSoundHandler().playSound(
-				new PositionedSoundRecord(FlansModResourceHandler.getSoundEvent(type.shootSound),
-						SoundCategory.PLAYERS,
-						// The volume has been turned down as part of the Orion Rework
-						silenced ? 0.5F : 2F,
-						(type.distortSound ? 1.0F / (world.rand.nextFloat() * 0.4F + 0.8F) : 1.0F) * (silenced ? 2F : 1F),
-						x, y, z));
 	}
 	
 	public void onUpdateServer(ItemStack itemstack, int gunSlot, World world, Entity entity, EnumHand hand, boolean hasOffHand)
