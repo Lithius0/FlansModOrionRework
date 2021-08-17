@@ -24,7 +24,7 @@ Damage 0.8
 //For guns in which the magazine is integrated
 LoadIntoGun 5
 //The higher this value, the more the bullets spread
-Accuracy 20
+Accuracy 18
 //Time in ticks between rounds
 ShootDelay 20
 ShootSound M1887Shoot

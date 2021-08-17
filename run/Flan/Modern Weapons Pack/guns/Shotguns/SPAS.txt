@@ -23,7 +23,7 @@ NumBullets 1
 //Damage in half hearts
 Damage 1.2
 //The higher this value, the more the bullets spread
-Accuracy 20
+Accuracy 16
 //Time in ticks between rounds
 ShootDelay 13.0
 ShootSound SPASShoot
