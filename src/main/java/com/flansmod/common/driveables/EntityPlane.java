@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -16,7 +15,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import com.flansmod.common.FlansMod;
 import com.flansmod.common.network.PacketDriveableControl;
 import com.flansmod.common.network.PacketPlaneControl;
-import com.flansmod.common.network.PacketPlaySound;
 import com.flansmod.common.teams.TeamsManager;
 import com.flansmod.common.tools.ItemTool;
 import com.flansmod.common.vector.Matrix4f;
@@ -39,7 +37,7 @@ public class EntityPlane extends EntityDriveable
 	 * The amount of drag that's imposed at 90 deg angle of attack
 	 * 1-MANEUVER_DRAG will be multiplied by the vehicle velocity at 90deg aoa
 	 */
-	private static final float MANEUVER_DRAG = 0.5F;
+	private static final float MANEUVER_DRAG = 0.7F;
 	/**
 	 * This is a general multiplier for the drag force. The higher this value, the higher the force
 	 * Value range: 0-inf, though it is recommend you keep this a low value
@@ -535,14 +533,14 @@ public class EntityPlane extends EntityDriveable
 						numPropsWorking++;
 				numProps = type.propellers.size();
 				
-				//The proportion of propellors that are able to produce thrust, essentially a multiplier
+				//The proportion of propellers that are able to produce thrust, essentially a multiplier
 				//Value range is 0-1
 				float workingPropellorProportion = (numProps == 0 ? 0 : (float)numPropsWorking / numProps);
 				
 				enginePower *= PLANE_ENGINE_MULTIPLIER;
 				
 				/*
-				 * This is a really simply way of making sure the plane is going where it is pointing
+				 * This is a really simple way of making sure the plane is going where it is pointing
 				 * Real aircraft do this with clever aerodynamics and lift forces from the airfoils
 				 * To simplify things a bit, we're just going to interpolate between the velocity and facing vector
 				 * 
@@ -555,6 +553,13 @@ public class EntityPlane extends EntityDriveable
 				
 				//Interpolation alpha
 				float alpha = throttle * workingPropellorProportion * 0.5F;
+				
+				//Missing wings will reduce lift
+				int numWingsIntact = 0;
+				if(isPartIntact(EnumDriveablePart.rightWing)) numWingsIntact++;
+				if(isPartIntact(EnumDriveablePart.leftWing)) numWingsIntact++;
+				
+				alpha *= numWingsIntact / 2F;
 
 				//A currentSpeed of 0 will give us a NaN error here.
 				//The throttle check is to prevent a weird bug regarding the fact that the velocity from the gravity carries to the next tick. 
@@ -575,30 +580,6 @@ public class EntityPlane extends EntityDriveable
 					motionY = (1F - alpha) * motionY + alpha * targetVector.y;
 					motionZ = (1F - alpha) * motionZ + alpha * targetVector.z;
 				}
-				
-				/**
-				 * Lift is implemented very simply. It is a force that directly counteracts gravity, no matter the orientation.
-				 * This means that all planes can effectively become helicopters
-				 */
-				
-				//The 0.7F is there to limit the max lift to 70% of the gravity
-				float amountOfLift = 0.7F * GRAVITY * throttle;
-				
-				//Missing wings will reduce lift
-				int numWingsIntact = 0;
-				if(isPartIntact(EnumDriveablePart.rightWing)) numWingsIntact++;
-				if(isPartIntact(EnumDriveablePart.leftWing)) numWingsIntact++;
-				
-				amountOfLift *= numWingsIntact / 2F;
-				
-				if(!isPartIntact(EnumDriveablePart.tail))
-					amountOfLift *= 0.75F;
-
-				//Capping lift at the amount of gravity
-				if(amountOfLift > GRAVITY)
-					amountOfLift = GRAVITY;
-				
-				motionY += amountOfLift;
 				
 				//The acceleration the plane would undergo if there was no drag
 				//This is not net acceleration, the plane's velocity at the end of the tick still has to go through drag and velocity capping
