@@ -79,6 +79,11 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 	/** Server side rotation, as synced by PacketVehicleControl packets */
 	public double serverYaw, serverPitch, serverRoll;
 	
+	/**
+	 * Last known valid position. These values may only be set immediately after checking the position is valid
+	 */
+	private double lastValidX = 0, lastValidY = 100, lastValidZ = 0;
+	
 	/** The driveable data which contains the inventory, the engine and the fuel */
 	public DriveableData driveableData;
 	/** The shortName of the driveable type, used to obtain said type */
@@ -1273,24 +1278,41 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 	
 	public void PostUpdate()
 	{
-		if(Double.isNaN(posX) 
-		|| Double.isNaN(posY)
-		|| Double.isNaN(posZ)
-		|| Float.isNaN(rotationYaw)
-		|| Float.isNaN(rotationPitch)
-		|| !axes.isValid())
+		//Checking validity of position
+		//NaN or infinite values will be picked up and dealt with
+		if(!Double.isFinite(posX) || !Double.isFinite(posY) || !Double.isFinite(posZ))
 		{
-			FlansMod.log.error("Driveable went to NaNsville. Reverting one frame");
-			posX = prevPosX;
-			posY = prevPosY;
-			posZ = prevPosZ;
-			
-			// Just reset the axes
+			FlansMod.log.error("Driveable: " + this.driveableType + " position is invalid!");
+
+			FlansMod.log.error("Attempt to revert to previous position"); 
+			//Attempt to revert to previous frame if previous frame is valid
+			if (!Double.isFinite(prevPosX) || !Double.isFinite(prevPosY) || !Double.isFinite(prevPosY))
+			{
+				//We're not using the prevPos here because that's a public value
+				//The lastValid position is private and is only set after verifying the position
+				//This ensures that it is going to be valid/finite
+				FlansMod.log.error("Reverting one frame to last valid position"); 
+				posX = lastValidX;
+				posY = lastValidY;
+				posZ = lastValidZ;
+			}
+		} 
+		else 
+		{
+			lastValidX = posX;
+			lastValidY = posY;
+			lastValidZ = posZ;
+		}
+		
+		if (!Float.isFinite(rotationYaw) || !Float.isFinite(rotationPitch) || !axes.isValid())
+		{
+			FlansMod.log.error("Driveable: " + this.driveableType + " rotation is invalid! Resetting rotation.");
+			// Just reset the axes.
 			axes = new RotatedAxes();
 			prevAxes = new RotatedAxes();
 		}
 	}
-	
+
 	public void tryRecoil()
 	{
 		int slot = -1;
