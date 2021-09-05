@@ -416,7 +416,7 @@ public abstract class DriveableType extends PaintableType
 			PilotGun pilotGun = (PilotGun)d.getShootPoint(split);
 			d.shootPointsSecondary.add(new ShootPoint(pilotGun, new Vector3f(0, 0, 0)));
 			d.pilotGuns.add(pilotGun);
-			d.driveableRecipe.add(new ItemStack(pilotGun.type.item));
+			d.driveableRecipe.add(new ItemStack(pilotGun.type.item)); //TODO:Check out if this needs to be here
 		});
 		parsers.put("BombPosition", (split, d) ->
 		{

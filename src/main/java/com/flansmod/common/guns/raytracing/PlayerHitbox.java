@@ -204,6 +204,7 @@ public class PlayerHitbox
 			}
 			return penetratingPower - 1;
 		}
+			//TODO: Deprecate this section and use the vanilla shield mechanic instead
 			case RIGHTITEM:
 			{
 				ItemStack currentStack = player.getHeldItemMainhand();
