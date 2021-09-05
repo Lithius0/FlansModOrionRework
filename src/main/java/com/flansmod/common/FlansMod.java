@@ -595,7 +595,7 @@ public class FlansMod
 	{
 		double chance = event.getWorld().rand.nextDouble();
 		
-		if(chance < armourSpawnRate && event.getEntity() instanceof EntityZombie || event.getEntity() instanceof EntitySkeleton)
+		if(mobArmorSpawn && chance < armourSpawnRate && (event.getEntity() instanceof EntityZombie || event.getEntity() instanceof EntitySkeleton))
 		{
 			if(event.getWorld().rand.nextBoolean() && ArmourType.armours.size() > 0)
 			{
@@ -756,8 +756,8 @@ public class FlansMod
 		forceUpdateJSONs = configFile.getBoolean("ForceUpdateJSONs", Configuration.CATEGORY_GENERAL, forceUpdateJSONs, "Turn this on to force re-create all JSON files. Should only be used in dev environment");
 		enchantmentModuleEnabled = configFile.getBoolean("EnchantmentModuleEnabled", Configuration.CATEGORY_GENERAL, enchantmentModuleEnabled, "Enable gun-related enchantments");
 		disabledVehicles = Arrays.asList(configFile.getStringList("DisabledVehicles", Configuration.CATEGORY_GENERAL, new String[0], "Any vehicle shortnames included in here will not be craftable in the vehicle crafting table"));
-		globalFuelUseMultiplier = configFile.getFloat("GlobalFuelUseMultiplier", Configuration.CATEGORY_CLIENT, globalFuelUseMultiplier, 0, 10, "Fuel use will be multiplied by this value. Higher means more fuel used per tick");
-		vehicleFuelTransferRate = configFile.getInt("VehicleFuelTransferRate", Configuration.CATEGORY_CLIENT, vehicleFuelTransferRate, 0, 100, "How much fuel to transfer from a container to the vehicle in one tick");
+		globalFuelUseMultiplier = configFile.getFloat("GlobalFuelUseMultiplier", Configuration.CATEGORY_GENERAL, globalFuelUseMultiplier, 0, 10, "Fuel use will be multiplied by this value. Higher means more fuel used per tick");
+		vehicleFuelTransferRate = configFile.getInt("VehicleFuelTransferRate", Configuration.CATEGORY_GENERAL, vehicleFuelTransferRate, 0, 100, "How much fuel to transfer from a container to the vehicle in one tick");
 		generateDungeonLoot = configFile.getBoolean("GenerateDungeonLoot", Configuration.CATEGORY_GENERAL, generateDungeonLoot, "Whether or not chests in randomly generated structures should have Flan's Mod loot");
 		mobArmorSpawn = configFile.getBoolean("MobSpawnWithArmor", Configuration.CATEGORY_GENERAL, mobArmorSpawn, "Whether or not zombies and skeletons spawn with random Flan's Mod armor");
 		
