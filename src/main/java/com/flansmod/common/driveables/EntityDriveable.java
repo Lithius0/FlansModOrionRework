@@ -80,9 +80,10 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 	public double serverYaw, serverPitch, serverRoll;
 	
 	/**
-	 * Last known valid position. These values may only be set immediately after checking the position is valid
+	 * These values keep track of the last stable position of the driveable.
+	 * They are only set when the position is found to be valid so will never be not finite.
 	 */
-	private double lastValidX = 0, lastValidY = 100, lastValidZ = 0;
+	private double lastStablePosX = 0, lastStablePosY = 100, lastStablePosZ = 0;
 	
 	/** The driveable data which contains the inventory, the engine and the fuel */
 	public DriveableData driveableData;
@@ -173,7 +174,13 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 
 	/** Damage factor of unbreakable block such as bedrock when collided */
 	public float unbreakableBlockDamage = 100F;
-
+	
+	/**
+	 * How many times we have tried to recover from a NaN error.
+	 * If this number grows to 5, it'll just delete the driveable
+	 */
+	public int nanRecoveryAttempt = 0;
+	
 	public EntityDriveable(World world)
 	{
 		super(world);
@@ -1282,34 +1289,51 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 		//NaN or infinite values will be picked up and dealt with
 		if(!Double.isFinite(posX) || !Double.isFinite(posY) || !Double.isFinite(posZ))
 		{
-			FlansMod.log.error("Driveable: " + this.driveableType + " position is invalid!");
-
-			FlansMod.log.error("Attempt to revert to previous position"); 
-			//Attempt to revert to previous frame if previous frame is valid
-			if (!Double.isFinite(prevPosX) || !Double.isFinite(prevPosY) || !Double.isFinite(prevPosY))
+			if (nanRecoveryAttempt < 5)
 			{
-				//We're not using the prevPos here because that's a public value
-				//The lastValid position is private and is only set after verifying the position
-				//This ensures that it is going to be valid/finite
-				FlansMod.log.error("Reverting one frame to last valid position"); 
-				posX = lastValidX;
-				posY = lastValidY;
-				posZ = lastValidZ;
+				FlansMod.log.error("Driveable: " + this.driveableType + " position is invalid! Attempting to revert to previous frame");
+
+				//Resetting velocity. If velocity was NaN, the next position would be NaN, too.
+				motionX = 0;
+				motionY = 0;
+				motionZ = 0;
+				
+				//Also reset the rotation axis, in case that was causing issues.
+				this.axes = new RotatedAxes();
+				
+				if (Double.isFinite(prevPosX) && Double.isFinite(prevPosY) && Double.isFinite(prevPosZ))
+				{
+					posX = prevPosX;
+					posY = prevPosY;
+					posZ = prevPosZ;
+				}
+				else
+				{
+					posX = lastStablePosX;
+					posY = lastStablePosY;
+					posZ = lastStablePosZ;
+					
+					prevPosX = lastStablePosX;
+					prevPosY = lastStablePosY;
+					prevPosZ = lastStablePosZ;
+				}
+				
+				nanRecoveryAttempt++;
+			}
+			else
+			{
+				//TODO: Dump a list of the cargo within the driveable
+				FlansMod.log.error("Too many attempt to recover driveable! Deleting driveable");
+				
+				this.setDead();
 			}
 		} 
 		else 
 		{
-			lastValidX = posX;
-			lastValidY = posY;
-			lastValidZ = posZ;
-		}
-		
-		if (!Float.isFinite(rotationYaw) || !Float.isFinite(rotationPitch) || !axes.isValid())
-		{
-			FlansMod.log.error("Driveable: " + this.driveableType + " rotation is invalid! Resetting rotation.");
-			// Just reset the axes.
-			axes = new RotatedAxes();
-			prevAxes = new RotatedAxes();
+			nanRecoveryAttempt = 0;
+			lastStablePosX = posX;
+			lastStablePosY = posY;
+			lastStablePosZ = posZ;
 		}
 	}
 
