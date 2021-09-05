@@ -1,29 +1,25 @@
-# Build and Bins
-.gradle/
-build/
-bin/
-out/
-run/*
-src/main/java/com/flansmod/leaderboards/*
-
-# IDEs
+# eclipse
+bin
+*.launch
+.settings
+.metadata
 .classpath
 .project
-.settings/
-eclipse/
-.idea/
-*.iml
+
+# idea
+out
 *.ipr
 *.iws
+*.iml
+.idea
 
-# System
-Thumbs.db
-.DS_Store
+# gradle
+build
+.gradle
 
-# Flan's Mod
-!run/Flan/
-!run/Templates/
+# other
+eclipse
+run
 
-# Flan's Scripts
-upload.bat
-*.launch
+# Files from Forge MDK
+forge*changelog.txt
