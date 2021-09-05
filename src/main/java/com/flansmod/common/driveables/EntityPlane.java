@@ -418,7 +418,7 @@ public class EntityPlane extends EntityDriveable
 			flapsPitchLeft = -20;
 		
 		//Player is not driving this. Update its position from server update packets 
-		if(world.isRemote && !thePlayerIsDrivingThis)
+		if(!thePlayerIsDrivingThis)
 		{
 			//The driveable is currently moving towards its server position. Continue doing so.
 			if(serverPositionTransitionTicker > 0)
@@ -483,6 +483,8 @@ public class EntityPlane extends EntityDriveable
 		switch(mode)
 		{
 			case HELI:
+
+				Vector3f up = axes.getYAxis();
 				
 				//Count the number of working propellers
 				for(Propeller prop : type.heliPropellers)
@@ -490,7 +492,6 @@ public class EntityPlane extends EntityDriveable
 						numPropsWorking++;
 				numProps = type.heliPropellers.size();
 				
-				Vector3f up = axes.getYAxis();
 				
 				float effectiveEnginePower = enginePower * (numProps == 0 ? 0 : (float)numPropsWorking / numProps);
 				
@@ -498,7 +499,7 @@ public class EntityPlane extends EntityDriveable
 				//With a player, throttle converges to hover speed
 				//Without a player, throttle converges to 0
 				float throttlePull = 0.99F;
-				float hoverThrottle = 1F / effectiveEnginePower;
+				float hoverThrottle = effectiveEnginePower == 0 ? 0 : (1F / effectiveEnginePower);
 				if(this.hasControllingPlayer())
 					throttle = (throttle - hoverThrottle) * throttlePull + hoverThrottle;
 				else
