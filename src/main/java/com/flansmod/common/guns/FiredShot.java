@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
 
 /**
  * Class for creating object containing all necessary informations about a fired shot

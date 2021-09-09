@@ -16,9 +16,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class EnchantmentModule 

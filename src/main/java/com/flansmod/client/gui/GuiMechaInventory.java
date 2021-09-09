@@ -2,8 +2,6 @@ package com.flansmod.client.gui;
 
 import java.io.IOException;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;

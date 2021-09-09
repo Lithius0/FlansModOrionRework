@@ -1,8 +1,5 @@
 package com.flansmod.client.model;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;

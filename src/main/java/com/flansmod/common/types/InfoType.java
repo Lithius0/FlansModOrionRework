@@ -18,7 +18,6 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootEntry;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
@@ -34,7 +33,6 @@ import net.minecraftforge.oredict.OreIngredient;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import com.flansmod.common.FlansMod;
-import com.flansmod.common.driveables.DriveableType;
 
 public class InfoType
 {

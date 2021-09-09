@@ -2,9 +2,6 @@ package com.flansmod.client.gui;
 
 import java.io.IOException;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;

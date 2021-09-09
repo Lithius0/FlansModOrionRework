@@ -1,7 +1,5 @@
 package com.flansmod.client.gui.teams;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;

@@ -2,8 +2,6 @@ package com.flansmod.client.model;
 
 import com.flansmod.client.tmt.ModelRendererTurbo;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
 public class ModelDefaultMuzzleFlash extends ModelMuzzleFlash

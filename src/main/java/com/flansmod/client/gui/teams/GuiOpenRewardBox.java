@@ -3,8 +3,6 @@ package com.flansmod.client.gui.teams;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;

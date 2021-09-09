@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.Random;
 
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
