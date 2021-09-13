@@ -200,25 +200,18 @@ public class ContentManager
 				{
 					if(container.getMod() instanceof IFlansModContentProvider)
 					{
+						// This is a Flan's Mod dependency. Register it as a content pack
 						IFlansModContentProvider mod = ((IFlansModContentProvider)container.getMod());
 						String folder = mod.GetContentFolder();
 					
-						// This is a Flan's Mod dependency. Register it as a content pack
 						File source = container.getSource();
-						if(source.getName().endsWith("bin"))
-						{
-							FlansMod.log.info("Found .java content pack" + source.getName() + " We must be in MCP. Loading from folder using IFlansModContentProvider");
-							packs.put(folder, new ContentPackMod(container, mod));
-						}
-						else if(zipJar.matcher(source.getName()).matches())
-						{
-							FlansMod.log.info("Found .jar content pack " + source.getName() + " in mods folder. Loading from jar");
-							packs.put(folder, new ContentPackMod(container, mod));
-						}
+						
+						FlansMod.log.info("Loading content pack: " + source.getName());
+						packs.put(folder, new ContentPackMod(container, mod));
 					}
 					else
 					{
-						FlansMod.log.error("Found Flan's Mod content pack on the classpath which did not implement IFlansModContentProvider");
+						FlansMod.log.error("Found possible Flan's Mod content pack (" + container.getName() + ") which did not implement IFlansModContentProvider. Ignore if mod listed is not a Flan's Mod content pack");
 					}
 				}
 			}
