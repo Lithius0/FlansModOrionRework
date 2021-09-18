@@ -37,13 +37,6 @@ AddAmmo flanMW2xScope 7 ingotIron 2 thinGlass
 AddAmmo flanMW4xScope 6 ingotIron 1 gold_ingot 2 thinGlass
 AddAmmo flanMW8xScope 6 ingotIron 1 diamond 2 thinGlass
 
-AddGun tripletake 12 ingotIron 8 fiberglass
-AddAmmo tripletakeAmmo 5 fiberglass 4 gunpowder
-AddAmmo seekerrifleammo 4 fiberglass 2 highexgunpowder 1 ender_eye
-AddAmmo flanMW2xScope 7 ingotIron 2 thinGlass
-AddAmmo flanMW4xScope 6 ingotIron 1 gold_ingot 2 thinGlass
-AddAmmo flanMW8xScope 6 ingotIron 1 diamond 2 thinGlass
-
 AddGun sg550 16 ingotIron 2 fiberglass
 AddAmmo sg550Ammo 5 ingotIron 4 gunpowder
 AddAmmo seekerrifleammo 4 fiberglass 2 highexgunpowder 1 ender_eye
@@ -228,10 +221,6 @@ AddAmmo uspPoisonAmmo 2 ingotIron 2 gunpowder 2 spiderEye
 
 AddGun desertEagle 12 ingotIron
 AddAmmo desertEagleAmmo 3 ingotIron 2 gunpowder
-AddAmmo uspPoisonAmmo 2 ingotIron 2 gunpowder 2 spiderEye
-
-AddGun kcasmartpistol 12 ingotIron
-AddAmmo kcasmartpistolAmmo 3 ingotIron 1 gunpowder 1 ender_eye
 AddAmmo uspPoisonAmmo 2 ingotIron 2 gunpowder 2 spiderEye
 
 // --- Misc ---
