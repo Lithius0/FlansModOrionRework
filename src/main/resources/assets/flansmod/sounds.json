@@ -497,42 +497,6 @@
       "flansmod:KraberReload"
     ]
   },
-  "TripletakeShoot": {
-    "category": "player",
-    "sounds": [
-      "flansmod:TripletakeShoot"
-    ]
-  },
-  "TripletakeReload": {
-    "category": "player",
-    "sounds": [
-      "flansmod:TripletakeReload"
-    ]
-  },
-  "MastiffShoot": {
-    "category": "player",
-    "sounds": [
-      "flansmod:MastiffShoot"
-    ]
-  },
-  "MastiffReload": {
-    "category": "player",
-    "sounds": [
-      "flansmod:MastiffReload"
-    ]
-  },
-  "KCASmartpistolShoot": {
-    "category": "player",
-    "sounds": [
-      "flansmod:KCASmartpistolShoot"
-    ]
-  },
-  "KCASmartpistolReload": {
-    "category": "player",
-    "sounds": [
-      "flansmod:KCASmartpistolReload"
-    ]
-  },
   "HoneyBadgerReload": {
     "category": "player",
     "sounds": [
@@ -563,24 +527,6 @@
       "flansmod:ElDiabloShoot"
     ]
   },
-  "EMP4Shoot": {
-    "category": "player",
-    "sounds": [
-      "flansmod:EMP4Shoot"
-    ]
-  },
-  "Pr3Shoot": {
-    "category": "player",
-    "sounds": [
-      "flansmod:Pr3Shoot"
-    ]
-  },
-  "Pr3Reload": {
-    "category": "player",
-    "sounds": [
-      "flansmod:Pr3Reload"
-    ]
-  },
   "AutomaticAnnihilation100Shoot": {
     "category": "player",
     "sounds": [
@@ -593,30 +539,6 @@
       "flansmod:GrizzlyBRShoot"
     ]
   },
-  "DevotionX55Shoot": {
-    "category": "player",
-    "sounds": [
-      "flansmod:DevotionX55Shoot"
-    ]
-  },
-  "DevotionX55Reload": {
-    "category": "player",
-    "sounds": [
-      "flansmod:DevotionX55Reload"
-    ]
-  },
-  "PeaceKeeperShoot": {
-    "category": "player",
-    "sounds": [
-      "flansmod:PeaceKeeperShoot"
-    ]
-  },
-  "PeaceKeeperReload": {
-    "category": "player",
-    "sounds": [
-      "flansmod:PeaceKeeperReload"
-    ]
-  },
   "FlamethrowerShoot": {
     "category": "player",
     "sounds": [
@@ -627,18 +549,6 @@
     "category": "player",
     "sounds": [
       "flansmod:FlamethrowerReload"
-    ]
-  },
-  "MLRS6Shoot": {
-    "category": "player",
-    "sounds": [
-      "flansmod:MLRS6Shoot"
-    ]
-  },
-  "MLRS6Reload": {
-    "category": "player",
-    "sounds": [
-      "flansmod:MLRS6Reload"
     ]
   },
   "KrissVectorShoot": {
@@ -723,18 +633,6 @@
     "category": "player",
     "sounds": [
       "flansmod:Rocket4Reload"
-    ]
-  },
-  "ColdWarE2Shoot": {
-    "category": "player",
-    "sounds": [
-      "flansmod:ColdWarE2Shoot"
-    ]
-  },
-  "ColdWarE2Reload": {
-    "category": "player",
-    "sounds": [
-      "flansmod:ColdWarE2Reload"
     ]
   },
   "GalilShoot": {
