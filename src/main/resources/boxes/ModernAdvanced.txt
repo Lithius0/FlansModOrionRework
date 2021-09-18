@@ -137,14 +137,6 @@ AddAmmo 12gheAmmo 1 fiberglass 1 highexgunpowder
 AddAmmo 12gincendiaryAmmo 1 fiberglass 1 gunpowder 1 blazePowder
 AddAmmo 12gpoisonedflechetteAmmo 1 ingotIron 1 fiberglass 1 gunpowder 1 spiderEye
 
-AddGun peacekeeper 12 ingotIron 8 treatedPlanks
-AddAmmo 12gbirdshotAmmo 6 iron_nugget 1 gunpowder
-AddAmmo 12gbuckshotAmmo 3 iron_nugget 1 gunpowder
-AddAmmo 12gslugAmmo 1 ingotIron 1 gunpowder
-AddAmmo 12gheAmmo 1 fiberglass 1 highexgunpowder
-AddAmmo 12gincendiaryAmmo 1 fiberglass 1 gunpowder 1 blazePowder
-AddAmmo 12gpoisonedflechetteAmmo 1 ingotIron 1 fiberglass 1 gunpowder 1 spiderEye
-
 // --- Specials ---
 SetPage Specials
 
