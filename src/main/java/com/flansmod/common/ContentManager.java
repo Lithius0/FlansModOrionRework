@@ -2,18 +2,15 @@ package com.flansmod.common;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
-
 import org.apache.commons.io.FileUtils;
 import com.flansmod.common.driveables.ItemPlane;
 import com.flansmod.common.driveables.ItemVehicle;
@@ -59,14 +56,14 @@ public class ContentManager
 {
 	public class ContentPackMod implements IFlansModContentProvider
 	{
+		public IFlansModContentProvider provider;
+		public ModContainer container;
+		
 		public ContentPackMod(ModContainer c, IFlansModContentProvider p)
 		{
 			container = c;
 			provider = p;
 		}
-		public IFlansModContentProvider provider;
-		public ModContainer container;
-		
 		@Override
 		public String GetContentFolder() 
 		{
@@ -80,11 +77,20 @@ public class ContentManager
 		}
 	}
 	
+	@Deprecated
 	public class ContentPackFlanFolder implements IFlansModContentProvider
 	{
-		public ContentPackFlanFolder(String n, File f) { folder = f; name = n; }
-		public String name;
-		public File folder;
+		public final String name;
+		public final File folder;
+
+		public ContentPackFlanFolder(String n, File f) 
+		{ 
+			folder = f; name = n; 
+		}
+		public ContentPackFlanFolder(File f) 
+		{ 
+			folder = f; name = f.getName(); 
+		}
 		
 		@Override
 		public String GetContentFolder() 
@@ -145,15 +151,31 @@ public class ContentManager
 		}
 	}
 	
-	private HashMap<String, IFlansModContentProvider> packs = new HashMap<String, IFlansModContentProvider>();
+	//Side note: why is this not just a static class?
+	//Actual fields for ContentManager instance
+	/**
+	 * List of all the content packs found.
+	 * Key is the name of the pack, value is the Mod instance which implements IFlansModContentProvider
+	 */
+	private List<IFlansModContentProvider> packs = new ArrayList<IFlansModContentProvider>();
 	protected Pattern zipJar = Pattern.compile("(.+)\\.(zip|jar)$");
 	private boolean wasAnythingInFlanFolder = false;
 	
+	/**
+	 * Checks whether or not Flan's mod has found a content pack
+	 * Does not guarantee the content pack(s) were loaded, just if they were found
+	 * @return true if a content pack was found, false otherwise
+	 */
 	public boolean LoadedAnyContentFromFlanFolder()
 	{
 		return wasAnythingInFlanFolder;
 	}
 	
+	/**
+	 * Finds all the content packs in the Flan folder
+	 * The packs are loaded into the instance
+	 */
+	@Deprecated
 	public void FindContentInFlanFolder()
 	{
 		for(File file : FlansMod.flanDir.listFiles())
@@ -162,22 +184,17 @@ public class ContentManager
 			if(file.isDirectory() || zipJar.matcher(file.getName()).matches())
 			{
 				//Add the directory to the content pack list
-				if(packs.containsKey(file.getName()))
-				{
-					FlansMod.log.info("Skipping loading content pack from Flan folder as it is duplicated: " + file.getName());
-				}
-				else
-				{
-					FlansMod.log.info("Loaded content pack from Flan folder : " + file.getName());
-					packs.put(file.getName(), new ContentPackFlanFolder(file.getName(), file));
-					wasAnythingInFlanFolder = true;
-				}
+				FlansMod.log.info("Loaded content pack from Flan folder : " + file.getName());
+				//For legacy content packs, their name is simply their file 
+				packs.add(new ContentPackFlanFolder(file));
+				wasAnythingInFlanFolder = true;
 			}
 		}
 		FlansMod.log.info("Loaded content pack list from Flan folder");
 	}
 	
-	
+
+	@Deprecated
 	public void LoadAssetsFromFlanFolder()
 	{
 		FlansMod.proxy.LoadAssetsFromFlanFolder();
@@ -185,10 +202,14 @@ public class ContentManager
 	
 	public void RegisterModelRedirects()
 	{
-		for(IFlansModContentProvider provider : packs.values())
+		for(IFlansModContentProvider provider : packs)
 			provider.RegisterModelRedirects();
 	}
 	
+	/**
+	 * Finds all the content packs within the Mod folder
+	 * The packs are loaded into the instance
+	 */
 	public void FindContentInModsFolder()
 	{
 		// Search for content packs in the mods folder
@@ -202,112 +223,76 @@ public class ContentManager
 					{
 						// This is a Flan's Mod dependency. Register it as a content pack
 						IFlansModContentProvider mod = ((IFlansModContentProvider)container.getMod());
-						String folder = mod.GetContentFolder();
-					
-						File source = container.getSource();
 						
-						FlansMod.log.info("Loading content pack: " + source.getName());
-						packs.put(folder, new ContentPackMod(container, mod));
+						FlansMod.log.info("Loading content pack: " + container.getName());
+						packs.add(new ContentPackMod(container, mod));
 					}
 					else
 					{
 						FlansMod.log.error("Found possible Flan's Mod content pack (" + container.getName() + ") which did not implement IFlansModContentProvider. Ignore if mod listed is not a Flan's Mod content pack");
 					}
+					break; //No need to look through the other requirements, we only care about the Flans one
 				}
 			}
 		}
 	}
 	
-	private void LoadTypesFromDirectory(String contentPackName, File contentPack)
+	/**
+	 * Loads types from a folder into the instance
+	 * Used during debugging to load the mod from bin
+	 * @param contentPackName the name of the content pack we're loading from
+	 * @param directory the directory we're loading from (should be .../bin/main, or something similar)
+	 */
+	private void LoadTypesFromDirectory(String contentPackName, File directory) 
 	{
+		
 		for(EnumType typeToCheckFor : EnumType.values())
 		{
-			File typesDir = new File(contentPack, "/" + typeToCheckFor.folderName + "/");
-			if(!typesDir.exists())
-				continue;
-			for(File file : FileUtils.listFiles(typesDir, new String[] {"txt" }, true))
-			{
-				if(!file.isDirectory())
+			//Getting the directory of the type that we're interested in
+			File typesDir = new File(directory, "/" + typeToCheckFor.folderName + "/");
+			
+			//Some packs may be missing some categories, make sure they exist
+			if(typesDir.exists()) {
+				
+				//Going through every file in the directories and subdirectories
+				//All Flan's Mod config files should have the .txt extension
+				for(File file : FileUtils.listFiles(typesDir, new String[] {"txt"}, true))
 				{
-					try
-					{
-						BufferedReader reader = new BufferedReader(new FileReader(file));
-						String[] splitName = file.getName().split("/");
-						TypeFile typeFile = new TypeFile(contentPackName, typeToCheckFor, splitName[splitName.length - 1].split("\\.")[0]);
-						for(; ; )
-						{
-							String line = null;
-							try
-							{
-								line = reader.readLine();
-							}
-							catch(Exception e)
-							{
-								break;
-							}
-							if(line == null)
-								break;
-							typeFile.parseLine(line);
-						}
-						reader.close();
-					}
-					catch(IOException e)
-					{
-						FlansMod.log.throwing(e);
-					}
+
+					//Adding type to TypeFile's files list
+					TypeFile.addContentFromFile(contentPackName, typeToCheckFor, file);
 				}
 			}
 		}
 	}
 	
+	/**
+	 * Loads types from a .zip or .jar file (most likle a .jar)
+	 * @param contentPackName the name of the content pack we're loading from
+	 * @param contentPack the file of the content pack (i.e., a File pointing to the .jar file)
+	 */
 	private void LoadTypesFromArchive(String contentPackName, File contentPack)
 	{
 		try
 		{
 			ZipFile zip = new ZipFile(contentPack);
-			ZipInputStream zipStream = new ZipInputStream(new FileInputStream(contentPack));
-			BufferedReader reader = new BufferedReader(new InputStreamReader(zipStream));
-			ZipEntry zipEntry = zipStream.getNextEntry();
-			do
+            Enumeration<? extends ZipEntry> entries = zip.entries();
+			while (entries.hasMoreElements())
 			{
-				zipEntry = zipStream.getNextEntry();
-				if(zipEntry == null)
-					continue;
-				if(zipEntry.isDirectory())
-					continue;
-				TypeFile typeFile = null;
-				for(EnumType type : EnumType.values())
-				{
-					if(zipEntry.getName().startsWith(type.folderName + "/") && zipEntry.getName().split(type.folderName + "/").length > 1 && zipEntry.getName().split(type.folderName + "/")[1].length() > 0)
+				ZipEntry zipEntry = entries.nextElement();
+				
+				if (!zipEntry.isDirectory()) {
+					for(EnumType type : EnumType.values())
 					{
-						String[] splitName = zipEntry.getName().split("/");
-						typeFile = new TypeFile(zip.getName(), type, splitName[splitName.length - 1].split("\\.")[0]);
+						if(zipEntry.getName().startsWith(type.folderName) && zipEntry.getName().endsWith(".txt"))
+						{
+							TypeFile.addContentFromZipEntry(contentPackName, type, zip, zipEntry);
+						}
 					}
-				}
-				if(typeFile == null)
-				{
-					continue;
-				}
-				for(; ; )
-				{
-					String line = null;
-					try
-					{
-						line = reader.readLine();
-					}
-					catch(Exception e)
-					{
-						break;
-					}
-					if(line == null)
-						break;
-					typeFile.parseLine(line);
 				}
 			}
-			while(zipEntry != null);
-			reader.close();
+			
 			zip.close();
-			zipStream.close();
 		}
 		catch(IOException e)
 		{
@@ -317,36 +302,34 @@ public class ContentManager
 	
 	public void LoadTypes()
 	{
-		for(HashMap.Entry<String, IFlansModContentProvider> entry : packs.entrySet())
+		for(IFlansModContentProvider pack : packs)
 		{
-			String contentPackName = entry.getKey();
-			IFlansModContentProvider provider = entry.getValue();
-			
-			if(provider instanceof ContentPackFlanFolder)
+			//If pack was found in Flan folder
+			if(pack instanceof ContentPackFlanFolder)
 			{
-				ContentPackFlanFolder contentPack = (ContentPackFlanFolder)provider;
+				ContentPackFlanFolder contentPack = (ContentPackFlanFolder)pack;
+				//If content pack is a folder
 				if(contentPack.folder.isDirectory())
 				{
-					LoadTypesFromDirectory(contentPackName, contentPack.folder);
+					LoadTypesFromDirectory(contentPack.name, contentPack.folder);
 				}
-				else // Let's hope its a zip / jar
+				else // Otherwise let's hope its a zip / jar
 				{
-					LoadTypesFromArchive(contentPackName, contentPack.folder);
+					LoadTypesFromArchive(contentPack.name, contentPack.folder);
 				}
 			}
-			else if(provider instanceof ContentPackMod)// Must be a mod in the classpath
+			else if(pack instanceof ContentPackMod)// Must be a mod in the classpath
 			{
-				ContentPackMod mod = (ContentPackMod)provider;
-				
-				if(mod.container.getSource().getName().endsWith("bin"))
-				{	
-					// If loading from inside MCP, use the content name to find content in run directory
-					LoadTypesFromDirectory(contentPackName, new File(FlansMod.flanDir + "/" + contentPackName));
-				}
-				else if(zipJar.matcher(mod.container.getSource().getName()).matches())
+				ContentPackMod mod = (ContentPackMod)pack;
+				File source = mod.container.getSource();
+				if (source.isFile()) 
 				{
-					// Else must be a mod loading from a jar in the mods folder
-					LoadTypesFromArchive(contentPackName, mod.container.getSource());
+					//Loading from a .jar/.zip
+					LoadTypesFromArchive(mod.container.getName(), source);
+				} 
+				else if (source.isDirectory())
+				{
+					LoadTypesFromDirectory(mod.container.getName(), source);
 				}
 			}	
 		}
@@ -420,26 +403,23 @@ public class ContentManager
 	public List<File> GetFolderContentPacks() 
 	{
 		List<File> result = new ArrayList<File>();
-		for(HashMap.Entry<String, IFlansModContentProvider> entry : packs.entrySet())
+		for(IFlansModContentProvider pack : packs)
 		{
-			String contentPackName = entry.getKey();
-			IFlansModContentProvider provider = entry.getValue();
-			
-			if(provider instanceof ContentPackFlanFolder)
+			if(pack instanceof ContentPackFlanFolder)
 			{
-				ContentPackFlanFolder contentPack = (ContentPackFlanFolder)provider;
+				ContentPackFlanFolder contentPack = (ContentPackFlanFolder)pack;
 				if(contentPack.folder.isDirectory())
 				{
 					result.add(contentPack.folder);
 				}
 			}
-			else if(provider instanceof ContentPackMod)
+			else if(pack instanceof ContentPackMod)
 			{
-				ContentPackMod mod = (ContentPackMod)provider;
+				ContentPackMod mod = (ContentPackMod)pack;
 				if(mod.container.getSource().getName().endsWith("bin"))
 				{	
 					// If loading from inside MCP, use the content name to find content in run directory
-					result.add(new File(FlansMod.flanDir + "/" + contentPackName));
+					result.add(new File(FlansMod.flanDir + "/" + pack));
 				}
 			}
 		}
