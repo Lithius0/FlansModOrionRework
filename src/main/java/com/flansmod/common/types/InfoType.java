@@ -613,10 +613,8 @@ public class InfoType
 				return ing.getMatchingStacks()[0];
 		}
 
-		// HACKY FIX, THIS HAS BEEN THROWING AN ERROR TODO:FIX THIS
-		for(Object item0 : Item.REGISTRY)
+		for(Item item : Item.REGISTRY)
 		{
-			Item item = (Item)item0;
 			if(item != null && (item.getTranslationKey().equals("item." + id) || item.getTranslationKey().equals("tile." + id)))
 			{
 				// Turned off console spam for this case. It's legacy, but there's so much of it now that this is pretty standard in official packs
