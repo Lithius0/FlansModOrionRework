@@ -1,5 +1,0 @@
-Name Skeleton
-ShortName skeleton
-SkinOverride Skeleton
-AddItem bow
-AddItem arrow 20
