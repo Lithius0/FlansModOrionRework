@@ -1,20 +1,11 @@
 package com.flansmod.common;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
-
 import org.apache.logging.log4j.Logger;
 
 import com.flansmod.client.debug.EntityDebugDot;
@@ -52,10 +43,7 @@ import com.flansmod.common.teams.TeamsManagerRanked;
 import com.flansmod.common.teams.TileEntitySpawner;
 import com.flansmod.common.tools.EntityParachute;
 import com.flansmod.common.tools.ItemTool;
-import com.flansmod.common.types.EnumType;
 import com.flansmod.common.types.InfoType;
-import com.flansmod.common.types.TypeFile;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.command.CommandHandler;
@@ -75,7 +63,6 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootEntry;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
@@ -521,24 +508,6 @@ public class FlansMod
 		}
 	}
 	
-	private class FMLootFunction extends LootFunction
-	{
-		private int min, max;
-		
-		protected FMLootFunction(LootCondition[] conditionsIn) 
-		{
-			super(conditionsIn);
-		}
-
-		@Override
-		public ItemStack apply(ItemStack stack, Random rand, LootContext context) 
-		{
-			return null;
-		}
-		
-	}
-
-	
 	/**
 	 * The mod post-initialisation method
 	 */
@@ -641,111 +610,10 @@ public class FlansMod
 			event.setCanceled(true);
 		}
 	}
-	
-	/**
-	 * Reads type files from all content packs
-	 */
-	private void getTypeFiles(List<File> contentPacks)
-	{
-		for(File contentPack : contentPacks)
-		{
-			if(contentPack.isDirectory())
-			{
-				for(EnumType typeToCheckFor : EnumType.values())
-				{
-					File typesDir = new File(contentPack, "/" + typeToCheckFor.folderName + "/");
-					if(!typesDir.exists())
-						continue;
-					for(File file : typesDir.listFiles())
-					{
-						try
-						{
-							BufferedReader reader = new BufferedReader(new FileReader(file));
-							String[] splitName = file.getName().split("/");
-							TypeFile typeFile = new TypeFile(contentPack.getName(), typeToCheckFor, splitName[splitName.length - 1].split("\\.")[0]);
-							for(; ; )
-							{
-								String line = null;
-								try
-								{
-									line = reader.readLine();
-								}
-								catch(Exception e)
-								{
-									break;
-								}
-								if(line == null)
-									break;
-								typeFile.parseLine(line);
-							}
-							reader.close();
-						}
-						catch(IOException e)
-						{
-							FlansMod.log.throwing(e);
-						}
-					}
-				}
-			}
-			else
-			{
-				try
-				{
-					ZipFile zip = new ZipFile(contentPack);
-					ZipInputStream zipStream = new ZipInputStream(new FileInputStream(contentPack));
-					BufferedReader reader = new BufferedReader(new InputStreamReader(zipStream));
-					ZipEntry zipEntry = zipStream.getNextEntry();
-					do
-					{
-						zipEntry = zipStream.getNextEntry();
-						if(zipEntry == null)
-							continue;
-						TypeFile typeFile = null;
-						for(EnumType type : EnumType.values())
-						{
-							if(zipEntry.getName().startsWith(type.folderName + "/") && zipEntry.getName().split(type.folderName + "/").length > 1 && zipEntry.getName().split(type.folderName + "/")[1].length() > 0)
-							{
-								String[] splitName = zipEntry.getName().split("/");
-								typeFile = new TypeFile(zip.getName(), type, splitName[splitName.length - 1].split("\\.")[0]);
-							}
-						}
-						if(typeFile == null)
-						{
-							continue;
-						}
-						for(; ; )
-						{
-							String line = null;
-							try
-							{
-								line = reader.readLine();
-							}
-							catch(Exception e)
-							{
-								break;
-							}
-							if(line == null)
-								break;
-							typeFile.parseLine(line);
-						}
-					}
-					while(zipEntry != null);
-					reader.close();
-					zip.close();
-					zipStream.close();
-				}
-				catch(IOException e)
-				{
-					FlansMod.log.throwing(e);
-				}
-			}
-		}
-	}
-	
 		
 	public static PacketHandler getPacketHandler()
 	{
-		return INSTANCE.packetHandler;
+		return FlansMod.packetHandler;
 	}
 	
 	public static void syncConfig()
