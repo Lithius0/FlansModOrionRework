@@ -1,5 +1,6 @@
-package com.flansmod.common.driveables;
+package com.flansmod.common.driveables.collisions;
 
+import com.flansmod.common.driveables.EnumDriveablePart;
 import com.flansmod.common.vector.Vector3f;
 
 public class CollisionBox

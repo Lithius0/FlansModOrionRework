@@ -2,6 +2,7 @@ package com.flansmod.common.driveables;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.flansmod.common.driveables.collisions.CollisionBox;
 import com.flansmod.common.guns.BulletType;
 import com.flansmod.common.guns.raytracing.FlansModRaytracer.DriveableHit;
 import com.flansmod.common.vector.Vector3f;

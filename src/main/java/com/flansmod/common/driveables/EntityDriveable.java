@@ -14,6 +14,7 @@ import com.flansmod.client.handlers.KeyInputHandler;
 import com.flansmod.common.FlansMod;
 import com.flansmod.common.RotatedAxes;
 import com.flansmod.common.driveables.DriveableType.ParticleEmitter;
+import com.flansmod.common.driveables.collisions.CollisionBox;
 import com.flansmod.common.driveables.mechas.ContainerMechaInventory;
 import com.flansmod.common.guns.BulletType;
 import com.flansmod.common.guns.EnumFireMode;

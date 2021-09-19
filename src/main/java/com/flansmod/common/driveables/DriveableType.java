@@ -18,6 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.flansmod.client.model.ModelDriveable;
 import com.flansmod.common.FlansMod;
+import com.flansmod.common.driveables.collisions.CollisionBox;
 import com.flansmod.common.driveables.collisions.CollisionShapeBox;
 import com.flansmod.common.guns.BulletType;
 import com.flansmod.common.guns.EnumFireMode;
