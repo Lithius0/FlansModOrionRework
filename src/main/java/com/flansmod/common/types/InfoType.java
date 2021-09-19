@@ -90,18 +90,17 @@ public class InfoType
 	public void read(TypeFile file)
 	{
 		preRead(file);
-		for(; ; )
+		String line = file.readLine();
+		while (line != null)
 		{
-			String line = null;
-			line = file.readLine();
-			if(line == null)
-				break;
-			if(line.startsWith("//"))
-				continue;
 			String[] split = line.split(" ");
+			//TODO: See if this is strictly necessary
+			//It might be needed if the parsers need at least 2 parameters, but I doubt it
 			if(split.length < 2)
 				continue;
 			read(split, file);
+			
+			line = file.readLine();
 		}
 		postRead(file);
 
@@ -111,18 +110,22 @@ public class InfoType
 	}
 
 	/**
-	 * Method for performing actions prior to reading the type file
+	 * Method for performing actions prior to reading the type file.
+	 * Meant to be overridden by subclasses if they need to do something prior to reading the files.
+	 * @param file the TypeFile that this will be reading from.
 	 */
 	protected void preRead(TypeFile file)
 	{
 	}
 
 	/**
-	 * Method for performing actions after reading the type file
+	 * Method for performing actions after reading the type file.
+	 * Meant to be overridden by subclasses if they need to do something after reading the files. 
+	 * @param file the TypeFile that this will be reading from.
 	 */
 	protected void postRead(TypeFile file)
 	{
-		// Check that recommended values were set
+		// Checks that recommended values were set
 		if(shortName.isEmpty())
 		{
 			FlansMod.log.warn("ShortName not set: " + file.name);

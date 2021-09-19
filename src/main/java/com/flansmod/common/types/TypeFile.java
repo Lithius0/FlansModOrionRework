@@ -8,11 +8,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
-
 import com.flansmod.common.FlansMod;
 
 public class TypeFile
@@ -27,7 +24,14 @@ public class TypeFile
 	 */
 	public final EnumType type;
 	public final String name, contentPack;
-	private ArrayList<String> rawLines;
+	/**
+	 * A list of all the non-comment lines within the file, in order
+	 */
+	private ArrayList<String> configLines;
+	/**
+	 * The current position the reader is in, increments forward when readLine is called
+	 * Prevents the parsers from reading the same line twice
+	 */
 	private int readerPosition = 0;
 	private int hash = 0x12345678;
 	
@@ -46,9 +50,16 @@ public class TypeFile
 		this.type = type;
 		this.name = name;
 		this.contentPack = contentPack;
-		rawLines = new ArrayList<>();
+		configLines = new ArrayList<>();
 	}
 	
+	/**
+	 * Adds a Flans object from an uncompressed .txt file
+	 * The file is then processed into a list of Strings for easier parsing later
+	 * @param contentPack 	the name of the content pack
+	 * @param type 			the type of the 
+	 * @param contentFile	the .txt file
+	 */
 	public static void addContentFromFile(String contentPack, EnumType type, File contentFile)
 	{
 		//Getting the name of the file without the extension
@@ -75,6 +86,14 @@ public class TypeFile
 	}
 
 	
+	/**
+	 * Adds a Flans object from a zip entry (a file in a .zip or .jar archive)
+	 * The file is then processed into a list of Strings for easier parsing later
+	 * @param contentPack the name of the contentPack
+	 * @param type the type of the Flans object (gun, bullet, plane, etc)
+	 * @param packFile the archive file
+	 * @param contentEntry the specific archive entry that points to the object to load
+	 */
 	public static void addContentFromZipEntry(String contentPack, EnumType type, ZipFile packFile, ZipEntry contentEntry)
 	{
 		//Getting the name of the file without the extension
@@ -101,13 +120,32 @@ public class TypeFile
 		}
 	}
 	
-	private void parseLine(String line)
+	/**
+	 * Adds a string to be processed later, will also remove any commented text (i.e. text after a //)
+	 * @param line the string to be added
+	 */
+	private void addLineForParsing(String line)
 	{
-		//TODO: Do basic things like remove comments here
-		rawLines.add(line);
-		hash ^= line.hashCode();
+		//Remove comments
+		int commentLocation = line.indexOf("//");
+		if (commentLocation >= 0) 
+		{
+			line = line.substring(0, commentLocation);
+		}
+		
+		//If there's a comment, it's likely to be the entire line that's commented out. 
+		//Only add if we still have something left to add
+		if (!line.isEmpty()) {
+			configLines.add(line);
+			hash ^= line.hashCode();
+		}
 	}
 	
+	/**
+	 * Reads text with a BufferedReader and adds the line to the list for parsing
+	 * @param reader the reader to read from
+	 * @throws IOException If reader throws an exception. If BufferedReader will throw an exception, this will too
+	 */
 	private void parseFromReader(BufferedReader reader) throws IOException 
 	{
 
@@ -115,21 +153,29 @@ public class TypeFile
 		//Read until end of file (reader returns null at end of file)
 		while(line != null)
 		{
-			this.parseLine(line);
+			this.addLineForParsing(line);
 			line = reader.readLine();
 		}
 	}
 	
+	/**
+	 * Gets the next line from the cleaned-up list of configs and advances the reader position by 1
+	 * @return the next line
+	 */
 	public String readLine()
 	{
-		if(readerPosition == rawLines.size())
+		if(readerPosition == configLines.size())
 			return null;
-		return rawLines.get(readerPosition++);
+		return configLines.get(readerPosition++);
 	}
 	
+	/**
+	 * Get the full list of config lines
+	 * @return the full list of config lines
+	 */
 	public List<String> getLines()
 	{
-		return rawLines;
+		return configLines;
 	}
 	
 	@Override

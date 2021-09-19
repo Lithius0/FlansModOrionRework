@@ -889,8 +889,6 @@ public abstract class DriveableType extends PaintableType
 		{
 			if(line == null)
 				break;
-			if(line.startsWith("//"))
-				continue;
 			String[] split = line.split(" ");
 			if(split.length < 2)
 				continue;
