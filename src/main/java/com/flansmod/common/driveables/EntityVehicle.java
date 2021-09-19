@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,7 +18,6 @@ import com.flansmod.client.model.AnimTankTrack;
 import com.flansmod.client.model.AnimTrackLink;
 import com.flansmod.common.FlansMod;
 import com.flansmod.common.RotatedAxes;
-import com.flansmod.common.network.PacketPlaySound;
 import com.flansmod.common.network.PacketVehicleControl;
 import com.flansmod.common.teams.TeamsManager;
 import com.flansmod.common.tools.ItemTool;
@@ -662,34 +660,6 @@ public class EntityVehicle extends EntityDriveable implements IExplodeable
 	public static float Clamp(float val, float min, float max)
 	{
 		return Math.max(min, Math.min(max, val));
-	}
-	
-	private float averageAngles(float a, float b)
-	{
-		FlansMod.log.debug("Pre  " + a + " " + b);
-		
-		float pi = (float)Math.PI;
-		for(; a > b + pi; a -= 2 * pi) ;
-		for(; a < b - pi; a += 2 * pi) ;
-		
-		float avg = (a + b) / 2F;
-		
-		for(; avg > pi; avg -= 2 * pi) ;
-		for(; avg < -pi; avg += 2 * pi) ;
-		
-		FlansMod.log.debug("Post " + a + " " + b + " " + avg);
-		
-		return avg;
-	}
-	
-	private Vec3d subtract(Vec3d a, Vec3d b)
-	{
-		return new Vec3d(a.x - b.x, a.y - b.y, a.z - b.z);
-	}
-	
-	private Vec3d crossProduct(Vec3d a, Vec3d b)
-	{
-		return new Vec3d(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
 	}
 	
 	@Override
