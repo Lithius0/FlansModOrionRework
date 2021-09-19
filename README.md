@@ -1,10 +1,6 @@
-[![GitHub release](https://img.shields.io/github/v/tag/FlansMods/FlansMod.svg?include_prereleases&sort=semver&color=brightgreen)](https://GitHub.com//FlansMods/FlansMod/releases/)
-[![Github all releases](https://img.shields.io/github/downloads/FlansMods/FlansMod/total.svg)](https://GitHub.com/FlansMods/FlansMod/releases/)
-[![GitHub forks](https://img.shields.io/github/forks/FlansMods/FlansMod.svg?color=brightgreen)](https://GitHub.com/FlansMods/FlansMod/network/)
-[![GitHub forks](https://img.shields.io/github/stars/FlansMods/FlansMod.svg?color=brightgreen)](https://GitHub.com/FlansMods/FlansMod/stargazers/)
-[![GitHub contributors](https://img.shields.io/github/contributors/FlansMods/FlansMod.svg)](https://GitHub.com/FlansMods/FlansMod/graphs/contributors/)
+# Flan's Mod Orion Rework
 
-# [Flan's Mod](https://www.flansmod.com/)
+_[The original Flan's Mod website](https://www.flansmod.com/)_
 
 This is a fork of the minecraft modification Flan's Mod, reworked by Lithius. 
 Any use of first-person pronouns in this document (I, me) will refer to Lithius, not jamieoflan.
