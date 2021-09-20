@@ -95,7 +95,7 @@ public abstract class PaintableType extends InfoType
 		try
 		{
 			//Paintjobs
-			if(KeyMatches(split, "Paintjob"))
+			if(keyMatches(split, "Paintjob"))
 			{
 				ItemStack[] dyeStacks = new ItemStack[(split.length - 3) / 2];
 				for(int i = 0; i < (split.length - 3) / 2; i++)

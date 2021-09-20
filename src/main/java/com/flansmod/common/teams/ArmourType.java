@@ -90,23 +90,23 @@ public class ArmourType extends InfoType
 					type = 3;
 			}
 			
-			defence = Read(split, "DamageReduction", defence);
-			defence = Read(split, "Defence", defence);
-			moveSpeedModifier = Read(split, "MoveSpeedModifier", moveSpeedModifier);
-			moveSpeedModifier = Read(split, "Slowness", moveSpeedModifier);
-			jumpModifier = Read(split, "JumpModifier", jumpModifier);
-			knockbackModifier = Read(split, "KnockbackReduction", knockbackModifier);
-			knockbackModifier = Read(split, "KnockbackModifier", knockbackModifier);
-			nightVision = Read(split, "NightVision", nightVision);
-			negateFallDamage = Read(split, "NegateFallDamage", negateFallDamage);
-			overlay = Read(split, "Overlay", overlay);
-			smokeProtection = Read(split, "SmokeProtection", smokeProtection);
-			armourTextureName = Read(split, "ArmourTexture", armourTextureName);
-			armourTextureName = Read(split, "ArmorTexture", armourTextureName);
-			Enchantability = Read(split, "Enchantability", Enchantability);
-			Toughness = Read(split, "Toughness", Toughness);
-			Durability = Read(split, "Durability", Durability);
-			DamageReductionAmount = Read(split, "DamageReductionAmount", DamageReductionAmount);
+			defence = readForDouble(split, "DamageReduction", defence);
+			defence = readForDouble(split, "Defence", defence);
+			moveSpeedModifier = readForFloat(split, "MoveSpeedModifier", moveSpeedModifier);
+			moveSpeedModifier = readForFloat(split, "Slowness", moveSpeedModifier);
+			jumpModifier = readForFloat(split, "JumpModifier", jumpModifier);
+			knockbackModifier = readForFloat(split, "KnockbackReduction", knockbackModifier);
+			knockbackModifier = readForFloat(split, "KnockbackModifier", knockbackModifier);
+			nightVision = readBoolean(split, "NightVision", nightVision);
+			negateFallDamage = readBoolean(split, "NegateFallDamage", negateFallDamage);
+			overlay = readForString(split, "Overlay", overlay);
+			smokeProtection = readBoolean(split, "SmokeProtection", smokeProtection);
+			armourTextureName = readForString(split, "ArmourTexture", armourTextureName);
+			armourTextureName = readForString(split, "ArmorTexture", armourTextureName);
+			Enchantability = readForInt(split, "Enchantability", Enchantability);
+			Toughness = readForInt(split, "Toughness", Toughness);
+			Durability = readForInt(split, "Durability", Durability);
+			DamageReductionAmount = readForInt(split, "DamageReductionAmount", DamageReductionAmount);
 			
 		}
 		catch(Exception e)

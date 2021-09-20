@@ -68,23 +68,23 @@ public class AAGunType extends InfoType
 				model = FlansMod.proxy.loadModel(split[1], shortName, ModelAAGun.class);
 			}
 			
-			damage = Read(split, "Damage", damage);
-			reloadTime = Read(split, "ReloadTime", reloadTime);
-			recoil = Read(split, "Recoil", recoil);
-			accuracy = Read(split, "Accuracy", accuracy);
-			shootDelay = Read(split, "ShootDelay", shootDelay);
-			fireAlternately = Read(split, "FireAlternately", fireAlternately);
-			health = Read(split, "Health", health);
-			topViewLimit = Read(split, "TopViewLimit", topViewLimit);
-			bottomViewLimit = Read(split, "BottomViewLimit", bottomViewLimit);
-			targetMobs = Read(split, "TargetMobs", targetMobs);
-			targetPlayers = Read(split, "TargetPlayers", targetPlayers);
-			targetVehicles = Read(split, "TargetVehicles", targetVehicles);
-			targetPlanes = Read(split, "TargetPlanes", targetPlanes);
-			targetMechas = Read(split, "TargetMechas", targetMechas);
-			shareAmmo = Read(split, "ShareAmmo", shareAmmo);
-			targetRange = Read(split, "TargetRange", targetRange);
-			bottomViewLimit = Read(split, "BottomViewLimit", bottomViewLimit);
+			damage = readForInt(split, "Damage", damage);
+			reloadTime = readForInt(split, "ReloadTime", reloadTime);
+			recoil = readForInt(split, "Recoil", recoil);
+			accuracy = readForInt(split, "Accuracy", accuracy);
+			shootDelay = readForInt(split, "ShootDelay", shootDelay);
+			fireAlternately = readBoolean(split, "FireAlternately", fireAlternately);
+			health = readForInt(split, "Health", health);
+			topViewLimit = readForFloat(split, "TopViewLimit", topViewLimit);
+			bottomViewLimit = readForFloat(split, "BottomViewLimit", bottomViewLimit);
+			targetMobs = readBoolean(split, "TargetMobs", targetMobs);
+			targetPlayers = readBoolean(split, "TargetPlayers", targetPlayers);
+			targetVehicles = readBoolean(split, "TargetVehicles", targetVehicles);
+			targetPlanes = readBoolean(split, "TargetPlanes", targetPlanes);
+			targetMechas = readBoolean(split, "TargetMechas", targetMechas);
+			shareAmmo = readBoolean(split, "ShareAmmo", shareAmmo);
+			targetRange = readForFloat(split, "TargetRange", targetRange);
+			bottomViewLimit = readForFloat(split, "BottomViewLimit", bottomViewLimit);
 			
 			if(split[0].equals("TargetDriveables"))
 				targetMechas = targetPlanes = targetVehicles = Boolean.parseBoolean(split[1]);

@@ -150,23 +150,23 @@ public class InfoType
 		try
 		{
 			// Standard line reads
-			shortName = Read(split, "ShortName", shortName);
-			name = ReadAndConcatenateMultipleStrings(split, "Name", name);
-			description = ReadAndConcatenateMultipleStrings(split, "Description", description);
+			shortName = readForString(split, "ShortName", shortName);
+			name = readAndCombineString(split, "Name", name);
+			description = readAndCombineString(split, "Description", description);
 
-			modelString = Read(split, "Model", modelString);
-			modelScale = Read(split, "ModelScale", modelScale);
-			texture = Read(split, "Texture", texture);
+			modelString = readForString(split, "Model", modelString);
+			modelScale = readForFloat(split, "ModelScale", modelScale);
+			texture = readForString(split, "Texture", texture);
 
-			iconPath = Read(split, "Icon", iconPath);
+			iconPath = readForString(split, "Icon", iconPath);
 
-			dungeonChance = Read(split, "DungeonProbability", dungeonChance);
-			dungeonChance = Read(split, "DungeonLootChance", dungeonChance);
+			dungeonChance = readForInt(split, "DungeonProbability", dungeonChance);
+			dungeonChance = readForInt(split, "DungeonLootChance", dungeonChance);
 
-			recipeOutput = Read(split, "RecipeOutput", recipeOutput);
+			recipeOutput = readForInt(split, "RecipeOutput", recipeOutput);
 
-			smeltableFrom = Read(split, "SmeltableFrom", smeltableFrom);
-			canDrop = Read(split, "CanDrop", canDrop);
+			smeltableFrom = readForString(split, "SmeltableFrom", smeltableFrom);
+			canDrop = readBoolean(split, "CanDrop", canDrop);
 
 			// More complicated line reads
 			if(split[0].equals("Colour") || split[0].equals("Color"))
@@ -215,32 +215,41 @@ public class InfoType
 		}
 	}
 
-	/** -------------------------------------------------------------------------------------------------------- */
-	/** HELPER FUNCTIONS FOR READING. Should give better debug output                                            */
 	/**
-	 * --------------------------------------------------------------------------------------------------------
+	 * Returns whether or not the split line's key matches the given key
+	 * More specifically, it checks if the first entry in split is equal to key. It is not cast sensitive
+	 * If either the key or split are null, this method will return false
+	 * @param 	split the line being read
+	 * @param 	key the key to match against
+	 * @return 	true if the split line's key matches with the given key, false otherwise
 	 */
-	protected boolean KeyMatches(String[] split, String key)
+	protected boolean keyMatches(String[] split, String key)
 	{
-		return split != null && split.length > 1 && key != null && split[0].toLowerCase().equals(key.toLowerCase());
+		return split != null && split.length > 0 && key != null && split[0].equalsIgnoreCase(key);
 	}
 
-	protected int Read(String[] split, String key, int currentValue)
+	/**
+	 * Gets the next integer immediately after the key. It will ignore any data after the first integer.
+	 * In every other instance, it will simple return currentValue. 
+	 * If there is no key, if there's no data after the key, or if the second string is not an integer, it will return currentValue
+	 * @param split 		the line to read from 
+	 * @param key 			the key (or the name) of the line
+	 * @param currentValue 	the current value, to be returned if data fails to be read
+	 * @return				the integer read from the line or currentValue if data could not be read
+	 */
+	protected int readForInt(String[] split, String key, int currentValue)
 	{
-		if(KeyMatches(split, key))
+		if(keyMatches(split, key))
 		{
-			if(split.length == 2)
+			try
 			{
-				try
-				{
-					currentValue = Integer.parseInt(split[1]);
-				}
-				catch(Exception e)
-				{
-					InfoType.LogError(shortName, "Incorrect format for " + key + ". Passed in value is not an integer");
-				}
+				currentValue = Integer.parseInt(split[1]);
 			}
-			else
+			catch(NumberFormatException e) //Exception thrown if the string could not be parsed
+			{
+				InfoType.LogError(shortName, "Incorrect format for " + key + ". Passed in value is not an integer");
+			}
+			catch(IndexOutOfBoundsException e) //Exception thrown if split.length < 2 (i.e. there's no data after the key)
 			{
 				InfoType.LogError(shortName, "Incorrect format for " + key + ". Should be \"" + key + " <integer value>\"");
 			}
@@ -249,22 +258,28 @@ public class InfoType
 		return currentValue;
 	}
 
-	protected float Read(String[] split, String key, float currentValue)
+	/**
+	 * Gets the next float immediately after the key. It will ignore any data after the first float.
+	 * In every other instance, it will simple return currentValue. 
+	 * If there is no key, if there's no data after the key, or if the second string is not an float, it will return currentValue
+	 * @param split 		the line to read from 
+	 * @param key 			the key (or the name) of the line
+	 * @param currentValue 	the current value, to be returned if data fails to be read
+	 * @return				the float read from the line or currentValue if data could not be read
+	 */
+	protected float readForFloat(String[] split, String key, float currentValue)
 	{
-		if(KeyMatches(split, key))
+		if(keyMatches(split, key))
 		{
-			if(split.length == 2)
+			try
 			{
-				try
-				{
-					currentValue = Float.parseFloat(split[1]);
-				}
-				catch(Exception e)
-				{
-					InfoType.LogError(shortName, "Incorrect format for " + key + ". Passed in value is not an float");
-				}
+				currentValue = Float.parseFloat(split[1]);
 			}
-			else
+			catch(NumberFormatException e) //Exception thrown if the string could not be parsed
+			{
+				InfoType.LogError(shortName, "Incorrect format for " + key + ". Passed in value is not a float");
+			}
+			catch(IndexOutOfBoundsException e) //Exception thrown if split.length < 2 (i.e. there's no data after the key)
 			{
 				InfoType.LogError(shortName, "Incorrect format for " + key + ". Should be \"" + key + " <float value>\"");
 			}
@@ -273,35 +288,49 @@ public class InfoType
 		return currentValue;
 	}
 
-	protected double Read(String[] split, String key, double currentValue)
+	/**
+	 * Gets the next double immediately after the key. It will ignore any data after the first float.
+	 * In every other instance, it will simple return currentValue. 
+	 * If there is no key, if there's no data after the key, or if the second string is not an float, it will return currentValue
+	 * @param split 		the line to read from 
+	 * @param key 			the key (or the name) of the line
+	 * @param currentValue 	the current value, to be returned if data fails to be read
+	 * @return				the double read from the line or currentValue if data could not be read
+	 */
+	protected double readForDouble(String[] split, String key, double currentValue)
 	{
-		if(KeyMatches(split, key))
+		if(keyMatches(split, key))
 		{
-			if(split.length == 2)
+			try
 			{
-				try
-				{
-					currentValue = Double.parseDouble(split[1]);
-				}
-				catch(Exception e)
-				{
-					InfoType.LogError(shortName, "Incorrect format for " + key + ". Passed in value is not an float");
-				}
+				currentValue = Double.parseDouble(split[1]);
 			}
-			else
+			catch(NumberFormatException e) //Exception thrown if the string could not be parsed
 			{
-				InfoType.LogError(shortName, "Incorrect format for " + key + ". Should be \"" + key + " <float value>\"");
+				InfoType.LogError(shortName, "Incorrect format for " + key + ". Passed in value is not a double");
+			}
+			catch(IndexOutOfBoundsException e) //Exception thrown if split.length < 2 (i.e. there's no data after the key)
+			{
+				InfoType.LogError(shortName, "Incorrect format for " + key + ". Should be \"" + key + " <double value>\"");
 			}
 		}
 
 		return currentValue;
 	}
 
-	protected String Read(String[] split, String key, String currentValue)
+	/**
+	 * Gets the next string immediately after the key. It will ignore any other data.
+	 * If there is no key or if there's no data after the key, it will return currentValue
+	 * @param split 		the line to read from 
+	 * @param key 			the key (or the name) of the line
+	 * @param currentValue 	the current value, to be returned if data fails to be read
+	 * @return				the String read from the line or currentValue if data could not be read
+	 */
+	protected String readForString(String[] split, String key, String currentValue)
 	{
-		if(KeyMatches(split, key))
+		if(keyMatches(split, key))
 		{
-			if(split.length == 2)
+			if(split.length > 1)
 			{
 				currentValue = split[1];
 			}
@@ -314,16 +343,26 @@ public class InfoType
 		return currentValue;
 	}
 
-	protected String ReadAndConcatenateMultipleStrings(String[] split, String key, String currentValue)
+	/**
+	 * Combines all the strings after the key.
+	 * If there is no key or if there's no data after the key, it will return currentValue
+	 * Otherwise it will return a string that is the combination of all the strings separated by a space
+	 * Currently used to get names
+	 * @param split 		the line to read from 
+	 * @param key 			the key (or the name) of the line
+	 * @param currentValue 	the current value, to be returned if data fails to be read
+	 * @return				the String read from the line or currentValue if data could not be read
+	 */
+	protected String readAndCombineString(String[] split, String key, String currentValue)
 	{
-		if(KeyMatches(split, key))
+		if(keyMatches(split, key))
 		{
 			if(split.length > 1)
 			{
-				currentValue = split[1];
-				for(int i = 0; i < split.length - 2; i++)
+				//Combining all the strings
+				for(int i = 1; i < split.length; i++)
 				{
-					currentValue = currentValue + " " + split[i + 2];
+					currentValue = currentValue + " " + split[i];
 				}
 			}
 			else
@@ -335,38 +374,48 @@ public class InfoType
 		return currentValue;
 	}
 
-	protected boolean Read(String[] split, String key, boolean currentValue)
+	/**
+	 * Gets the next boolean value immediately after the key. It will ignore any data after the first string.
+	 * In every other instance, it will simple return currentValue. 
+	 * If there is no key, if there's no data after the key, or if the second string is not an float, it will return currentValue
+	 * @param split 		the line to read from 
+	 * @param key 			the key (or the name) of the line
+	 * @param currentValue 	the current value, to be returned if data fails to be read
+	 * @return				the boolean read from the line or currentValue if data could not be read
+	 */
+	protected boolean readBoolean(String[] split, String key, boolean currentValue)
 	{
-		if(KeyMatches(split, key))
+		if(keyMatches(split, key))
 		{
-			if(split.length == 2)
+			if(keyMatches(split, key))
 			{
 				try
 				{
 					currentValue = Boolean.parseBoolean(split[1]);
 				}
-				catch(Exception e)
+				catch(NumberFormatException e) //Exception thrown if the string could not be parsed
 				{
-					InfoType.LogError(shortName, "Incorrect format for " + key + ". Passed in value is not an boolean");
+					InfoType.LogError(shortName, "Incorrect format for " + key + ". Passed in value is not a boolean");
 				}
-			}
-			else
-			{
-				InfoType.LogError(shortName, "Incorrect format for " + key + ". Should be \"" + key + " <true/false>\"");
+				catch(IndexOutOfBoundsException e) //Exception thrown if split.length < 2 (i.e. there's no data after the key)
+				{
+					InfoType.LogError(shortName, "Incorrect format for " + key + ". Should be \"" + key + " <true/false>\"");
+				}
 			}
 		}
 
 		return currentValue;
 	}
-	/** -------------------------------------------------------------------------------------------------------- */
-	/**                                                                                                          */
-	/**
-	 * --------------------------------------------------------------------------------------------------------
-	 */
 
+	/**
+	 * Logs the errors produced in parsing in a standard format
+	 * Example: [Problem reading MP5.txt]Incorrect format...
+	 * @param shortName
+	 * @param s
+	 */
 	protected static void LogError(String shortName, String s)
 	{
-		FlansMod.log.error("[Problem in " + shortName + ".txt]" + s);
+		FlansMod.log.error("[Problem reading " + shortName + ".txt]" + s);
 	}
 
 	@Override

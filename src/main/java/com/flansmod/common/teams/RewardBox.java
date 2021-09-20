@@ -36,7 +36,7 @@ public class RewardBox extends InfoType
 	{
 		super.read(split, file);
 		
-		if(KeyMatches(split, "AddPaintjob"))
+		if(keyMatches(split, "AddPaintjob"))
 		{
 			PaintableType type = PaintableType.GetPaintableType(split[2].hashCode());
 			if(type == null)
@@ -54,7 +54,7 @@ public class RewardBox extends InfoType
 			
 			paintjobs.add(paintjob);
 		}
-		else if(KeyMatches(split, "RarityWeight"))
+		else if(keyMatches(split, "RarityWeight"))
 		{
 			EnumPaintjobRarity rarity = GetRarity(split[1]);
 			float weight = Float.parseFloat(split[2]);

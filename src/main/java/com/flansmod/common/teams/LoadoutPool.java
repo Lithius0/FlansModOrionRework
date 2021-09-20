@@ -66,11 +66,11 @@ public class LoadoutPool extends InfoType
 	{
 		super.read(split, file);
 		
-		XPForKill = Read(split, "XPForKill", XPForKill);
-		XPForDeath = Read(split, "XPForDeath", XPForDeath);
-		XPForKillstreakBonus = Read(split, "XPForKillstreakBonus", XPForKillstreakBonus);
+		XPForKill = readForInt(split, "XPForKill", XPForKill);
+		XPForDeath = readForInt(split, "XPForDeath", XPForDeath);
+		XPForKillstreakBonus = readForInt(split, "XPForKillstreakBonus", XPForKillstreakBonus);
 		
-		if(KeyMatches(split, "MaxLevel"))
+		if(keyMatches(split, "MaxLevel"))
 		{
 			maxLevel = Integer.parseInt(split[1]);
 			XPPerLevel = new int[maxLevel];
@@ -81,7 +81,7 @@ public class LoadoutPool extends InfoType
 				rewardsPerLevel[i] = new ArrayList<>();
 			}
 		}
-		else if(KeyMatches(split, "XPPerLevel"))
+		else if(keyMatches(split, "XPPerLevel"))
 		{
 			for(int i = 0; i < maxLevel; i++)
 			{
@@ -106,14 +106,14 @@ public class LoadoutPool extends InfoType
 		else if(ParseLoadoutEntry("AddArmour", EnumLoadoutSlot.armour, split))
 		{
 		}
-		else if(KeyMatches(split, "SlotUnlockLevels"))
+		else if(keyMatches(split, "SlotUnlockLevels"))
 		{
 			for(int i = 0; i < 5; i++)
 			{
 				slotUnlockLevels[i] = Integer.parseInt(split[i + 1]);
 			}
 		}
-		else if(KeyMatches(split, "DefaultLoadout"))
+		else if(keyMatches(split, "DefaultLoadout"))
 		{
 			int index = Integer.parseInt(split[1]) - 1;
 			
@@ -130,7 +130,7 @@ public class LoadoutPool extends InfoType
 				}
 			}
 		}
-		else if(KeyMatches(split, "AddRewardBox"))
+		else if(keyMatches(split, "AddRewardBox"))
 		{
 			boolean slotAvailable = false;
 			for(int i = 0; i < 3; i++)
@@ -144,7 +144,7 @@ public class LoadoutPool extends InfoType
 			}
 			FlansMod.Assert(slotAvailable, "Trying to insert more than 3 reward box types. No support for this yet");
 		}
-		else if(KeyMatches(split, "AddReward"))
+		else if(keyMatches(split, "AddReward"))
 		{
 			RewardBox box = RewardBox.GetRewardBox(split[1]);
 			boolean found = false;
@@ -166,7 +166,7 @@ public class LoadoutPool extends InfoType
 	
 	private boolean ParseLoadoutEntry(String keyword, EnumLoadoutSlot slot, String[] split)
 	{
-		if(KeyMatches(split, keyword))
+		if(keyMatches(split, keyword))
 		{
 			LoadoutEntryInfoType entry = new LoadoutEntryInfoType();
 			

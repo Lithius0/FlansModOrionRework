@@ -25,9 +25,9 @@ public abstract class BoxType extends InfoType
 		super.read(split, file);
 		try
 		{
-			topTexturePath = Read(split, "TopTexture", topTexturePath);
-			bottomTexturePath = Read(split, "BottomTexture", bottomTexturePath);
-			sideTexturePath = Read(split, "SideTexture", sideTexturePath);
+			topTexturePath = readForString(split, "TopTexture", topTexturePath);
+			bottomTexturePath = readForString(split, "BottomTexture", bottomTexturePath);
+			sideTexturePath = readForString(split, "SideTexture", sideTexturePath);
 		}
 		catch(Exception e)
 		{

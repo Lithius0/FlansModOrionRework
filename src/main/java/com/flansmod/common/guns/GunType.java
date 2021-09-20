@@ -332,18 +332,18 @@ public class GunType extends PaintableType implements IScope
 		super.read(split, file);
 		try
 		{
-			damage = Read(split, "Damage", damage);
-			canForceReload = Read(split, "CanForceReload", canForceReload);
-			reloadTime = Read(split, "ReloadTime", reloadTime);
-			recoil = Read(split, "Recoil", recoil);
-			knockback = Read(split, "Knockback", knockback);
-			bulletSpread = Read(split, "Accuracy", bulletSpread);
-			bulletSpread = Read(split, "Spread", bulletSpread);
-			numBullets = Read(split, "NumBullets", numBullets);
-			consumeGunUponUse = Read(split, "ConsumeGunOnUse", consumeGunUponUse);
-			dropItemOnShoot = Read(split, "DropItemOnShoot", dropItemOnShoot);
-			numBurstRounds = Read(split, "NumBurstRounds", numBurstRounds);
-			minigunStartSpeed = Read(split, "MinigunStartSpeed", minigunStartSpeed);
+			damage = readForFloat(split, "Damage", damage);
+			canForceReload = readBoolean(split, "CanForceReload", canForceReload);
+			reloadTime = readForInt(split, "ReloadTime", reloadTime);
+			recoil = readForFloat(split, "Recoil", recoil);
+			knockback = readForFloat(split, "Knockback", knockback);
+			bulletSpread = readForFloat(split, "Accuracy", bulletSpread);
+			bulletSpread = readForFloat(split, "Spread", bulletSpread);
+			numBullets = readForInt(split, "NumBullets", numBullets);
+			consumeGunUponUse = readBoolean(split, "ConsumeGunOnUse", consumeGunUponUse);
+			dropItemOnShoot = readForString(split, "DropItemOnShoot", dropItemOnShoot);
+			numBurstRounds = readForInt(split, "NumBurstRounds", numBurstRounds);
+			minigunStartSpeed = readForFloat(split, "MinigunStartSpeed", minigunStartSpeed);
 			if(split[0].equals("MeleeDamage"))
 			{
 				meleeDamage = Float.parseFloat(split[1]);
@@ -352,20 +352,20 @@ public class GunType extends PaintableType implements IScope
 			}
 			
 			//Information
-			showAttachments = Read(split, "ShowAttachments", showAttachments);
-			showDamage = Read(split, "ShowDamage", showDamage);
-			showRecoil = Read(split, "ShowRecoil", showRecoil);
-			showSpread = Read(split, "ShowAccuracy", showSpread);
-			showReloadTime = Read(split, "ShowReloadTime", showReloadTime);
+			showAttachments = readBoolean(split, "ShowAttachments", showAttachments);
+			showDamage = readBoolean(split, "ShowDamage", showDamage);
+			showRecoil = readBoolean(split, "ShowRecoil", showRecoil);
+			showSpread = readBoolean(split, "ShowAccuracy", showSpread);
+			showReloadTime = readBoolean(split, "ShowReloadTime", showReloadTime);
 			
 			//Sounds
-			shootDelay = Read(split, "ShootDelay", shootDelay);
-			shootSoundLength = Read(split, "SoundLength", shootSoundLength);
-			distortSound = Read(split, "DistortSound", distortSound);
-			idleSoundLength = Read(split, "IdleSoundLength", idleSoundLength);
-			warmupSoundLength = Read(split, "WarmupSoundLength", warmupSoundLength);
-			loopedSoundLength = Read(split, "LoopedSoundLength", loopedSoundLength);
-			loopedSoundLength = Read(split, "SpinSoundLength", loopedSoundLength);
+			shootDelay = readForFloat(split, "ShootDelay", shootDelay);
+			shootSoundLength = readForInt(split, "SoundLength", shootSoundLength);
+			distortSound = readBoolean(split, "DistortSound", distortSound);
+			idleSoundLength = readForInt(split, "IdleSoundLength", idleSoundLength);
+			warmupSoundLength = readForInt(split, "WarmupSoundLength", warmupSoundLength);
+			loopedSoundLength = readForInt(split, "LoopedSoundLength", loopedSoundLength);
+			loopedSoundLength = readForInt(split, "SpinSoundLength", loopedSoundLength);
 			if(split[0].equals("ShootSound"))
 			{
 				shootSound = split[1];
@@ -441,19 +441,19 @@ public class GunType extends PaintableType implements IScope
 			{
 				muzzleFlashModel = FlansMod.proxy.loadModel(split[1], shortName, ModelMuzzleFlash.class);
 			}
-			deployableTexture = Read(split, "DeployedTexture", deployableTexture);
-			standBackDist = Read(split, "StandBackDistance", standBackDist);
-			topViewLimit = Read(split, "TopViewLimit", topViewLimit);
-			bottomViewLimit = Read(split, "BottomViewLimit", bottomViewLimit);
-			sideViewLimit = Read(split, "SideViewLimit", sideViewLimit);
-			pivotHeight = Read(split, "PivotHeight", pivotHeight);
-			numAmmoItemsInGun = Read(split, "NumAmmoSlots", numAmmoItemsInGun);
-			numAmmoItemsInGun = Read(split, "NumAmmoItemsInGun", numAmmoItemsInGun);
-			numAmmoItemsInGun = Read(split, "LoadIntoGun", numAmmoItemsInGun);
-			canShootUnderwater = Read(split, "CanShootUnderwater", canShootUnderwater);
-			oneHanded = Read(split, "OneHanded", oneHanded);
-			usableByPlayers = Read(split, "UsableByPlayers", usableByPlayers);
-			usableByMechas = Read(split, "UsableByMechas", usableByMechas);
+			deployableTexture = readForString(split, "DeployedTexture", deployableTexture);
+			standBackDist = readForFloat(split, "StandBackDistance", standBackDist);
+			topViewLimit = readForFloat(split, "TopViewLimit", topViewLimit);
+			bottomViewLimit = readForFloat(split, "BottomViewLimit", bottomViewLimit);
+			sideViewLimit = readForFloat(split, "SideViewLimit", sideViewLimit);
+			pivotHeight = readForFloat(split, "PivotHeight", pivotHeight);
+			numAmmoItemsInGun = readForInt(split, "NumAmmoSlots", numAmmoItemsInGun);
+			numAmmoItemsInGun = readForInt(split, "NumAmmoItemsInGun", numAmmoItemsInGun);
+			numAmmoItemsInGun = readForInt(split, "LoadIntoGun", numAmmoItemsInGun);
+			canShootUnderwater = readBoolean(split, "CanShootUnderwater", canShootUnderwater);
+			oneHanded = readBoolean(split, "OneHanded", oneHanded);
+			usableByPlayers = readBoolean(split, "UsableByPlayers", usableByPlayers);
+			usableByMechas = readBoolean(split, "UsableByMechas", usableByMechas);
 			
 			if(split[0].equals("SpreadPattern"))
 				spreadPattern = EnumSpreadPattern.get(split[1]);
@@ -490,7 +490,7 @@ public class GunType extends PaintableType implements IScope
 			else if(split[0].equals("UseCustomMelee") && Boolean.parseBoolean(split[1]))
 				secondaryFunction = EnumSecondaryFunction.CUSTOM_MELEE;
 			
-			meleeTime = Read(split, "MeleeTime", meleeTime);
+			meleeTime = readForInt(split, "MeleeTime", meleeTime);
 			
 			if(split[0].equals("AddNode"))
 			{
@@ -503,13 +503,13 @@ public class GunType extends PaintableType implements IScope
 			}
 			
 			//Player modifiers
-			moveSpeedModifier = Read(split, "MoveSpeedModifier", moveSpeedModifier);
-			moveSpeedModifier = Read(split, "Slowness", moveSpeedModifier);
-			knockbackModifier = Read(split, "KnockbackReduction", knockbackModifier);
-			knockbackModifier = Read(split, "KnockbackModifier", knockbackModifier);
+			moveSpeedModifier = readForFloat(split, "MoveSpeedModifier", moveSpeedModifier);
+			moveSpeedModifier = readForFloat(split, "Slowness", moveSpeedModifier);
+			knockbackModifier = readForFloat(split, "KnockbackReduction", knockbackModifier);
+			knockbackModifier = readForFloat(split, "KnockbackModifier", knockbackModifier);
 			
 			//Attachment settings
-			allowAllAttachments = Read(split, "AllowAllAttachments", allowAllAttachments);
+			allowAllAttachments = readBoolean(split, "AllowAllAttachments", allowAllAttachments);
 			if(split[0].equals("AllowAttachments"))
 			{
 				for(int i = 1; i < split.length; i++)
@@ -518,11 +518,11 @@ public class GunType extends PaintableType implements IScope
 				}
 			}
 			
-			allowBarrelAttachments = Read(split, "AllowBarrelAttachments", allowBarrelAttachments);
-			allowScopeAttachments = Read(split, "AllowScopeAttachments", allowScopeAttachments);
-			allowStockAttachments = Read(split, "AllowStockAttachments", allowStockAttachments);
-			allowGripAttachments = Read(split, "AllowGripAttachments", allowGripAttachments);
-			numGenericAttachmentSlots = Read(split, "NumGenericAttachmentSlots", numGenericAttachmentSlots);
+			allowBarrelAttachments = readBoolean(split, "AllowBarrelAttachments", allowBarrelAttachments);
+			allowScopeAttachments = readBoolean(split, "AllowScopeAttachments", allowScopeAttachments);
+			allowStockAttachments = readBoolean(split, "AllowStockAttachments", allowStockAttachments);
+			allowGripAttachments = readBoolean(split, "AllowGripAttachments", allowGripAttachments);
+			numGenericAttachmentSlots = readForInt(split, "NumGenericAttachmentSlots", numGenericAttachmentSlots);
 			
 			//Shield settings
 			if(split[0].toLowerCase().equals("shield"))
