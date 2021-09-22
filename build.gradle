@@ -1,63 +1,54 @@
-buildscript 
-{
-    dependencies 
-	{
+buildscript {
+    repositories {
+        maven { 
+        	url = 'https://files.minecraftforge.net/maven'
+        }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
     }
-    repositories 
-	{
-        jcenter()
-        maven 
-		{
-			// location of the maven that hosts the forge files
-			name = "Forge maven"
-			url = "http://files.minecraftforge.net/maven"
-        }
-    }
 }
-
+        
 apply plugin: 'net.minecraftforge.gradle.forge'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
 
-version = version_major + "." + version_minor + "." + version_patch + version_extra
+version = minecraft_version + "-" + version_major + "." + version_minor + "." + version_patch
 group = "com.flansmod"
-archivesBaseName = "Flan's Mod"
+archivesBaseName = "modernweaponspack"
 
-apocalypseVersion = apocalypseVersion + version_extra
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
-sourceCompatibility = targetCompatibility = '1.8'
-compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
+//I'm too lazy to set up a proper Maven repo, this is purely a local one for now.
+//-Lithius
+repositories {
+    mavenLocal()
 }
-
+    
 dependencies {
+	//Getting Flan's Mod core as a dependency
+	compile "com.flansmod:FlansModOrionRework:1.12.2-6.0.0"
+    
+	//Libraries that Flan's Mod requires
     compile "io.vavr:vavr:0.10.2"
     shadow "io.vavr:vavr:0.10.2"
 }
 
 minecraft {
-    version = minecraft_version + "-" + forge_version
-    runDir = "run"
-
-    replace "@ALLOWED_VERSIONS@", "[5.14.0, 5.15)"
-    replace "@VERSION@", project.version
-    replaceIn "FlansMod.java"
-	replaceIn "ModernWeaponsPackMod.java"
-	replaceIn "TitanPackMod.java"
-	replaceIn "SimplePartsPackMod.java"
-	replaceIn "NerfPackMod.java"
-	replaceIn "MechaPartsPackMod.java"
-	replaceIn "UtilityPackMod.java"
-	replaceIn "WW2PackMod.java"
-	replaceIn "YeOldePackMod.java"	
-	replaceIn "ZombiePackMod.java"	
 	
-    replace "@ALLOWED_VERSIONS_APOCALYPSE@", "[1.4, 1.5)"
-    replace "@VERSION_APOCALYPSE@", project.apocalypseVersion
-    replaceIn "FlansModApocalypse.java"
+    version = minecraft_version + "-" + forge_version
+    mappings "stable_39"
 
-    mappings = "stable_39"
+    runDir = "run"
+    
+    replace "@VERSION@", project.version
+	replaceIn "SimplePartsPackMod.java"
+    
     //if this is required, it should be enabled locally for selected runs. These runs will take about 10 seconds longer
     makeObfSourceJar = false
 }
@@ -65,7 +56,6 @@ minecraft {
 processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
-    inputs.property "apocalypseversion", project.apocalypseVersion
     inputs.property "mcversion", project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
@@ -73,8 +63,7 @@ processResources {
         include 'mcmod.info'
 
         // replace version and mcversion
-        expand 'version': project.version, 'apocalypseversion': project.apocalypseVersion,
-            'mcversion': project.minecraft.version
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
 
     // copy everything else except the mcmod.info
@@ -83,144 +72,3 @@ processResources {
     }
 }
 
-version = "${project.minecraft.version}-${project.version}"
-
-task mechaParts(type: Jar) {
-	from(zipTree("${destinationDir}/${archiveName}")) { include 'com/flansmod/mechaparts/' }
-    from 'run/Flan/Mecha Parts Pack'
-    baseName = 'Mecha Parts'
-    appendix = 'Content Pack'
-}
-
-task modernWeapons(type: Jar) {
-    from(zipTree("${destinationDir}/${archiveName}")) { include 'com/flansmod/modernweapons/' }
-    from 'run/Flan/Modern Weapons Pack'
-    baseName = 'Modern Warfare'
-    appendix = 'Content Pack'
-}
-
-task nerf(type: Jar) {
-    from(zipTree("${destinationDir}/${archiveName}")) { include 'com/flansmod/nerf/' }
-    from 'run/Flan/Nerf Pack'
-    baseName = 'Nerf'
-    appendix = 'Content Pack'
-}
-
-task simpleParts(type: Jar) {
-	from(zipTree("${destinationDir}/${archiveName}")) { include 'com/flansmod/simple/' }
-    from 'run/Flan/Parts Pack'
-    baseName = 'Simple Parts'
-    appendix = 'Content Pack'
-}
-
-task titan(type: Jar) {
-    from(zipTree("${destinationDir}/${archiveName}")) { include 'com/flansmod/titan/' }
-    from 'run/Flan/Titan Pack'
-    baseName = 'Titan'
-    appendix = 'Content Pack'
-}
-
-task utility(type: Jar) {
-    from(zipTree("${destinationDir}/${archiveName}")) { include 'com/flansmod/utility/' }
-    from 'run/Flan/Utility Pack'
-    baseName = 'Utility'
-    appendix = 'Content Pack'
-}
-
-task ww2(type: Jar) {
-    from(zipTree("${destinationDir}/${archiveName}")) { include 'com/flansmod/ww2/' }
-    from 'run/Flan/WW2 Pack'
-    baseName = 'WW2'
-    appendix = 'Content Pack'
-}
-
-task yeOlde(type: Jar) {
-    from(zipTree("${destinationDir}/${archiveName}")) { include 'com/flansmod/yeolde/' }
-    from 'run/Flan/Ye Olde Pack'
-    baseName = 'Ye Olde'
-    appendix = 'Content Pack'
-}
-
-task zombie(type: Jar) {
-    from(zipTree("${destinationDir}/${archiveName}")) { include 'com/flansmod/zombie/' }
-    from 'run/Flan/Zombie Pack'
-    baseName = 'Zombie'
-    appendix = 'Content Pack'
-}
-
-task apoc(type: Jar) {
-    from(zipTree("${destinationDir}/${archiveName}")) { include 'com/flansmod/apocalypse/' }
-    from 'run/Flan/Apocalypse Pack'
-    baseName = 'Apocalypse'
-    appendix = 'Content Pack'
-}
-
-task leaderboards(type: Jar) {
-    from(zipTree("${destinationDir}/${archiveName}")) { include 'com/flansmod/leaderboards/' }
-    baseName = 'Leaderboards'
-    appendix = 'Content Pack'
-}
-
-task contentPacks() {
-    dependsOn mechaParts
-    dependsOn modernWeapons
-    dependsOn nerf
-    dependsOn simpleParts
-    dependsOn titan
-    dependsOn utility
-    dependsOn ww2
-    dependsOn yeOlde
-    dependsOn zombie
-    dependsOn apoc
-	dependsOn leaderboards
-}
-
-task clearOutput(type: Delete) {
-    delete 'build/output/'
-}
-
-task outputJar(type: Jar) {
-    destinationDir = new File("build/output/mods/")
-    from(zipTree("build/libs/${archivesBaseName}-${version}-all.jar")) {
-        exclude '**/apocalypse/'
-        exclude '**/modernweapons/'
-        exclude '**/nerf/'
-        exclude '**/titan/'
-        exclude '**/utility/'
-        exclude '**/ww2/'
-        exclude '**/yeolde/'
-        exclude '**/zombie/'
-        exclude '**/simple/'
-        exclude '**/mechaparts/'
-		exclude '**/steampunk/'
-		exclude '**/leaderboards/'
-    }
-}
-
-task outputPacks(type: Copy) {
-    from('build/libs/') {
-        include "**/*${version}.jar"
-        exclude "**/Flan's Mod*.jar"
-    }
-    into 'build/output/mods/'
-}
-
-shadowJar {
-    configurations = [project.configurations.shadow]
-}
-
-reobf {
-    shadowJar {
-        mappingType = "SEARGE"
-    }
-}
-
-tasks.reobfShadowJar.mustRunAfter shadowJar
-
-build {
-    dependsOn reobfShadowJar
-    dependsOn contentPacks
-    dependsOn clearOutput
-    dependsOn outputJar
-    dependsOn outputPacks
-}

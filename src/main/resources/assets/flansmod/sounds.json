@@ -1,4 +1,46 @@
 {
+  "AAfire": {
+    "category": "player",
+    "sounds": [
+      "flansmod:AAfire"
+    ]
+  },
+  "bomb": {
+    "category": "player",
+    "sounds": [
+      "flansmod:bomb"
+    ]
+  },
+  "Engine": {
+    "category": "player",
+    "sounds": [
+      "flansmod:Engine"
+    ]
+  },
+  "Flak": {
+    "category": "player",
+    "sounds": [
+      "flansmod:Flak"
+    ]
+  },
+  "propSound": {
+    "category": "player",
+    "sounds": [
+      "flansmod:propSound"
+    ]
+  },
+  "propStart": {
+    "category": "player",
+    "sounds": [
+      "flansmod:propStart"
+    ]
+  },
+  "TankShell": {
+    "category": "player",
+    "sounds": [
+      "flansmod:TankShell"
+    ]
+  },
   "bullet": {
     "category": "player",
     "sounds": [
@@ -6,12 +48,6 @@
       "flansmod:bullet2",
       "flansmod:bullet3",
       "flansmod:bullet4"
-    ]
-  },
-  "UnlockNotch": {
-    "category": "player",
-    "sounds": [
-      "flansmod:UnlockNotch"
     ]
   },
   "bulletFlyby": {
@@ -24,18 +60,6 @@
       "flansmod:bulletair5",
       "flansmod:bulletair6",
       "flansmod:bulletair7"
-    ]
-  },
-    "skullboss_laugh": {
-    "category": "player",
-    "sounds": [
-      "flansmod:skullboss_laugh"
-    ]
-  },
-   "skullboss_spawn": {
-    "category": "player",
-    "sounds": [
-      "flansmod:skullboss_spawn"
     ]
   }
 }
