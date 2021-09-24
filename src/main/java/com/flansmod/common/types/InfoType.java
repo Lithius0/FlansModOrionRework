@@ -96,10 +96,10 @@ public class InfoType
 			String[] split = line.split(" ");
 			//TODO: See if this is strictly necessary
 			//It might be needed if the parsers need at least 2 parameters, but I doubt it
-			if(split.length < 2)
-				continue;
-			read(split, file);
-			
+			if(split.length >= 2) {
+				read(split, file);
+			}
+
 			line = file.readLine();
 		}
 		postRead(file);
@@ -178,18 +178,7 @@ public class InfoType
 			{
 				for(int i = 0; i < 3; i++)
 				{
-					String line = null;
-					line = file.readLine();
-					if(line == null)
-					{
-						continue;
-					}
-					if(line.startsWith("//"))
-					{
-						i--;
-						continue;
-					}
-
+					String line = file.readLine();
 					if(line.length() > 3)
 						FlansMod.log.warn("Looks like a bad recipe in " + shortName + ". Double check whether '"
 								+ line + "' is supposed to be part of the recipe");
