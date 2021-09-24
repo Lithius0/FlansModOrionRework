@@ -281,10 +281,10 @@ public class ContentManager
 			{
 				ZipEntry zipEntry = entries.nextElement();
 				
-				if (!zipEntry.isDirectory()) {
+				if (!zipEntry.isDirectory() && zipEntry.getName().endsWith(".txt")) {
 					for(EnumType type : EnumType.values())
 					{
-						if(zipEntry.getName().startsWith(type.folderName) && zipEntry.getName().endsWith(".txt"))
+						if(zipEntry.getName().startsWith(type.folderName))
 						{
 							TypeFile.addContentFromZipEntry(contentPackName, type, zip, zipEntry);
 						}
