@@ -1,10 +1,8 @@
-{
-  "modListVersion": 2,
-  "modList": [
+[
     {
-      "modid": "flansmod",
-      "name": "Flan's Mod Orion Rework",
-      "description": "Guns, planes and other vehicles in Minecraft.",
+      "modid": "simplepartspack",
+      "name": "Flan's Mod-OR: Simple Parts Pack",
+      "description": "Basic crafting materials and tools used for everything in Flan's Mod",
       "version": "${version}",
       "mcversion": "${mcversion}",
       "url": "https://www.flansmod.com",
@@ -15,31 +13,6 @@
       ],
       "credits": "All code contributors.",
       "logoFile": "/flansmod.png",
-      "dependants": [
-        "flansmodapocalypse"
-      ],
-      "useDependencyInformation": true
-    },
-    {
-      "modid": "flansmodapocalypse",
-      "name": "Flan's Mod: Apocalypse",
-      "description": "The Flan's Mod apocalyptic dimension.",
-      "version": "${apocalypseversion}",
-      "mcversion": "${mcversion}",
-      "url": "https://www.flansmod.com",
-      "updateUrl": "",
-      "authorList": [
-        "jamioflan"
-      ],
-      "credits": "All code contributors.",
-      "logoFile": "/flansmod.png",
-      "requiredMods": [
-        "flansmod"
-      ],
-      "dependencies": [
-        "flansmod"
-      ],
-      "useDependencyInformation": true
+      "dependants": []
     }
-  ]
-}
+]
