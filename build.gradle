@@ -20,7 +20,7 @@ apply plugin: 'maven-publish'
 
 version = minecraft_version + "-" + version_major + "." + version_minor + "." + version_patch
 group = "com.flansmod"
-archivesBaseName = "modernweaponspack"
+archivesBaseName = "simplepartspack"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
