@@ -121,11 +121,16 @@ public class TypeFile
 	}
 	
 	/**
-	 * Adds a string to be processed later, will also remove any commented text (i.e. text after a //)
+	 * Adds a string to be processed later. 
+	 * This method will also remove any commented text (i.e. text after a //) and ignore empty lines
 	 * @param line the string to be added
 	 */
 	private void addLineForParsing(String line)
 	{
+		//Primarily to remove empty lines that happen to have a space
+		//Line with just a " " would not trigger the isEmpty check
+		line = line.trim(); 
+		
 		//Remove comments
 		int commentLocation = line.indexOf("//");
 		if (commentLocation >= 0) 
@@ -134,6 +139,7 @@ public class TypeFile
 		}
 		
 		//If there's a comment, it's likely to be the entire line that's commented out. 
+		//Also some lines will be empty for the sake of spacing and readability in the config file
 		//Only add if we still have something left to add
 		if (!line.isEmpty()) {
 			configLines.add(line);
