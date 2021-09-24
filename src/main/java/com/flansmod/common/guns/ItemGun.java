@@ -1071,7 +1071,7 @@ public class ItemGun extends Item implements IPaintableItem
 		if(type.showRecoil)
 			lines.add("\u00a79Recoil" + "\u00a77: " + type.getRecoil(stack));
 		if(type.showSpread)
-			lines.add("\u00a79Accuracy" + "\u00a77: " + type.getSpread(stack));
+			lines.add("\u00a79Spread" + "\u00a77: " + type.getSpread(stack));
 		if(type.showReloadTime)
 			lines.add("\u00a79Reload Time" + "\u00a77: " + type.getReloadTime(stack) / 20 + "s");
 		for(AttachmentType attachment : type.getCurrentAttachments(stack))
