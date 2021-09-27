@@ -1286,6 +1286,12 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 	
 	public void PostUpdate()
 	{
+		/*
+		 * This method really shouldn't exist.
+		 * Sometimes, the vehicle gets stuck in a NaN loop which causes some serious issues
+		 * However, it's so rare that it's hard to reproduce. This is more of a band-aid solution
+		 */
+		
 		//Checking validity of position
 		//NaN or infinite values will be picked up and dealt with
 		if(!Double.isFinite(posX) || !Double.isFinite(posY) || !Double.isFinite(posZ))

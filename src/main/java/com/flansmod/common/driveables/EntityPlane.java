@@ -679,8 +679,12 @@ public class EntityPlane extends EntityDriveable
 				wheel.rotationYaw = axes.getYaw();
 				
 				//Pull wheels towards car
+				
+				//Where we expect the wheel to be 
 				Vector3f targetWheelPos = axes.findLocalVectorGlobally(
 						getPlaneType().wheelPositions[wheel.getExpectedWheelID()].position);
+				
+				//The current position of this wheel 
 				Vector3f currentWheelPos = new Vector3f(wheel.posX - posX, wheel.posY - posY, wheel.posZ - posZ);
 				
 				float targetWheelLength = targetWheelPos.length();
@@ -735,6 +739,8 @@ public class EntityPlane extends EntityDriveable
 					amountToMoveCar.y += ((wheel.posY - wheel.prevPosY) - (motionY)) * 0.5F / wheels.length;
 					//amountToMoveCar.z += ((wheel.posZ - wheel.prevPosZ) - (motionZ)) * 0.0616F / wheels.length;
 					
+					//TODO: Remove this
+					//I think this is causing a bug stopping vehicles from getting teleported
 					if(amountToMoveWheel.lengthSquared() >= 32f * 32f)
 					{
 						FlansMod.log.warn("Wheel tried to move " + amountToMoveWheel.length() + " in a single frame, capping at 32 blocks");

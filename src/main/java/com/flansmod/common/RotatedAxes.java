@@ -183,7 +183,13 @@ public class RotatedAxes
 		return new Vector3f(mat.m00, mat.m10, mat.m20);
 	}
 	
-	//Find a local vector in terms of the global axes.
+	/**
+	 * Turns a local vector into a global vector.
+	 * In other words, take a vector local to this RotatedAxes instance
+	 * and find out where it would be in absolute coordinates 
+	 * @param in	a vector local to this RotatedAxes instance
+	 * @return		a vector in absolute space (i.e. relative to Minecraft's world space)
+	 */
 	public Vector3f findLocalVectorGlobally(Vector3f in)
 	{
 		//Create a new matrix and use the first column to store the vector we are rotating
