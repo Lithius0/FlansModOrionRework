@@ -43,7 +43,7 @@ public class PacketDriveableControl extends PacketBase
 		avely = driveable.angularVelocity.y;
 		avelz = driveable.angularVelocity.z;
 		throttle = driveable.throttle;
-		fuelInTank = driveable.driveableData.fuelInTank;
+		fuelInTank = driveable.driveableData.fuelTank.getFillLevel();
 		if(driveable instanceof EntityVehicle)
 		{
 			EntityVehicle veh = (EntityVehicle)driveable;
@@ -120,7 +120,7 @@ public class PacketDriveableControl extends PacketBase
 	protected void updateDriveable(EntityDriveable driveable, boolean clientSide)
 	{
 		driveable.setPositionRotationAndMotion(posX, posY, posZ, yaw, pitch, roll, motX, motY, motZ, avelx, avely, avelz, throttle, steeringYaw);
-		driveable.driveableData.fuelInTank = fuelInTank;
+		driveable.driveableData.fuelTank.setFillAmount(fuelInTank);
 	}
 	
 	@Override
@@ -135,7 +135,7 @@ public class PacketDriveableControl extends PacketBase
 			if(obj instanceof EntityDriveable && ((Entity)obj).getEntityId() == entityId)
 			{
 				driveable = (EntityDriveable)obj;
-				driveable.driveableData.fuelInTank = fuelInTank;
+				driveable.driveableData.fuelTank.setFillAmount(fuelInTank);
 				if(driveable.getSeat(0) != null && driveable.getSeat(0).getControllingPassenger() == clientPlayer)
 					return;
 				break;

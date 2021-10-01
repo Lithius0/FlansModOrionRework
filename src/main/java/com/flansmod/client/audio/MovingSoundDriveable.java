@@ -47,7 +47,7 @@ public class MovingSoundDriveable extends MovingSound
 			yPosF = (float)driveable.posY;
 			zPosF = (float)driveable.posZ;
 			
-			if ((!canIdle || driveable.throttle >= EntityDriveable.ENGINE_SOUND_THRESHOLD) && driveable.throttle > 0.001F && driveable.hasFuel())
+			if ((!canIdle || driveable.throttle >= EntityDriveable.ENGINE_SOUND_THRESHOLD) && driveable.throttle > 0.001F && driveable.canProducePower(driveable.getCurrentFuelConsumption()))
 			{
 				float throttleModifier = driveable.throttle * 0.5F + 0.5F; //Throttle can change the volume by a max of 50%
 		        this.volume = (FlansMod.soundRange / 16F) * throttleModifier;

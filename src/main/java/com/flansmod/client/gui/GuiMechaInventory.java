@@ -93,8 +93,8 @@ public class GuiMechaInventory extends GuiContainer
 			if(newTime % 5 == 0)
 				anim++;
 		}
-		int fuelTankSize = mecha.getMechaType().fuelTankSize;
-		float fuelInTank = mecha.driveableData.fuelInTank;
+		float fuelTankSize = mecha.driveableData.fuelTank.getMaxFillLevel();
+		float fuelInTank = mecha.driveableData.fuelTank.getFillLevel();
 		if(fuelInTank < fuelTankSize / 8 && (anim % 4) > 1)
 			drawTexturedModalRect(width / 2 - 14, height / 2 - 59, 360, 0, 6, 6);
 		if(fuelInTank > 0)

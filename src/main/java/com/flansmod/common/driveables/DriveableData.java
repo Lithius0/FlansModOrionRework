@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 
+import com.flansmod.common.driveables.fuel.InternalFuelTank;
 import com.flansmod.common.guns.ItemBullet;
 import com.flansmod.common.parts.EnumPartCategory;
 import com.flansmod.common.parts.ItemPart;
@@ -38,7 +39,7 @@ public class DriveableData implements IInventory
 	/**
 	 * The amount of fuel in the tank
 	 */
-	public float fuelInTank;
+	public InternalFuelTank fuelTank;
 	/**
 	 * Each driveable part has a small class that holds its current status
 	 */
@@ -68,13 +69,14 @@ public class DriveableData implements IInventory
 			return;
 		
 		type = tag.getString("Type");
+		paintjobID = tag.getInteger("Paint");
 		DriveableType dType = DriveableType.getDriveable(type);
+		//Inventory slots
 		numBombs = dType.numBombSlots;
 		numCargo = dType.numCargoSlots;
 		numMissiles = dType.numMissileSlots;
 		numGuns = dType.ammoSlots();
-		engine = PartType.getPart(tag.getString("Engine"));
-		paintjobID = tag.getInteger("Paint");
+		
 		ammo = new ItemStack[numGuns];
 		bombs = new ItemStack[numBombs];
 		missiles = new ItemStack[numMissiles];
@@ -91,8 +93,15 @@ public class DriveableData implements IInventory
 		for(int i = 0; i < numCargo; i++)
 			cargo[i] = new ItemStack(tag.getCompoundTag("Cargo " + i));
 		
-		fuel = new ItemStack(tag.getCompoundTag("Fuel"));
-		fuelInTank = tag.getInteger("FuelInTank");
+		//Engine and Fuel
+		fuel = new ItemStack(tag.getCompoundTag("Fuel")); //Item in the fuel inventory slot
+		engine = PartType.getPart(tag.getString("Engine"));
+		fuelTank = new InternalFuelTank(dType.fuelTankSize, engine.useRFPower); //Creating the fuel tank
+		//Fuels are technically floats, but they're kept this way for backwards-compatibility
+		//and also no one will notice a 0.6 mb difference anyway
+		fuelTank.setFillAmount(tag.getInteger("FuelInTank")); 
+		
+		
 		for(EnumDriveablePart part : EnumDriveablePart.values())
 		{
 			parts.put(part, new DriveablePart(part, dType.health.get(part)));
@@ -130,7 +139,7 @@ public class DriveableData implements IInventory
 		}
 		if(fuel != null)
 			tag.setTag("Fuel", fuel.writeToNBT(new NBTTagCompound()));
-		tag.setInteger("FuelInTank", (int)fuelInTank);
+		tag.setInteger("FuelInTank", (int)fuelTank.getFillLevel());
 		for(DriveablePart part : parts.values())
 		{
 			part.writeToNBT(tag);

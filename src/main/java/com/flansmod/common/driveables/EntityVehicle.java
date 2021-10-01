@@ -319,7 +319,7 @@ public class EntityVehicle extends EntityDriveable implements IExplodeable
 		
 		//Aesthetics
 		//Rotate the wheels
-		if(hasEnoughFuel())
+		if(canProducePower(getCurrentFuelConsumption()))
 		{
 			wheelsAngle += throttle * 0.2F;
 		}
@@ -384,12 +384,9 @@ public class EntityVehicle extends EntityDriveable implements IExplodeable
 			
 			//Apply velocity
 			EntityPlayer driver = getDriver();
-			if(canThrust(data, driver))
+			if(canProducePower(getCurrentFuelConsumption()))
 			{
-				if (!driverIsCreative())
-				{
-					data.fuelInTank -= data.engine.fuelConsumption * throttle * FlansMod.globalFuelUseMultiplier;
-				}
+				consumeFuel(getCurrentFuelConsumption());
 
 				if(getVehicleType().tank)
 				{
@@ -586,12 +583,6 @@ public class EntityVehicle extends EntityDriveable implements IExplodeable
 		}
 		
 		PostUpdate();
-	}
-
-	private boolean canThrust(DriveableData data, EntityPlayer driver) {
-		return !TeamsManager.vehiclesNeedFuel
-				|| driverIsCreative()
-				|| (data.engine != null && data.fuelInTank > data.engine.fuelConsumption * throttle);
 	}
 
 	public void animateFancyTracks()

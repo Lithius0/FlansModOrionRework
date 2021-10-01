@@ -15,6 +15,7 @@ import com.flansmod.common.FlansMod;
 import com.flansmod.common.RotatedAxes;
 import com.flansmod.common.driveables.DriveableType.ParticleEmitter;
 import com.flansmod.common.driveables.collisions.CollisionBox;
+import com.flansmod.common.driveables.fuel.InternalFuelTank;
 import com.flansmod.common.driveables.mechas.ContainerMechaInventory;
 import com.flansmod.common.guns.BulletType;
 import com.flansmod.common.guns.EnumFireMode;
@@ -53,6 +54,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -65,10 +67,20 @@ import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.UniversalBucket;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import scala.collection.parallel.BucketCombiner;
 
 public abstract class EntityDriveable extends Entity implements IControllable, IExplodeable, IEntityAdditionalSpawnData
 {
@@ -968,7 +980,7 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 		
 		// Harvest stuff
 		// Aesthetics
-		if(hasEnoughFuel())
+		if(canProducePower(getCurrentFuelConsumption()))
 		{
 			harvesterAngle += throttle / 5F;
 		}
@@ -1170,11 +1182,10 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 		prevRotationRoll = axes.getRoll();
 		prevAxes = axes.clone();
 		
-		boolean canThrust = driverIsCreative() || driveableData.fuelInTank > 0;
-		
 		// If there's no player in the driveable or it cannot thrust, slow the plane and turn off mouse held actions
+		//TODO: Likely unnecessary, firing weapon should still be possible with no fuel. Also, reducing throttle is not needed.
 		if((getDriver() == null) ||
-			!canThrust && getDriveableType().maxThrottle != 0 && getDriveableType().maxNegativeThrottle != 0)
+			!canProducePower(getCurrentFuelConsumption()) && getDriveableType().maxThrottle != 0 && getDriveableType().maxNegativeThrottle != 0)
 		{
 			throttle *= 0.98F;
 			primaryShootHeld = secondaryShootHeld = false;
@@ -1216,71 +1227,79 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 			}
 		}
 		
-		// Handle fuel
-		
-		int fuelMultiplier = 2;
-		
-		// The tank is currently full, so do nothing
-		if(driveableData.fuelInTank >= type.fuelTankSize)
-			return;
-		
-		//TODO: Make fuel cans a class of their own with compatibility for other mods built into a consume fuel method
-		
 		// Look through the entire inventory for fuel cans, buildcraft fuel buckets and RedstoneFlux power sources
 		int fuelSlot = driveableData.getFuelSlot();
 		ItemStack stack = driveableData.getStackInSlot(fuelSlot);
 		if(stack != null && !stack.isEmpty())
 		{
 			Item item = stack.getItem();
-			// Check for Flan's Mod fuel items
+			
+			/**
+			 * This bit looks for Flan's Mod fuel items
+			 * This is legacy and it is recommended that you use Forge Fluid tanks instead.
+			 */
 			if(item instanceof ItemPart)
 			{
 				PartType part = ((ItemPart)item).type;
 				// Check it is a fuel item
 				if(part.category == EnumPartCategory.FUEL)
 				{
-					int amountOfFuelToTransfer = FlansMod.vehicleFuelTransferRate;
+					//The max amount the fuel can can transfer is its full capacity
+					int maxTransferAmount = stack.getMaxDamage() - stack.getItemDamage();
 					
-					//If the fuel item has less fuel than the amount we want to transfer, we only transfer the amount we have
-					if ((stack.getMaxDamage() - stack.getItemDamage()) < FlansMod.vehicleFuelTransferRate)
-						amountOfFuelToTransfer = stack.getMaxDamage() - stack.getItemDamage();
-						
-					// Put 2 points of fuel
-					getDriveableData().fuelInTank += amountOfFuelToTransfer;
+					int amountTransferred = driveableData.fuelTank.receiveFuel(maxTransferAmount, false);
 					
 					// Damage the fuel item to indicate being used up
-					int damage = stack.getItemDamage();
-					stack.setItemDamage(damage + amountOfFuelToTransfer);
-					
-					// If we have finished this fuel item
-					if(damage >= stack.getMaxDamage())
-					{
-						// Reset the damage to 0
-						stack.setItemDamage(0);
-						// Consume one item
+					//TODO: Refactor this
+					stack.setItemDamage(stack.getItemDamage() + amountTransferred);
+					if (stack.getItemDamage() >= stack.getMaxDamage()) {
 						stack.setCount(stack.getCount() - 1);
-						// If we consumed the last one, destroy the stack
-						if(stack.getCount() <= 0)
+						
+						if (stack.getCount() <= 0) {
 							getDriveableData().setInventorySlotContents(driveableData.getFuelSlot(), ItemStack.EMPTY.copy());
+						}
 					}
-				}
-				
-				// Check for Buildcraft oil and fuel buckets
-				else if(FlansMod.hooks.BuildCraftLoaded && stack.isItemEqual(
-					FlansMod.hooks.BuildCraftOilBucket) &&
-					getDriveableData().fuelInTank + 1000 * fuelMultiplier <= type.fuelTankSize)
-				{
-					getDriveableData().fuelInTank += 1000 * fuelMultiplier;
-					getDriveableData().setInventorySlotContents(fuelSlot, new ItemStack(Items.BUCKET));
-				}
-				else if(FlansMod.hooks.BuildCraftLoaded && stack.isItemEqual(
-					FlansMod.hooks.BuildCraftFuelBucket) &&
-					getDriveableData().fuelInTank + 2000 * fuelMultiplier <= type.fuelTankSize)
-				{
-					getDriveableData().fuelInTank += 2000 * fuelMultiplier;
-					getDriveableData().setInventorySlotContents(fuelSlot, new ItemStack(Items.BUCKET));
+					//TODO: Test if the fuel cans get used up properly
 				}
 			}
+			
+			// Forge fluid item draining 
+			else if(stack.getItem() instanceof IFluidHandlerItem) {
+				
+				IFluidHandlerItem fuelItem = (IFluidHandlerItem)stack.getItem();
+
+				// Forge fluid buckets
+				// Buckets must transfer the full 1000 mb, so they have special handling
+				if (stack.getItem() instanceof UniversalBucket) {
+					stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+					
+					//Checking to see if the fuel tank can hold 1000mb more
+					int amountToTransfer = driveableData.fuelTank.receiveFuel(Fluid.BUCKET_VOLUME, true);
+					if (amountToTransfer == Fluid.BUCKET_VOLUME) {
+						fuelItem.drain(Fluid.BUCKET_VOLUME, true);
+						driveableData.fuelTank.receiveFuel(Fluid.BUCKET_VOLUME, false);
+					}
+				} else {
+					
+					IFluidTankProperties[] fluidTanksToDrain = fuelItem.getTankProperties();
+					
+					for (IFluidTankProperties fluidTank : fluidTanksToDrain) {
+						//Checking to see if the fluid 
+						Fluid fluidToDrain = fluidTank.getContents().getFluid();
+						if (InternalFuelTank.isFuel(fluidToDrain)) {
+							//Check to see how much we can drain first
+							FluidStack amountToDrain = fuelItem.drain(new FluidStack(fluidToDrain, Integer.MAX_VALUE), false);
+							
+							//Filling the internal tank
+							int amountTransfered = driveableData.fuelTank.receiveFuel(amountToDrain, false);
+							
+							//Draining the item
+							fuelItem.drain(new FluidStack(fluidToDrain, amountTransfered), true);
+						}
+					}
+				}
+			}
+			//TODO: Forge energy implementation
 		}
 	}
 	
@@ -1637,20 +1656,46 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 		return stack;
 	}
 	
-	
-	public boolean hasFuel()
-	{
-		if(getDriver() == null)
-			return false;
-		return driverIsCreative() || driveableData.fuelInTank > 0;
+	/**
+	 * Gets the current fuel consumption rate of the driveable.
+	 * This is simply the standard fuel consumption rate ({@link #getStandardFuelConsumption()}}) * throttle.
+	 * Use this method for getting the fuel consumption rate for any action that involves the throttle.
+	 * @return	how many millibuckets per tick this driveable would consume.
+	 */
+	public float getCurrentFuelConsumption() {
+		return getStandardFuelConsumption() * throttle;
 	}
 	
-	public boolean hasEnoughFuel()
-	{
-		if(getDriver() == null)
-			return false;
-		return driverIsCreative() || driveableData.fuelInTank > driveableData.engine.fuelConsumption * throttle;
-		
+	/**
+	 * Gets the standard fuel consumption rate of the driveable.
+	 * This is simply the static consumption rate of the driveable's type 
+	 * multiplied by the engine's fuel consumption multiplier
+	 * @return	how many millibuckets per tick this driveable would consume.
+	 */
+	public float getStandardFuelConsumption() {
+		return getDriveableType().fuelConsumptionRate * driveableData.engine.fuelConsumption;
+	}
+	
+	/**
+	 * Checks to see if the driveable can produce power to move.
+	 * This is true if the driver is in creative mode (in which case fuel doesn't matter)
+	 * or the game has vehiclesNeedFuel set to false.
+	 * or the fuel tank has enough fuel to power the driveable for another tick.
+	 * @return	true if the driveable can provide power to move, false otherwise.
+	 */
+	public boolean canProducePower(float fuelConsumption) {
+		return driverIsCreative() || driveableData.fuelTank.hasFuel(fuelConsumption) || !TeamsManager.vehiclesNeedFuel;
+	}
+	
+	/**
+	 * Consumes a given amount of fuel from the fuel tank.
+	 * Will only consume fuel if there is a driver and they are not in creative.
+	 * @param amount	the amount to consume (mb of fuel/RF)
+	 */
+	public void consumeFuel(float amount) {
+		if (!driverIsCreative() && TeamsManager.vehiclesNeedFuel) {
+			driveableData.fuelTank.consume(amount);
+		}
 	}
 	
 	public double getSpeedXYZ()

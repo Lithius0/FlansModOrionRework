@@ -37,7 +37,7 @@ public class MovingSoundDriveableIdling extends MovingSound {
 			yPosF = (float)driveable.posY;
 			zPosF = (float)driveable.posZ;
 
-			if (driveable.throttle < EntityDriveable.ENGINE_SOUND_THRESHOLD && driveable.throttle > 0.001F && driveable.hasFuel())
+			if (driveable.throttle < EntityDriveable.ENGINE_SOUND_THRESHOLD && driveable.throttle > 0.001F && driveable.canProducePower(driveable.getCurrentFuelConsumption()))
 			{
 				volume = 1;
 			}

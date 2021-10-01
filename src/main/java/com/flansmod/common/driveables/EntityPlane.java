@@ -215,7 +215,7 @@ public class EntityPlane extends EntityDriveable
 	{
 		PlaneType type = this.getPlaneType();
 		//Send keys which require server side updates to the server
-		boolean canThrust = canThrust();
+		boolean canThrust = canProducePower(getCurrentFuelConsumption());
 		switch(key)
 		{
 			case 0: //Accelerate : Increase the throttle, up to 1.
@@ -393,7 +393,7 @@ public class EntityPlane extends EntityDriveable
 		
 		//Aesthetics
 		//Rotate the propellers
-		if(hasEnoughFuel())
+		if(canProducePower(getCurrentFuelConsumption()))
 		{
 			propAngle += (Math.pow(throttle, 0.4)) * 1.5;
 		}
@@ -474,7 +474,7 @@ public class EntityPlane extends EntityDriveable
 		//The power output of the engine will determine the speed of the plane and its acceleration
 		float enginePower = type.maxThrottle * (data.engine == null ? 0 : data.engine.engineSpeed);
 		
-		if(!canThrust())
+		if(!canProducePower(getCurrentFuelConsumption()))
 			enginePower = 0;
 		
 		int numPropsWorking = 0;
@@ -563,9 +563,9 @@ public class EntityPlane extends EntityDriveable
 				alpha *= numWingsIntact / 2F;
 
 				//A currentSpeed of 0 will give us a NaN error here.
-				//The throttle check is to prevent a weird bug regarding the fact that the velocity from the gravity carries to the next tick. 
-				//Even if the aircraft is on the ground
-				//The other checks are to make sure there is a pilot before we do the checks
+				//The throttle check is to prevent a weird bug regarding the fact that the velocity from the gravity carries to the next tick.
+				//I think this may be because the collisions don't reset the motionY value
+				//even if the aircraft is on the ground
 				if (currentSpeed > 0.1 && throttle > 0.1 && hasControllingPlayer()) {
 					Vector3f targetVector = new Vector3f(forwards.x, forwards.y, forwards.z);
 					targetVector.scale(currentSpeed);
@@ -621,7 +621,7 @@ public class EntityPlane extends EntityDriveable
 		}
 		
 		//Burning fuel
-		data.fuelInTank -= throttle * data.engine.fuelConsumption * FlansMod.globalFuelUseMultiplier;
+		consumeFuel(getCurrentFuelConsumption());
 		
 		//Velocity capping
 		double planeSpeed = this.getSpeed();
@@ -780,22 +780,10 @@ public class EntityPlane extends EntityDriveable
 		PostUpdate();
 	}
 	
-	/**
-	 * Whether or no the plane is allowed to produce any thrust
-	 * Plane is allowed to produce thrust if there is fuel in the tank or if controlling player is in creative
-	 * @return true if plane can thrust, false otherwise
-	 */
-	public boolean canThrust()
+	@Override
+	public boolean canProducePower(float consumption)
 	{
-		if (hasWorkingProp()) {
-			if (getDriveableData().fuelInTank > 0) {
-				return true;
-			}
-			if (hasControllingPlayer()) {
-				return ((EntityPlayer)getSeat(0).getControllingPassenger()).capabilities.isCreativeMode;
-			}
-		}
-		return false;
+		return hasWorkingProp() && super.canProducePower(consumption);
 	}
 	
 	@Override

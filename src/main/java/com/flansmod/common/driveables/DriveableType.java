@@ -97,6 +97,14 @@ public abstract class DriveableType extends PaintableType
 	public int numCargoSlots, numBombSlots, numMissileSlots;
 	/** The fuel tank size */
 	public int fuelTankSize = 100;
+	/** 
+	 * The standard fuel consumption rate with an engine that has a fuelConsumption multiplier of 1.
+	 * Measured in mb/t for standard fuels. 
+	 * Multiply by 1200 for the RF/t consumption rate.
+	 * Keep in mind that electric engines typically have a fuelConsumption multiplier of 0.5.
+	 */ 
+	public float fuelConsumptionRate = 0.25F;
+	
 	
 	//Rendering variables
 	/** The yOffset of the model. Shouldn't be needed if you made your model properly */
