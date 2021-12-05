@@ -2,9 +2,7 @@ package com.flansmod.common;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 import org.apache.logging.log4j.Logger;
 
@@ -79,7 +77,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -118,18 +115,6 @@ public class FlansMod
 	public static final int numPlayerSnapshots = 20;
 	public static boolean isApocalypseLoaded = false;
 	
-	//TODO:Clean up configs, preferably move them into a separate class
-	public static boolean addAllPaintjobsToCreative = false;
-	public static boolean addGunpowderRecipe = true;
-	public static boolean shootOnRightClick = false;
-	public static boolean forceUpdateJSONs = false;
-	public static boolean enchantmentModuleEnabled = true;
-	public static List<String> disabledVehicles; //List of shortnames of disabled vehicles
-	public static float globalFuelUseMultiplier = 0.05F;
-	public static int vehicleFuelTransferRate = 4;
-	public static boolean generateDungeonLoot = false;
-	public static boolean mobArmorSpawn = false;
-	
 	public static float armourSpawnRate = 0.25F;
 	
 	public static int dungeonLootChance = 500;
@@ -140,6 +125,7 @@ public class FlansMod
 	public static Team spectators = new Team("spectators", "Spectators", 0x404040, '7');
 	
 	//Handlers
+	//TODO: Change these into singletons, remove static methods and fields and replace constructors() with getInstance()
 	public static final PacketHandler packetHandler = new PacketHandler();
 	public static final PlayerHandler playerHandler = new PlayerHandler();
 	public static final TeamsManager teamsManager = new TeamsManagerRanked();
@@ -204,14 +190,8 @@ public class FlansMod
 		proxy.preInit();
 		proxy.registerRenderers();
 		
-		configFile = new Configuration(event.getSuggestedConfigurationFile());
-		syncConfig();
-		
-		if(enchantmentModuleEnabled)
+		if(FlansConfig.enchantmentModuleEnabled)
 			enchantmentModule.PreInit();
-		//TODO : Load properties
-		//configuration = new Configuration(event.getSuggestedConfigurationFile());
-		//loadProperties();
 		
 		try
 		{
@@ -224,6 +204,8 @@ public class FlansMod
 		}
 		
 		modDir = new File(event.getModConfigurationDirectory().getParentFile(), "/mods/");
+		
+		//TODO:Remove this
 		flanDir = new File(event.getModConfigurationDirectory().getParentFile(), "/Flan/");
 		
 		if(!flanDir.exists())
@@ -253,8 +235,11 @@ public class FlansMod
 		
 		//Read content packs
 		contentManager.FindContentInModsFolder();
+		
+		//Gets packs from Flan folder. This is purely for legacy support.
 		contentManager.FindContentInFlanFolder();
 		contentManager.LoadAssetsFromFlanFolder();
+		
 		contentManager.RegisterModelRedirects();
 		contentManager.LoadTypes();
 		contentManager.CreateItems();
@@ -281,7 +266,7 @@ public class FlansMod
 		//Do proxy loading
 		proxy.init();
 		
-		if(enchantmentModuleEnabled)
+		if(FlansConfig.enchantmentModuleEnabled)
 			enchantmentModule.Init();
 		
 		//Initialising handlers
@@ -317,7 +302,7 @@ public class FlansMod
 		{
 			type.addRecipe(event.getRegistry());
 		}
-		if(addGunpowderRecipe)
+		if(FlansConfig.addAllPaintjobsToCreative)
 		{
 			NonNullList<Ingredient> ingredients = NonNullList.create();
 			ingredients.add(Ingredient.fromStacks(new ItemStack(Items.GLOWSTONE_DUST)));
@@ -456,7 +441,7 @@ public class FlansMod
 		 * The loot generation code is a bit wonky.
 		 * This config just disables it directly.
 		 */
-		if (!generateDungeonLoot)
+		if (!FlansConfig.generateDungeonLoot)
 			return;
 		
 		// Add default Flan's loot - extra gunpowder, iron etc
@@ -516,10 +501,11 @@ public class FlansMod
 	{
 		packetHandler.postInitialise();
 		
-		if(enchantmentModuleEnabled)
+		if(FlansConfig.enchantmentModuleEnabled)
 			enchantmentModule.PostInit();
 		
 		hooks.hook();
+		
 	}
 	
 	@SubscribeEvent
@@ -553,18 +539,11 @@ public class FlansMod
 	}
 	
 	@SubscribeEvent
-	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs)
-	{
-		if(eventArgs.getModID().equals(MODID))
-			syncConfig();
-	}
-	
-	@SubscribeEvent
 	public void onLivingSpecialSpawn(EntityJoinWorldEvent event)
 	{
 		double chance = event.getWorld().rand.nextDouble();
 		
-		if(mobArmorSpawn && chance < armourSpawnRate && (event.getEntity() instanceof EntityZombie || event.getEntity() instanceof EntitySkeleton))
+		if(FlansConfig.mobArmorSpawn && chance < armourSpawnRate && (event.getEntity() instanceof EntityZombie || event.getEntity() instanceof EntitySkeleton))
 		{
 			if(event.getWorld().rand.nextBoolean() && ArmourType.armours.size() > 0)
 			{
@@ -616,23 +595,6 @@ public class FlansMod
 		return FlansMod.packetHandler;
 	}
 	
-	public static void syncConfig()
-	{
-		addGunpowderRecipe = configFile.getBoolean("Gunpowder Recipe", Configuration.CATEGORY_GENERAL, addGunpowderRecipe, "Whether or not to add the extra gunpowder recipe (3 charcoal + 1 lightstone)");
-		shootOnRightClick = configFile.getBoolean("ShootOnRightClick", Configuration.CATEGORY_GENERAL, shootOnRightClick, "If true, then shoot will be on right click");
-		addAllPaintjobsToCreative = configFile.getBoolean("Add All Paintjobs to Creative", Configuration.CATEGORY_GENERAL, addAllPaintjobsToCreative, "Whether all paintjobs should appear in creative");
-		forceUpdateJSONs = configFile.getBoolean("ForceUpdateJSONs", Configuration.CATEGORY_GENERAL, forceUpdateJSONs, "Turn this on to force re-create all JSON files. Should only be used in dev environment");
-		enchantmentModuleEnabled = configFile.getBoolean("EnchantmentModuleEnabled", Configuration.CATEGORY_GENERAL, enchantmentModuleEnabled, "Enable gun-related enchantments");
-		disabledVehicles = Arrays.asList(configFile.getStringList("DisabledVehicles", Configuration.CATEGORY_GENERAL, new String[0], "Any vehicle shortnames included in here will not be craftable in the vehicle crafting table"));
-		globalFuelUseMultiplier = configFile.getFloat("GlobalFuelUseMultiplier", Configuration.CATEGORY_GENERAL, globalFuelUseMultiplier, 0, 10, "Fuel use will be multiplied by this value. Higher means more fuel used per tick");
-		vehicleFuelTransferRate = configFile.getInt("VehicleFuelTransferRate", Configuration.CATEGORY_GENERAL, vehicleFuelTransferRate, 0, 100, "How much fuel to transfer from a container to the vehicle in one tick");
-		generateDungeonLoot = configFile.getBoolean("GenerateDungeonLoot", Configuration.CATEGORY_GENERAL, generateDungeonLoot, "Whether or not chests in randomly generated structures should have Flan's Mod loot");
-		mobArmorSpawn = configFile.getBoolean("MobSpawnWithArmor", Configuration.CATEGORY_GENERAL, mobArmorSpawn, "Whether or not zombies and skeletons spawn with random Flan's Mod armor");
-		
-		if(configFile.hasChanged())
-			configFile.save();
-	}
-	
 	public static void Assert(boolean b, String string)
 	{
 		if(!b)
@@ -641,6 +603,7 @@ public class FlansMod
 		}
 	}
 	
+	//TODO: Use the method included in EnumParticleTypes class instead
 	public static EnumParticleTypes getParticleType(String s)
 	{
 		if(s.equals("hugeexplosion")) return EnumParticleTypes.EXPLOSION_HUGE;

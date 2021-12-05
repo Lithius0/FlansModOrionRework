@@ -1,5 +1,6 @@
 package com.flansmod.common.enchantments;
 
+import com.flansmod.common.FlansConfig;
 import com.flansmod.common.FlansMod;
 import com.flansmod.common.guns.FireableGun;
 
@@ -144,7 +145,7 @@ public class EnchantmentModule
 
 	public static void ModifyGun(FireableGun fireableGun, EntityLivingBase entity, ItemStack otherHand) 
 	{
-		if(!FlansMod.enchantmentModuleEnabled)
+		if(!FlansConfig.enchantmentModuleEnabled)
 			return;
 		
 		int steadyLevel = EnchantmentHelper.getEnchantmentLevel(STEADY_ENCHANT, otherHand);
@@ -164,7 +165,7 @@ public class EnchantmentModule
 
 	public static float ModifyReloadTime(float reloadTime, EntityLivingBase entity, ItemStack otherHand) 
 	{
-		if(!FlansMod.enchantmentModuleEnabled)
+		if(!FlansConfig.enchantmentModuleEnabled)
 			return reloadTime;
 		
 		int nimbleLevel = EnchantmentHelper.getEnchantmentLevel(NIMBLE_ENCHANT, otherHand);

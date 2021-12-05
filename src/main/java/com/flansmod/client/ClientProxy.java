@@ -74,6 +74,7 @@ import com.flansmod.client.model.RenderPlane;
 import com.flansmod.client.model.RenderVehicle;
 import com.flansmod.common.CommonProxy;
 import com.flansmod.common.EntityItemCustomRender;
+import com.flansmod.common.FlansConfig;
 import com.flansmod.common.FlansMod;
 import com.flansmod.common.PlayerData;
 import com.flansmod.common.PlayerHandler;
@@ -677,7 +678,7 @@ public class ClientProxy extends CommonProxy
 	
 	private void createJSONFile(File file, String contents) throws Exception
 	{
-		if(FlansMod.forceUpdateJSONs)
+		if(FlansConfig.forceUpdateJSONs)
 		{
 			if(file.exists())
 			{

@@ -47,6 +47,7 @@ import com.flansmod.client.FlansModClient;
 import com.flansmod.client.debug.EntityDebugDot;
 import com.flansmod.client.model.GunAnimations;
 import com.flansmod.common.EntityItemCustomRender;
+import com.flansmod.common.FlansConfig;
 import com.flansmod.common.FlansMod;
 import com.flansmod.common.PlayerData;
 import com.flansmod.common.PlayerHandler;
@@ -96,7 +97,7 @@ public class ItemGun extends Item implements IPaintableItem
 
 	private static boolean GetMouseHeld(EnumHand hand)
 	{
-		if(FlansMod.shootOnRightClick)
+		if(FlansConfig.client.shootOnRightClick)
 			return hand == EnumHand.MAIN_HAND ? rightMouseHeld : leftMouseHeld;
 		else
 			return hand == EnumHand.MAIN_HAND ? leftMouseHeld : rightMouseHeld;
@@ -104,7 +105,7 @@ public class ItemGun extends Item implements IPaintableItem
 
 	private static boolean GetLastMouseHeld(EnumHand hand)
 	{
-		if(FlansMod.shootOnRightClick)
+		if(FlansConfig.client.shootOnRightClick)
 			return hand == EnumHand.MAIN_HAND ? lastRightMouseHeld : lastLeftMouseHeld;
 		else
 			return hand == EnumHand.MAIN_HAND ? lastLeftMouseHeld : lastRightMouseHeld;
@@ -1196,7 +1197,7 @@ public class ItemGun extends Item implements IPaintableItem
 			return;
 
 		PaintableType type = ((IPaintableItem)this).GetPaintableType();
-		if(FlansMod.addAllPaintjobsToCreative)
+		if(FlansConfig.addAllPaintjobsToCreative)
 		{
 			for(Paintjob paintjob : type.paintjobs)
 				addPaintjobToList(this, type, paintjob, items);

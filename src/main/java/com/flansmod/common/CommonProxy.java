@@ -155,7 +155,7 @@ public class CommonProxy
 		boolean canCraft = true;
 		
 		//Making sure the crafting recipe is not disabled
-		canCraft = !FlansMod.disabledVehicles.contains(type.shortName);
+		canCraft = !FlansConfig.isVehicleDisabled(type.shortName);
 		
 		//Iterate over rows then columns
 		for(ItemStack recipeStack : type.driveableRecipe)

@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.flansmod.client.model.ModelDriveable;
+import com.flansmod.common.FlansConfig;
 import com.flansmod.common.FlansMod;
 import com.flansmod.common.driveables.collisions.CollisionBox;
 import com.flansmod.common.driveables.collisions.CollisionShapeBox;
@@ -934,7 +935,7 @@ public abstract class DriveableType extends PaintableType
 		super.postRead(file);
 	
 		//If the configs do not explicitly disable the crafting recipe for this, we can add it to the craftableTypes list
-		if (!FlansMod.disabledVehicles.contains(this.shortName))
+		if (!FlansConfig.isVehicleDisabled(this.shortName))
 			craftableTypes.add(this);
 	}
 	

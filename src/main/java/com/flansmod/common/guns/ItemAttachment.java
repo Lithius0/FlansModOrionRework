@@ -12,6 +12,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import com.flansmod.common.FlansConfig;
 import com.flansmod.common.FlansMod;
 import com.flansmod.common.paintjob.IPaintableItem;
 import com.flansmod.common.paintjob.PaintableType;
@@ -88,7 +89,7 @@ public class ItemAttachment extends Item implements IPaintableItem
 			return;
 		
 		PaintableType type = ((IPaintableItem)this).GetPaintableType();
-		if(FlansMod.addAllPaintjobsToCreative)
+		if(FlansConfig.addAllPaintjobsToCreative)
 		{
 			for(Paintjob paintjob : type.paintjobs)
 				addPaintjobToList(this, type, paintjob, items);
