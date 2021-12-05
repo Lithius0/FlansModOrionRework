@@ -11,11 +11,11 @@ import com.flansmod.client.EntityCamera;
 import com.flansmod.client.FlansModClient;
 import com.flansmod.client.debug.EntityDebugVector;
 import com.flansmod.client.handlers.KeyInputHandler;
+import com.flansmod.common.FlansConfig;
 import com.flansmod.common.FlansMod;
 import com.flansmod.common.RotatedAxes;
 import com.flansmod.common.driveables.DriveableType.ParticleEmitter;
 import com.flansmod.common.driveables.collisions.CollisionBox;
-import com.flansmod.common.driveables.fuel.InternalFuelTank;
 import com.flansmod.common.driveables.mechas.ContainerMechaInventory;
 import com.flansmod.common.guns.BulletType;
 import com.flansmod.common.guns.EnumFireMode;
@@ -34,9 +34,6 @@ import com.flansmod.common.network.PacketDriveableDamage;
 import com.flansmod.common.network.PacketDriveableKey;
 import com.flansmod.common.network.PacketDriveableKeyHeld;
 import com.flansmod.common.network.PacketPlaySound;
-import com.flansmod.common.parts.EnumPartCategory;
-import com.flansmod.common.parts.ItemPart;
-import com.flansmod.common.parts.PartType;
 import com.flansmod.common.teams.TeamsManager;
 import com.flansmod.common.vector.Vector3f;
 
@@ -49,12 +46,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -67,20 +62,10 @@ import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.UniversalBucket;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import scala.collection.parallel.BucketCombiner;
 
 public abstract class EntityDriveable extends Entity implements IControllable, IExplodeable, IEntityAdditionalSpawnData
 {
@@ -1226,80 +1211,13 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 					shoot(true);
 			}
 		}
-		
-		// Look through the entire inventory for fuel cans, buildcraft fuel buckets and RedstoneFlux power sources
+
 		int fuelSlot = driveableData.getFuelSlot();
 		ItemStack stack = driveableData.getStackInSlot(fuelSlot);
+		
 		if(stack != null && !stack.isEmpty())
 		{
-			Item item = stack.getItem();
-			
-			/**
-			 * This bit looks for Flan's Mod fuel items
-			 * This is legacy and it is recommended that you use Forge Fluid tanks instead.
-			 */
-			if(item instanceof ItemPart)
-			{
-				PartType part = ((ItemPart)item).type;
-				// Check it is a fuel item
-				if(part.category == EnumPartCategory.FUEL)
-				{
-					//The max amount the fuel can can transfer is its full capacity
-					int maxTransferAmount = stack.getMaxDamage() - stack.getItemDamage();
-					
-					int amountTransferred = driveableData.fuelTank.receiveFuel(maxTransferAmount, false);
-					
-					// Damage the fuel item to indicate being used up
-					//TODO: Refactor this
-					stack.setItemDamage(stack.getItemDamage() + amountTransferred);
-					if (stack.getItemDamage() >= stack.getMaxDamage()) {
-						stack.setCount(stack.getCount() - 1);
-						
-						if (stack.getCount() <= 0) {
-							getDriveableData().setInventorySlotContents(driveableData.getFuelSlot(), ItemStack.EMPTY.copy());
-						}
-					}
-					//TODO: Test if the fuel cans get used up properly
-				}
-			}
-			
-			// Forge fluid item draining 
-			else if(stack.getItem() instanceof IFluidHandlerItem) {
-				
-				IFluidHandlerItem fuelItem = (IFluidHandlerItem)stack.getItem();
-
-				// Forge fluid buckets
-				// Buckets must transfer the full 1000 mb, so they have special handling
-				if (stack.getItem() instanceof UniversalBucket) {
-					stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-					
-					//Checking to see if the fuel tank can hold 1000mb more
-					int amountToTransfer = driveableData.fuelTank.receiveFuel(Fluid.BUCKET_VOLUME, true);
-					if (amountToTransfer == Fluid.BUCKET_VOLUME) {
-						fuelItem.drain(Fluid.BUCKET_VOLUME, true);
-						driveableData.fuelTank.receiveFuel(Fluid.BUCKET_VOLUME, false);
-					}
-				} else {
-					
-					IFluidTankProperties[] fluidTanksToDrain = fuelItem.getTankProperties();
-					
-					for (IFluidTankProperties fluidTank : fluidTanksToDrain) {
-						//Checking to see if the fluid 
-						Fluid fluidToDrain = fluidTank.getContents().getFluid();
-						if (InternalFuelTank.isFuel(fluidToDrain)) {
-							//Check to see how much we can drain first
-							FluidStack amountToDrain = fuelItem.drain(new FluidStack(fluidToDrain, Integer.MAX_VALUE), false);
-							
-							//Filling the internal tank
-							int amountTransfered = driveableData.fuelTank.receiveFuel(amountToDrain, false);
-							
-							//Draining the item
-							fuelItem.drain(new FluidStack(fluidToDrain, amountTransfered), true);
-						}
-					}
-				}
-			}
-			//TODO: Forge energy implementation
+			driveableData.setInventorySlotContents(fuelSlot, driveableData.fuelTank.handleFuelItem(stack));
 		}
 	}
 	
@@ -1307,7 +1225,7 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 	{
 		/*
 		 * This method really shouldn't exist.
-		 * Sometimes, the vehicle gets stuck in a NaN loop which causes some serious issues
+		 * Sometimes, the vehicle gets stuck in a NaN position loop which causes some serious issues
 		 * However, it's so rare that it's hard to reproduce. This is more of a band-aid solution
 		 */
 		
@@ -1673,7 +1591,7 @@ public abstract class EntityDriveable extends Entity implements IControllable, I
 	 * @return	how many millibuckets per tick this driveable would consume.
 	 */
 	public float getStandardFuelConsumption() {
-		return getDriveableType().fuelConsumptionRate * driveableData.engine.fuelConsumption;
+		return getDriveableType().fuelConsumptionRate * driveableData.engine.fuelConsumption * FlansConfig.globalFuelUseMultiplier;
 	}
 	
 	/**
