@@ -183,10 +183,9 @@ public class GuiDriveableCrafting extends GuiScreen
 					recipeScrollPos--;
 				break;
 			case RECIPE_DOWN_BUTTON_ID:
-				DriveableType selectedType = DriveableType.craftableTypes.get(selectedBlueprint);
-				int totalCells = RECIPE_ROW_COUNT * RECIPE_COLUMN_COUNT;
-				if(recipeScrollPos * RECIPE_COLUMN_COUNT + totalCells < selectedType.driveableRecipe.size())
+				if (canScrollDownRecipe()) {
 					recipeScrollPos++;
+				}
 				break;
 		}
 
@@ -208,28 +207,32 @@ public class GuiDriveableCrafting extends GuiScreen
 		List<ItemToRender> itemsToRender = getBlueprintItemsToRender();
 
 		// Preview
-		DriveableType selectedType = DriveableType.craftableTypes.get(selectedBlueprint);
-		drawPreview(selectedType);
+		if (itemsToRender.nonEmpty()) {
+			DriveableType selectedType = DriveableType.craftableTypes.get(selectedBlueprint);
+			drawPreview(selectedType);
 
-		// Stats
-		drawStats(selectedType);
+			// Stats
+			drawStats(selectedType);
+	
+			// Engine requirements
+			drawString(fontRenderer, "Engine", engineTextX, engineTextY, WHITE);
+			drawString(fontRenderer, selectedType.numEngines() + "x", engineTextX - 14, engineTextY, WHITE);
+	
+			canCraft = true;
+	
+			// Recipe items
+			itemsToRender = itemsToRender.pushAll(getRecipeItemsToRender(selectedType));
+	
+			// Collect up all the engines into neat and tidy stacks so we can find if any of them are big enough
+			// and which of those stacks are best
+			ItemStack bestEngineStack = getBestEngineStackForType(selectedType);
 
-		// Engine requirements
-		drawString(fontRenderer, "Engine", engineTextX, engineTextY, WHITE);
-		drawString(fontRenderer, selectedType.numEngines() + "x", engineTextX - 14, engineTextY, WHITE);
+	
+			// Draw engine slot
+			itemsToRender = itemsToRender.pushAll(getEngineItemToRender(bestEngineStack));
 
-		canCraft = true;
-
-		// Recipe items
-		itemsToRender = itemsToRender.pushAll(getRecipeItemsToRender(selectedType));
-
-		// Collect up all the engines into neat and tidy stacks so we can find if any of them are big enough
-		// and which of those stacks are best
-		ItemStack bestEngineStack = getBestEngineStackForType(selectedType);
-
-		// Draw engine slot
-		itemsToRender = itemsToRender.pushAll(getEngineItemToRender(bestEngineStack));
-
+		}
+		
 		craftButton.enabled = canCraft;
 		
 		GlStateManager.disableLighting();
@@ -509,6 +512,8 @@ public class GuiDriveableCrafting extends GuiScreen
 						{
 							recipeScrollPos = 0;
 							selectedBlueprint = result;
+							
+							updateButtons();
 							return;
 						}
 					}
@@ -534,13 +539,7 @@ public class GuiDriveableCrafting extends GuiScreen
 
 		// Recipe buttons
 		recipeUpButton.enabled = recipeScrollPos > 0;
-
-		int totalRecipeItems = RECIPE_COLUMN_COUNT * RECIPE_ROW_COUNT;
-		if (selectedBlueprint < DriveableType.craftableTypes.size()) {
-			DriveableType selectedType = DriveableType.craftableTypes.get(selectedBlueprint);
-			recipeDownButton.enabled =
-			recipeScrollPos * RECIPE_COLUMN_COUNT + totalRecipeItems < selectedType.driveableRecipe.size() - 1;
-		}
+		recipeDownButton.enabled = canScrollDownRecipe();
 	}
 
 	private static class ArrowButton extends GuiButton
@@ -591,6 +590,26 @@ public class GuiDriveableCrafting extends GuiScreen
 			}
 		}
 
+	}
+	
+	/**
+	 * Checks to see if the recipe tab can be scrolled down any further.
+	 * @return true if there's any more items to show in the recipes tab, false otherwise
+	 */
+	private boolean canScrollDownRecipe() {
+		//This check is primarily to prevent a crash in case there are no craftable types.
+		//e.g. there are no content packs or the installed packs don't add vehicles
+		if (DriveableType.craftableTypes.size() > selectedBlueprint) {
+			DriveableType selectedType = DriveableType.craftableTypes.get(selectedBlueprint);
+			int recipeRows = (int) Math.ceil(selectedType.driveableRecipe.size() / (double)RECIPE_COLUMN_COUNT);
+			
+			//The +1 here is to allow the user to see 1 blank extra row to make sure that there's nothing else.
+			//It's both an assurance to the user and to the developer to make sure nothing's wrong.
+			if ((recipeScrollPos + RECIPE_ROW_COUNT) < (recipeRows + 1)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static class ItemToRender
