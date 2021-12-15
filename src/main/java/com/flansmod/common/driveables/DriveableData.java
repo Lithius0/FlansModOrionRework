@@ -9,6 +9,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 
 import com.flansmod.common.driveables.fuel.InternalFuelTank;
+import com.flansmod.common.driveables.fuel.LiquidFuelTank;
+import com.flansmod.common.driveables.fuel.VehicleBattery;
 import com.flansmod.common.guns.ItemBullet;
 import com.flansmod.common.parts.EnumPartCategory;
 import com.flansmod.common.parts.ItemPart;
@@ -96,7 +98,12 @@ public class DriveableData implements IInventory
 		//Engine and Fuel
 		fuel = new ItemStack(tag.getCompoundTag("Fuel")); //Item in the fuel inventory slot
 		engine = PartType.getPart(tag.getString("Engine"));
-		fuelTank = new InternalFuelTank(dType.fuelTankSize, engine.useRFPower); //Creating the fuel tank
+		 //Creating the fuel tank
+		if (engine.useRFPower) {
+			fuelTank = VehicleBattery.convertFromFuel(dType.fuelTankSize);
+		} else {
+			fuelTank = new LiquidFuelTank(dType.fuelTankSize);
+		}
 		//Fuels are technically floats, but they're kept this way for backwards-compatibility
 		//and also no one will notice a 0.6 mb difference anyway
 		fuelTank.setFillAmount(tag.getInteger("FuelInTank")); 

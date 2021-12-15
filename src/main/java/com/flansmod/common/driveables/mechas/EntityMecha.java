@@ -48,6 +48,7 @@ import com.flansmod.common.driveables.DriveableType;
 import com.flansmod.common.driveables.EntityDriveable;
 import com.flansmod.common.driveables.EntitySeat;
 import com.flansmod.common.driveables.EnumDriveablePart;
+import com.flansmod.common.driveables.fuel.LiquidFuelTank;
 import com.flansmod.common.guns.BulletType;
 import com.flansmod.common.guns.EntityGrenade;
 import com.flansmod.common.guns.EnumFireMode;
@@ -230,7 +231,6 @@ public class EntityMecha extends EntityDriveable
 	public boolean pressKey(int key, EntityPlayer player, boolean isOnEvent)
 	{
 		MechaType type = getMechaType();
-		DriveableData data = getDriveableData();
 		//send keys which require server side updates to the server
 		switch(key)
 		{
@@ -606,7 +606,6 @@ public class EntityMecha extends EntityDriveable
 
 				intent = axes.findLocalVectorGlobally(intent);
 
-				Vector3f intentOnLegAxes = legAxes.findGlobalVectorLocally(intent);
 				float intentAngle = (float)Math.atan2(intent.z, intent.x) * 180F / 3.14159265F;
 				float angleBetween = intentAngle - legAxes.getYaw();
 				if(angleBetween > 180F) angleBetween -= 360F;
@@ -827,14 +826,17 @@ public class EntityMecha extends EntityDriveable
 				}
 			}
 			
-			//Check for auto coal consumption
-			//To avoid over-filling and wasting coal, this checks to see if the tank can receive the full 200.
-			if(autoCoal() && (stack.getItem() == Items.COAL) && (data.fuelTank.receiveFuel(200, true) == 200))
+			//Check for auto coal consumption and makes this the vehicle uses a liquid fuel tank
+			//I know that coal isn't a liquid, this is just support for a system that no longer makes sense -Lithius
+			if(autoCoal() && (stack.getItem() == Items.COAL) && data.fuelTank instanceof LiquidFuelTank)
 			{
+				LiquidFuelTank fuelTank = (LiquidFuelTank) data.fuelTank;
 				//Insert the fuel for real this time
-				data.fuelTank.receiveFuel(200, false);
-				couldNotFindFuel = false;
-				stack.setCount(0);
+				if ((fuelTank.receiveFuel(200, true) == 200)) {
+					fuelTank.receiveFuel(200, false);
+					couldNotFindFuel = false;
+					stack.setCount(0);
+				}
 			}
 			
 			//Add the itemstack to mecha inventory
