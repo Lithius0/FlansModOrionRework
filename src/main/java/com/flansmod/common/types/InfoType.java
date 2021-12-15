@@ -37,6 +37,11 @@ import com.flansmod.common.FlansMod;
 public class InfoType
 {
 	/**
+	 * Special OreDict ingredients and treated planks from Immersive Engineering.
+	 */
+	private static final HashMap<String, Ingredient> SPECIAL_INGREDIENTS = new HashMap<String, Ingredient>();
+	
+	/**
 	 * infoTypes
 	 */
 	public static HashMap<Integer, InfoType> infoTypes = new HashMap<>();
@@ -650,8 +655,11 @@ public class InfoType
 		if(SPECIAL_INGREDIENTS.containsKey(id))
 		{
 			Ingredient ing = SPECIAL_INGREDIENTS.get(id);
-			if(ing.getMatchingStacks().length > 0)
-				return ing.getMatchingStacks()[0];
+			if(ing.getMatchingStacks().length > 0) {
+				ItemStack element = ing.getMatchingStacks()[0].copy();
+				element.setCount(amount);
+				return element;
+			}
 		}
 
 		for(Item item : Item.REGISTRY)
@@ -739,7 +747,6 @@ public class InfoType
 		}
 	}
 
-	private static HashMap<String, Ingredient> SPECIAL_INGREDIENTS = new HashMap<String, Ingredient>();
 	public static void InitializeSpecialIngredients()
 	{
 		// Steel ingot - fallback is iron
@@ -787,6 +794,7 @@ public class InfoType
 	private static void AddModEntry(String name, String resLoc, Ingredient fallback)
 	{
 		Item item = Item.getByNameOrId(resLoc);
+		
 		if(item != null)
 			SPECIAL_INGREDIENTS.put(name, Ingredient.fromItem(item));
 		else

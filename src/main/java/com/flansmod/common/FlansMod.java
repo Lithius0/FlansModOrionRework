@@ -20,6 +20,7 @@ import com.flansmod.common.guns.EntityAAGun;
 import com.flansmod.common.guns.EntityBullet;
 import com.flansmod.common.guns.EntityGrenade;
 import com.flansmod.common.guns.EntityMG;
+import com.flansmod.common.guns.boxes.GunBoxType;
 import com.flansmod.common.network.PacketHandler;
 import com.flansmod.common.paintjob.BlockPaintjobTable;
 import com.flansmod.common.paintjob.TileEntityPaintjobTable;
@@ -232,6 +233,7 @@ public class FlansMod
 		GameRegistry.registerTileEntity(TileEntitySpawner.class, new ResourceLocation("flansmod:teamsSpawner"));
 		GameRegistry.registerTileEntity(TileEntityPaintjobTable.class, new ResourceLocation("flansmod:paintjobTable"));
 		GameRegistry.registerTileEntity(TileEntityItemHolder.class, new ResourceLocation("flansmod:itemHolder"));
+
 		
 		//Read content packs
 		contentManager.FindContentInModsFolder();
@@ -293,9 +295,10 @@ public class FlansMod
 	@SubscribeEvent
 	public void registerRecipes(RegistryEvent.Register<IRecipe> event)
 	{
-		log.info("Registering Recipes.");
-		
+		//Initialize the Map of special ingredients for crafting recipes.
 		InfoType.InitializeSpecialIngredients();
+		
+		log.info("Registering Recipes.");
 		
 		// Recipes
 		for(InfoType type : InfoType.infoTypes.values())
@@ -350,6 +353,9 @@ public class FlansMod
 				ingredients.add(Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT)));
 			
 			event.getRegistry().register(new ShapedRecipes("FlansMod", 3, 3, ingredients, new ItemStack(workbench, 1, 0)).setRegistryName("FM_Workbench2"));
+
+			//Gun box recipes. The parsing is done here so we can use OreDict items and items from other mods
+			GunBoxType.parseAllBoxes();
 		}
 	}
 	

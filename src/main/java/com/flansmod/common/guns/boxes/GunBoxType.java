@@ -3,6 +3,7 @@ package com.flansmod.common.guns.boxes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -50,10 +51,6 @@ public class GunBoxType extends BoxType
 		//Make sure NumGuns is read before anything else
 		for(String line : file.getLines())
 		{
-			if(line == null)
-				break;
-			if(line.startsWith("//"))
-				continue;
 			String[] split = line.split(" ");
 			if(split.length < 2)
 				continue;
@@ -121,16 +118,20 @@ public class GunBoxType extends BoxType
 		registry.register(block);
 	}
 
-	private List<ItemStack> getRecipe(String[] split)
+	/**
+	 * Turns the split line of text into a raw recipe for parsing later
+	 * @param split	a line in the box TypeFile
+	 * @return a Map mapping a required item name and the required item amount
+	 */
+	private Map<String, Integer> getRecipe(String[] split)
 	{
-		List<ItemStack> recipe = new ArrayList<>();
+		Map<String, Integer> recipe = new HashMap<String, Integer>();
 		
-		for(int i = 0; i < (split.length - 2) / 2; i++)
+		//Start at 2 to skip AddAmmo/AddGun and shortname
+		for(int i = 2; i < split.length; i += 2)
 		{
-			if(split[i * 2 + 3].contains("."))
-				recipe.add(getRecipeElement(split[i * 2 + 3].split("\\.")[0], Integer.parseInt(split[i * 2 + 2]), Integer.valueOf(split[i * 2 + 3].split("\\.")[1])));
-			else
-				recipe.add(getRecipeElement(split[i * 2 + 3], Integer.parseInt(split[i * 2 + 2]), 0));
+			//In the files, amount comes first, then item
+			recipe.put(split[i + 1], Integer.parseInt(split[i]));
 		}
 		
 		return recipe;
@@ -151,112 +152,26 @@ public class GunBoxType extends BoxType
 		return null;
 	}
 	
-	/* Reimported from old code
-	@Override
-	public void addRecipe(Item par1Item)
-	{
-		if (smeltableFrom != null)
-		{
-			GameRegistry.addSmelting(getRecipeElement(smeltableFrom, 0), new ItemStack(item), 0.0F);
-		}
-		if (recipeLine == null)
-			return;
-		try
-		{
-			if (!shapeless)
-			{
-				// Fix oversized recipes
-				int rows = 3;
-				// First column
-				if (((String) recipe[0]).charAt(0) == ' ' && ((String) recipe[1]).charAt(0) == ' ' && ((String) recipe[2]).charAt(0) == ' ')
-				{
-					for (int i = 0; i < 3; i++)
-						recipe[i] = ((String) recipe[i]).substring(1);
-					// New first column
-					if (((String) recipe[0]).charAt(0) == ' ' && ((String) recipe[1]).charAt(0) == ' ' && ((String) recipe[2]).charAt(0) == ' ')
-					{
-						for (int i = 0; i < 3; i++)
-							recipe[i] = ((String) recipe[i]).substring(1);
-					}
-				}
-				// Last column
-				int last = ((String) recipe[0]).length() - 1;
-				if (((String) recipe[0]).charAt(last) == ' ' && ((String) recipe[1]).charAt(last) == ' ' && ((String) recipe[2]).charAt(last) == ' ')
-				{
-					for (int i = 0; i < 3; i++)
-						recipe[i] = ((String) recipe[i]).substring(0, last);
-					// New last column
-					last--;
-					if (((String) recipe[0]).charAt(last) == ' ' && ((String) recipe[1]).charAt(last) == ' ' && ((String) recipe[2]).charAt(last) == ' ')
-					{
-						for (int i = 0; i < 3; i++)
-							recipe[i] = ((String) recipe[i]).substring(0, 0);
-					}
-				}
-				// Top row
-				if (recipe[0].equals(" ") || recipe[0].equals("  ") || recipe[0].equals("   "))
-				{
-					Object[] newRecipe = new Object[recipe.length - 1];
-					newRecipe[0] = recipe[1];
-					newRecipe[1] = recipe[2];
-					recipe = newRecipe;
-					rows--;
-					// Next top row
-					if (recipe[0].equals(" ") || recipe[0].equals("  ") || recipe[0].equals("   "))
-					{
-						Object[] newRecipe1 = new Object[recipe.length - 1];
-						newRecipe1[0] = recipe[1];
-						recipe = newRecipe1;
-						rows--;
-					}
-				}
-				// Bottom row
-				if (recipe[rows - 1].equals(" ") || recipe[rows - 1].equals("  ") || recipe[rows - 1].equals("   "))
-				{
-					Object[] newRecipe = new Object[recipe.length - 1];
-					newRecipe[0] = recipe[0];
-					newRecipe[1] = recipe[1];
-					recipe = newRecipe;
-					rows--;
-					// Next bottom row
-					if (recipe[rows - 1].equals(" ") || recipe[rows - 1].equals("  ") || recipe[rows - 1].equals("   "))
-					{
-						Object[] newRecipe1 = new Object[recipe.length - 1];
-						newRecipe1[0] = recipe[0];
-						recipe = newRecipe1;
-						rows--;
-					}
-				}
-				for (int i = 0; i < (recipeLine.length - 1) / 2; i++)
-				{
-					recipe[i * 2 + rows] = recipeLine[i * 2 + 1].charAt(0);
-					// Split ID with . and if it contains a second part, use it
-					// as damage value.
-					if (recipeLine[i * 2 + 2].contains("."))
-						recipe[i * 2 + rows + 1] = getRecipeElement(recipeLine[i * 2 + 2].split("\\.")[0], Integer.valueOf(recipeLine[i * 2 + 2].split("\\.")[1]));
-					else
-						recipe[i * 2 + rows + 1] = getRecipeElement(recipeLine[i * 2 + 2], 0);
-				}
-				GameRegistry.addRecipe(new ItemStack(block, recipeOutput, 0), recipe);
-			} else
-			{
-				recipe = new Object[recipeLine.length - 1];
-				for (int i = 0; i < (recipeLine.length - 1); i++)
-				{
-					if (recipeLine[i + 1].contains("."))
-						recipe[i] = getRecipeElement(recipeLine[i + 1].split("\\.")[0], Integer.valueOf(recipeLine[i + 1].split("\\.")[1]));
-					else
-						recipe[i] = getRecipeElement(recipeLine[i + 1], 0);
-				}
-				GameRegistry.addShapelessRecipe(new ItemStack(block, recipeOutput, 0), recipe);
+	/**
+	 * Goes through every entry in this box and parses their raw data into actual recipes.
+	 */
+	public void parseAllPages() {
+		for (GunBoxPage page : pages) {
+			for (GunBoxEntry entry : page.entries) {
+				entry.parse();
 			}
-		} catch (Exception e)
-		{
-			FlansMod.log("Failed to add recipe for : " + shortName);
-			FlansMod.log.throwing(e);
 		}
 	}
-	*/
+
+	/**
+	 * Goes through every entry in every box and parses their raw data into actual recipes.
+	 * Call this when other recipes are being registered.
+	 */
+	public static void parseAllBoxes() {
+		for (Map.Entry<String, GunBoxType> box : gunBoxMap.entrySet()) {
+			box.getValue().parseAllPages();
+		}
+	}
 	
 	/**
 	 * Represents a page in the gun box
@@ -276,16 +191,16 @@ public class GunBoxType extends BoxType
 			entries = new ArrayList<>();
 		}
 		
-		public void addNewEntry(InfoType type, List<ItemStack> requiredParts)
+		public void addNewEntry(InfoType type, Map<String, Integer> recipe)
 		{
-			GunBoxEntryTopLevel entry = new GunBoxEntryTopLevel(type, requiredParts);
+			GunBoxEntryTopLevel entry = new GunBoxEntryTopLevel(type, recipe);
 			entries.add(entry);
 			currentlyEditing = entry;
 		}
 		
-		public void addAmmoToCurrentEntry(InfoType type, List<ItemStack> requiredParts)
+		public void addAmmoToCurrentEntry(InfoType type, Map<String, Integer> recipe)
 		{
-			currentlyEditing.addAmmo(type, requiredParts);
+			currentlyEditing.addAmmo(type, recipe);
 		}
 	}
 	
@@ -294,13 +209,18 @@ public class GunBoxType extends BoxType
 	 */
 	public static class GunBoxEntry
 	{
+		/** The InfoType of the item we're crafting */
 		public InfoType type;
+		/** The unparsed data of the crafting recipe. */
+		private Map<String, Integer> rawData;
+		/** A list of all the requirements to craft the item. */
 		public List<ItemStack> requiredParts;
 		
-		public GunBoxEntry(InfoType type, List<ItemStack> requiredParts)
+		public GunBoxEntry(InfoType type, Map<String, Integer> recipe)
 		{
 			this.type = type;
-			this.requiredParts = requiredParts;
+			this.rawData = recipe;
+			this.requiredParts = new ArrayList<ItemStack>();
 		}
 		
 		public boolean haveEnoughOf(InventoryPlayer inv, ItemStack stackNeeded)
@@ -375,6 +295,30 @@ public class GunBoxType extends BoxType
 			
 			return canCraft;
 		}
+		
+		/**
+		 * Parses the raw data into an ItemStack for easy checking. 
+		 * Can be called while game is ongoing to refresh recipe.
+		 */
+		public void parse() {
+			for (Map.Entry<String, Integer> recipeItem : this.rawData.entrySet()) {
+				if (recipeItem.getKey().contains(".")) {
+					String[] splitName = recipeItem.getKey().split("\\.");
+					requiredParts.add(getRecipeElement(splitName[0], recipeItem.getValue(), Integer.valueOf(splitName[1])));
+				} else {
+					requiredParts.add(getRecipeElement(recipeItem.getKey(), recipeItem.getValue(), 0));
+				}
+			}
+		}
+		
+		/**
+		 * Sets the raw crafting data of this entry to newRawData.
+		 * The data given can be turned into the actual crafting recipe by called {@link #parse()}
+		 * @param newRawData a map of crafting data. The String is the name of the ingredient, the integer is the amount
+		 */
+		public void setRawData(Map<String, Integer> newRawData) {
+			this.rawData = newRawData;
+		}
 	}
 	
 	/**
@@ -384,15 +328,15 @@ public class GunBoxType extends BoxType
 	{
 		public List<GunBoxEntry> childEntries;
 		
-		public GunBoxEntryTopLevel(InfoType type, List<ItemStack> requiredParts)
+		public GunBoxEntryTopLevel(InfoType type, Map<String, Integer> recipe)
 		{
-			super(type, requiredParts);
+			super(type, recipe);
 			childEntries = new ArrayList<>();
 		}
 
-		public void addAmmo(InfoType type, List<ItemStack> requiredParts)
+		public void addAmmo(InfoType type, Map<String, Integer> recipe)
 		{
-			childEntries.add(new GunBoxEntry(type, requiredParts));
+			childEntries.add(new GunBoxEntry(type, recipe));
 		}
 	}
 
